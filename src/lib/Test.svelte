@@ -1,0 +1,1 @@
+<h1 class="text-blue-600 font-bold">Card</h1>
