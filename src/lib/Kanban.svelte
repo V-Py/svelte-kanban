@@ -303,11 +303,10 @@
 	})
 </script>
 
-
-<main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}'>
-	<div class="layout">
-		<div class="header">
-			<div id="container">
+<main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="text-center p-4">
+	<div class="layout flex w-full h-full flex-col border-dashed border-2 border-gray-500">
+		<div style="height:150px;" class="header flex justify-center w-full">
+			<div id="container w-full h-full flex items-center justify-center">
 				<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
 					<NewCard 
 						on:mousedown={newCardDragStart}
@@ -316,10 +315,8 @@
 					/>
 				</div>
 			</div>
-			
-			<!-- <button on:click={addSlot}>+</button> -->
 		</div>
-		<div class="kanban-container">
+		<div class="kanban-container flex-1 w-full flex justify-start">
 			{#each columns as column, index_col}
 				<Column
 					cards={column.cards}
@@ -339,64 +336,23 @@
 				on:addColumn={addColumn}
 			/>
 		</div>
-		<div class="footer"></div>
+		<div style="height:75px;"class="footer mt-2.5"></div>
 	</div>
 </main>
 
 
 <style type="text/scss">
 	@import './src/styles/colors';
-
 	main {
-		text-align: center;
-		padding: 1em;
 		background:$MAIN_BG;
 	}
-
-	.layout{
-		display:flex;
-		width:100%;
-		height:100%;
-		flex-direction:column;
-        border:3px dashed darkgrey;
-	}
-
 	.header{
-		height:140px;
-		min-height:140px;
-		height:140px;
+		background:$HEADER_BG;
 	}
-	.footer{
-		margin-top:10px;
-		height:70px;
-		min-height:70px;
-		height:70px;
-	}
-
 	.footer{
 		background:$FOOTER_BG;
 	}
-
-	.header{
-		background:$HEADER_BG;
-		display:flex;
-		align-items: center;
-		justify-content: center;
-		width:100%;
-	}
-	#container{
-		width:100%;
-		height:100%;
-		display:flex;
-		align-items: center;
-		justify-content: center;
-	}
-
 	.kanban-container{
-		width:100%;
-		height:100%;
-		display:flex;
-		justify-content: flex-start;
 		background:$HEADER_BG;
 	}
 </style>

@@ -4,6 +4,8 @@
     import {fly} from 'svelte/transition';
     import Card from '../Card.svelte';
     import OptionsColumn from'./OptionsColumn.svelte';
+    import Fa from 'svelte-fa'
+    import { faSave } from '@fortawesome/free-solid-svg-icons';
 
     let bool_show_options = true;
 
@@ -26,29 +28,19 @@
 
     function saveColumn(){
         bool_show_options = true;
-        // console.log('SAVE COLUMN');
-        // const id_options    = this.id.replace('save', 'options');
-        // const id_container  = this.id.replace('save', 'container');
-        // const id_title      = this.id.replace('save', 'title');
-
-        // console.log('ID', id_options, id_container, id_title);
-        // document.getElementById(id_container).style.display = 'none';
-        // document.getElementById(id_options).style.display = '';
-        // document.getElementById(id_title).style.display = '';
     }
 
 </script>
 
-<div class="column" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
-    <div class="title">
+<div class="column w-52 min-w-52 max-w-52 h-full bg-gray-50 flex flex-col rounded mx-1.5 my-3 border-transparent" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
+    <div class="title h-20 max-h-20 min-h-20 tracking-wider font-bold text-base flex justify-center items-center relative">
         {#if bool_show_options}
         <span id="title-column{index_col}">{title.toUpperCase()}</span>
         {:else}
         <div id="container-column{index_col}">
-            <input type="text" id="input-colum{index_col}" class="column-title" value={title} />
-            <button id="save-column{index_col} "class="save-column" on:click={saveColumn}>
-                <!-- <i class="fas fa-save"></i> -->
-                save
+            <input type="text" id="input-colum{index_col}" class="text-center padding-1 w-6/12" value={title} />
+            <button id="save-column{index_col} "class="save-column bg-transparent border-transparent text-gray-700 w-8 h-8 rounded-full absolute top-0 left-44 hover:cursor-pointer hover:bg-black hover:bg-opacity-10" on:click={saveColumn}>
+                <Fa icon={faSave} />
             </button>
         </div>
         {/if}
@@ -59,12 +51,12 @@
             {bool_show_options}
         />
     </div>
-    <div class="content">
+    <div class="content h-full flex flex-col justify-start items-center">
         {#if show_fake_slot}
-            <div class="slot animate" style="background:transparent;"></div>
+            <div class="animate flex bg-transparent z-1 relative w-full h-7 m-1.5" style="background:transparent;"></div>
         {/if}
         {#each slots as slot, index}
-            <div class="slot {slot.animate == true ? 'animate' : ''}" transition:fly="{{y:-200, duration:500}}">
+            <div class="{slot.animate == true ? 'animate' : ''} animate flex bg-transparent z-1 relative w-full h-7 m-1.5" transition:fly="{{y:-200, duration:500}}">
                 {#if slot.empty == false}
                     <Card
                         id={index}
@@ -83,78 +75,7 @@
 
 <style type="text/scss">
     @import './src/styles/colors';
-
-    .column-title{
-        text-align:center;
-        padding:5px;
-        width:50%;
-    }
-
-    .save-column{
-        background:transparent;
-        border:transparent;
-        color:darkslategray;
-        height:30px;
-        width:30px;
-        border-radius:50%;
-        position:absolute;
-        top:0px;
-        left:180px;
-    }
-
-    .save-column:hover{
-        cursor:pointer;
-        background:rgba(0,0,0,0.1);
-    }
-
-    .column{
-		width:210px;
-		min-width:210px;
-		max-width:210px;
-		height:100%;
-		border: 2px solid transparent;
-		background-color:#F4F4F4;
-		margin: 5px 10px;
-		display:flex;
-		flex-direction:column;
-        border-radius:0.25rem;
-	}
-
-	.column > .title{
-		// flex:1;
-        height:85px;
-        min-height:85px;
-        max-height:85px;
-		color:$COLUMN_TITLE_COLOR;
-		letter-spacing:1px;
-		font-weight:bold;
-		font-size:16px;
-		display:flex;
-		justify-content: center;
-		align-items: center;
-        position:relative;
-	}
-
-	.column > .content{
-		height:100%;
-		display:flex;
-		flex-direction:column;
-		justify-content: start;
-		align-items:center;
-	}
-
-	// .column > .content > .slot:not(.hide){
-	.column > .content > .slot{
-		margin:5px;
-		display:flex;
-        background:transparent;
-        z-index:1;
-		position:relative;
-		width:100%;
-		height:120px;
-	}
-
-    .slot.animate{
+    .animate{
         animation: growingSlot .3s ease-out forwards;
     }
 

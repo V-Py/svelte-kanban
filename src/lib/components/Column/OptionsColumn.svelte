@@ -1,6 +1,8 @@
 <script lang="ts">
     import {onMount, getContext, createEventDispatcher} from 'svelte';
     import {fly} from 'svelte/transition';
+    import Fa from 'svelte-fa'
+    import {faEllipsisV, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
     const dispatch = createEventDispatcher();
     export let index_col;
@@ -13,29 +15,17 @@
 
     function showOptionsColumn(){
         bool_show_modal = !bool_show_modal
-
         if(bool_show_modal){
             this.parentNode.children[1].classList.add('show-options');
         }else{
             this.parentNode.children[1].classList.remove('show-options');
         }
-        console.log('THIS', );
     }
 
     function modifyColumn(){
-        console.log('MODIFY COLUMN');
         bool_show_modal = !bool_show_modal;
         this.parentNode.classList.remove('show-options');
         dispatch('modifyColumn', {});
-
-        // const id_options    = this.id.replace('modify', 'options');
-        // const id_container  = this.id.replace('modify', 'container');
-        // const id_title      = this.id.replace('modify', 'title');
-
-        // console.log('ID', id_options, id_container);
-        // document.getElementById(id_options).style.display = 'none';
-        // document.getElementById(id_title).style.display = 'none';
-        // document.getElementById(id_container).style.display = '';
 
     }
 
@@ -46,80 +36,26 @@
     }
 </script>
 
-<div class="options-container">
+<div class="absolute left-48 top-1.5">
     {#if bool_show_options}
-        <button id="options-column{index_col}" class="options" on:click="{showOptionsColumn}">
-            <!-- <i class="fas fa-ellipsis-v"> -->
-            |
+        <button id="options-column{index_col}" class="bg-transparent text-gray-700 border-transparent w-4 h-4 hover:cursor-pointer hover:brightness-90" on:click="{showOptionsColumn}">
+            <Fa icon={faEllipsisV}/>
         </button>
-        <div class="modal-options">
-            <button id="modify-column{index_col}" class="action modify" on:click={modifyColumn}><i class="fas fa-pen custom-fa"></i>Modifier</button>
-            <button id="delete-column{index_col}" class="action remove" on:click={removeColumn}><i class="fas fa-trash-alt custom-fa"></i>Supprimer</button>
+        <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; z-index:4;" class="modal-options absolute w-32 max-w-32 h-20 max-h-20 bg-white rounded-md top-3 flex flex-col font-bold font-size text-sm justify-around">
+            <button id="modify-column{index_col}" class="action leading-8 h-8 flex justify-start items-center text-gray-700 tracking-normal bg-transparent border-transparent p-2 hover:cursor-pointer hover:bg-black hover:bg-opacity-10" on:click={modifyColumn}>
+                <Fa icon={faPen}/> <span class="ml-2">Modifier</span>
+            </button>
+            <button id="delete-column{index_col}" class="action leading-8 h-8 flex justify-start items-center text-gray-700 tracking-normal bg-transparent border-transparent p-2 hover:bg-black hover:bg-opacity-10" on:click={removeColumn}>
+                <Fa icon={faTrashAlt}/> <span class="ml-2">Supprimer</span>
+            </button>
         </div>
     {/if}
 </div>
 
 <style type="text/scss">
     @import './src/styles/colors';
-    
-    .options-container{
-        position:absolute;
-        left:185px;
-        top:5px;
-    }
-
-    .modal-options{
-        position:absolute;
-        width:120px;
-        max-width:120px;
-        height:80px;
-        max-height:80px;
-        background-color:white;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        border-radius:5px;
-        top:20px;
-        z-index:4;
-        display:flex;
-        flex-direction:column;
-        font-weight:400;
-        font-size:14px;
-        justify-content:space-around;
-    }
-
     .modal-options:not(.show-options){
         display:none;
     }
-    
-    .modal-options > .action{
-        line-height:32px;
-        height:32px;
-        display:flex;
-        justify-content: start;
-        align-items: center;
-        color:darkslategray;
-        // border-radius:5px;
-        letter-spacing: 0px;
-        background:transparent;
-        border:transparent;
-    }
-
-    .modal-options > .action:hover{
-        cursor:pointer;
-        background-color: rgba(0,0,0,0.1);
-    }
-
-    .options{
-        background:transparent;
-        color:#444;
-        border-color:transparent;
-        width:15px;
-        height:15px;
-    }
-
-    .options:hover{
-        cursor:pointer;
-        filter:brightness(0.9);
-    }
-
 
 </style>
