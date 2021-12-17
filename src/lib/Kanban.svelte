@@ -8,11 +8,22 @@
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
 	import {card_height, card_width, number_of_slots, main_width, main_height} from "../stores/store";
 
-	let columns_dur = ['first', 'second', 'third', 'fourth'];
+	// Properties of the Kanban
+	export let props_list;
+	export let cols_list;
+
+	let elem_dragged;
+	let cOffX_new = 0;
+	let cOffY_new = 0;
+	let cOffX     = 0;
+	let cOffY     = 0;
+	let rect_new_card;
+	let rect_card;
 	let columns = [];
-	columns_dur.forEach(function(column, index){
+
+	cols_list.forEach(function(column, index){
 		columns[index] = {
-			title:column,
+			title:column.label,
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
 			cards:[],
@@ -20,18 +31,6 @@
 			slot_added:false
 		}
 	})
-
-
-	let elem_dragged;
-
-	//#region dragNdrop
-	let cOffX_new = 0;
-	let cOffY_new = 0;
-	let cOffX     = 0;
-	let cOffY     = 0;
-
-	let rect_new_card;
-	let rect_card;
 
 	function newCardDragStart(e) {
 		e = e || window.event;
@@ -310,8 +309,7 @@
 				<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
 					<NewCard 
 						on:mousedown={newCardDragStart}
-						color="red"
-						title="Label"
+						{props_list}
 					/>
 				</div>
 			</div>

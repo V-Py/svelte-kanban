@@ -43,7 +43,7 @@
         <div class="text-lg font-bold tracking-wider text-">{title}</div>
     </div>
     <div class="flex-1 w-full">
-        <div class="text-xs text-gray-500 flaot-left">09/12/2021</div>
+        <div class="text-xs text-gray-500 float-left">09/12/2021</div>
     </div>
 </div>
 
