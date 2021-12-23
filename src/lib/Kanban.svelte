@@ -6,11 +6,12 @@
     import Card from './components/Card.svelte';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
-	import {card_height, card_width, number_of_slots, main_width, main_height} from "../stores/store";
+	import {card_height, card_width, number_of_slots, main_width, main_height, columns} from "../stores/store";
 
 	// Properties of the Kanban
 	export let props_list;
 	export let cols_list;
+	export let dragNew;
 
 	let elem_dragged;
 	let cOffX_new = 0;
@@ -19,10 +20,10 @@
 	let cOffY     = 0;
 	let rect_new_card;
 	let rect_card;
-	let columns = [];
+	// let columns = [];
 
 	cols_list.forEach(function(column, index){
-		columns[index] = {
+		$columns[index] = {
 			title:column.label,
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
@@ -60,28 +61,28 @@
 		const columns_temp = document.getElementsByClassName('column');
 		
 		for(let i=0; i<columns.length;i++){
-			if((x_test >= columns[i].rect.left) && (x_test <= columns[i].rect.right) && (y_test >= columns[i].rect.top) && (y_test <= columns[i].rect.bottom)){
+			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
 
 				columns_temp[i].classList.add('dragover');
 				columns_temp[i].classList.remove('enlightened');
 
-				if(columns[i].slot_added != true){
-					// const slots_temp = columns[i].slots;
+				if($columns[i].slot_added != true){
+					// const slots_temp = $columns[i].slots;
 					// slots_temp.unshift({empty:true});
-					// columns[i].slots = [...slots_temp];
-					columns[i].slot_added = true;
+					// $columns[i].slots = [...slots_temp];
+					$columns[i].slot_added = true;
 				}
 			}else{
 				columns_temp[i].classList.add('enlightened');
 				columns_temp[i].classList.remove('dragover');
 
-				if(columns[i].slot_added == true){
-					// const slots_temp = columns[i].slots;
+				if($columns[i].slot_added == true){
+					// const slots_temp = $columns[i].slots;
 					// if(slots_temp[0].empty == true){
 					// 	slots_temp.shift();
-					// 	columns[i].slots = [...slots_temp];
+					// 	$columns[i].slots = [...slots_temp];
 					// }
-					columns[i].slot_added = false;
+					$columns[i].slot_added = false;
 				}
 			}
 		}
@@ -104,16 +105,16 @@
 
 		const columns_temp = document.getElementsByClassName('column');
 
-		for(let i=0; i<columns.length;i++){
+		for(let i=0; i<$columns.length;i++){
 			columns_temp[i].classList.remove('enlightened', 'dragover');
 
-			if((x_end >= columns[i].rect.left) && (x_end <= columns[i].rect.right) && (y_end >= columns[i].rect.top) && (y_end <= columns[i].rect.bottom)){
+			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
 				const card_temp = {empty:false, title:"New card"};
-				const slots_temp = columns[i].slots;
+				const slots_temp = $columns[i].slots;
 				// slots_temp.shift();
-				columns[i].slot_added = false;
+				$columns[i].slot_added = false;
 				slots_temp.unshift(card_temp)
-				columns[i].slots = [...slots_temp];
+				$columns[i].slots = [...slots_temp];
 			}
 		}
 	};
@@ -155,26 +156,26 @@
 
 		const columns_temp = document.getElementsByClassName('column');
 
-		for(let i=0; i<columns.length;i++){
-			if((x_test >= columns[i].rect.left) && (x_test <= columns[i].rect.right) && (y_test >= columns[i].rect.top) && (y_test <= columns[i].rect.bottom)){
+		for(let i=0; i<$columns.length;i++){
+			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
 				columns_temp[i].classList.add('dragover');
 				columns_temp[i].classList.remove('enlightened');
 
-				if(columns[i].slot_added != true && col_index != i){
-					// const slots_temp = columns[i].slots;
+				if($columns[i].slot_added != true && col_index != i){
+					// const slots_temp = $columns[i].slots;
 					// slots_temp.unshift({empty:true});
-					// columns[i].slots = [...slots_temp];
-					columns[i].slot_added = true;
+					// $columns[i].slots = [...slots_temp];
+					$columns[i].slot_added = true;
 				}
 			}else{
 				columns_temp[i].classList.add('enlightened');
 				columns_temp[i].classList.remove('dragover');
 				
-				if(columns[i].slot_added == true){
-					// const slots_temp = columns[i].slots;
+				if($columns[i].slot_added == true){
+					// const slots_temp = $columns[i].slots;
 					// slots_temp.pop();
-					// columns[i].slots = [...slots_temp];
-					columns[i].slot_added = false;
+					// $columns[i].slots = [...slots_temp];
+					$columns[i].slot_added = false;
 				}
 			}
 		}
@@ -202,19 +203,19 @@
 
 		const columns_temp = document.getElementsByClassName('column');
 
-		for(let i=0; i<columns.length;i++){
+		for(let i=0; i<$columns.length;i++){
 			columns_temp[i].classList.remove('enlightened', 'dragover');
 
-			if((x_end >= columns[i].rect.left) && (x_end <= columns[i].rect.right) && (y_end >= columns[i].rect.top) && (y_end <= columns[i].rect.bottom)){
+			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
 				console.log('DANS COLONNE');
 				const card_temp = {empty:false, title:"New card"};
-				const columns_work = [... columns];
+				const columns_work = [... $columns];
 				columns_work[col_index].slots.splice(card_index, 1);
 				columns_work[col_index].slots.push({empty:true});
 				columns_work[i].slots.pop();
 				columns_work[i].slots.unshift(card_temp);
 
-				columns = [... columns_work];
+				$columns = [... columns_work];
 
 				console.log(columns);
 			}
@@ -227,9 +228,9 @@
 	function removeColumn(event){
 		console.log('REMOVE COLUMN :', event.detail.index_col);
 
-		const columns_temp = [... columns];
+		const columns_temp = [... $columns];
 		columns_temp.splice(event.detail.index_col, 1);
-		columns = [... columns_temp];
+		$columns = [... columns_temp];
 	}
 
 	function addColumn(){
@@ -241,13 +242,13 @@
 			slots:[]
 		}
 
-		columns = [... columns, col_temp];
+		$columns = [... $columns, col_temp];
 
 		setTimeout(function(){
-			const col_index = columns.length - 1 ;
-			columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
+			const col_index = $columns.length - 1 ;
+			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
 			for(let i=0; i<$number_of_slots; i++){
-				columns[col_index].slots = {empty:true};
+				$columns[col_index].slots = {empty:true};
 			}
 		}, 200)
 	}
@@ -255,20 +256,20 @@
 	function removeCard(event){
 		console.log('CARD', event.detail.card);
 		console.log('COL', event.detail.col);
-		const column_temp = columns[event.detail.col];
+		const column_temp = $columns[event.detail.col];
 
 		// console.log(column_temp);
 		column_temp.cards.splice(event.detail.card,1);
-		columns[event.detail.col].cards = [... column_temp.cards];
+		$columns[event.detail.col].cards = [... column_temp.cards];
 	}
 
 	function addSlot(){
 		console.log('TEST');
 
-		const slots_temp = columns[1].slots;
+		const slots_temp = $columns[1].slots;
 		slots_temp.unshift({empty:true, animate:true});
-		columns[1].slots = [... slots_temp];
-		// columns[1].slots.unshift({empty:true});
+		$columns[1].slots = [... slots_temp];
+		// $columns[1].slots.unshift({empty:true});
 	}
 
 	onMount(() => {
@@ -278,17 +279,17 @@
 		let width_card
 		for(let i=0; i<columns_temp.length; i++){
 			const rect_col  =  columns_content[i].getBoundingClientRect();
-			columns[i].rect = rect_col;
+			$columns[i].rect = rect_col;
 			const width = rect_col.width;
 
-			columns[i].number_of_slots = Math.floor(rect_col.height/$card_height);
+			$columns[i].number_of_slots = Math.floor(rect_col.height/$card_height);
 
 			if(i==0){
 				number_of_slots.set(Math.floor(rect_col.height/$card_height));
 			}
 
 			for(let j=0; j<$number_of_slots; j++){
-				columns[i].slots[j] = {empty:true};
+				$columns[i].slots[j] = {empty:true};
 			}
 		}
 
@@ -304,18 +305,21 @@
 
 <main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="text-center p-4">
 	<div class="layout flex w-full h-full flex-col border-dashed border-2 border-gray-500">
-		<div style="height:150px;" class="header flex justify-center w-full">
-			<div id="container w-full h-full flex items-center justify-center">
-				<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
-					<NewCard 
-						on:mousedown={newCardDragStart}
-						{props_list}
-					/>
+		<!-- Drag N Drop New card -->
+		{#if dragNew}
+			<div style="height:150px;" class="header flex justify-center w-full">
+				<div id="container w-full h-full flex items-center justify-center">
+					<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
+						<NewCard 
+							on:mousedown={newCardDragStart}
+							{props_list}
+						/>
+					</div>
 				</div>
 			</div>
-		</div>
+		{/if}
 		<div class="kanban-container flex-1 w-full flex justify-start">
-			{#each columns as column, index_col}
+			{#each $columns as column, index_col}
 				<Column
 					cards={column.cards}
 					slots={column.slots}

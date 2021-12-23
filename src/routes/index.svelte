@@ -1,7 +1,7 @@
 <script lang="ts">
     import Test from '$lib/Test.svelte';
     import Kanban from '$lib/Kanban.svelte';
-
+    
     let props_list = [
         {
             label:"first",
@@ -17,17 +17,11 @@
 
     let cols_list = [
         {
-            label:"First1",
+            label:"First",
             value:"first"
         },{
-            label:"Second2",
+            label:"Second",
             value:"second"
-        },{
-            label:"Third3",
-            value:"third"
-        },{
-            label:"Fourth4",
-            value:"fourth"
         }
     ]
 </script>
@@ -36,6 +30,7 @@
 
 
 <Kanban 
+    dragNew = {false}
     {props_list}
     {cols_list}
 />
