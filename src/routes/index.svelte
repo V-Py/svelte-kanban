@@ -33,5 +33,7 @@
     dragNew = {false}
     {props_list}
     {cols_list}
+
+    on:cardRemoved
 />
 

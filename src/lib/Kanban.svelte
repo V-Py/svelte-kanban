@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { onMount, createEventDispatcher } from "svelte";
 	import { element } from "svelte/internal";
 	import {fade} from "svelte/transition";
 	import NewCard from "./components/NewCard.svelte";
@@ -21,6 +21,7 @@
 	let rect_new_card;
 	let rect_card;
 	// let columns = [];
+    const dispatch = createEventDispatcher();
 
 	cols_list.forEach(function(column, index){
 		$columns[index] = {
@@ -58,30 +59,13 @@
 		elem_dragged.style.top = y_live.toString() + 'px';
 		elem_dragged.style.left = x_live.toString() + 'px';
 
-		const columns_temp = document.getElementsByClassName('column');
-		
 		for(let i=0; i<columns.length;i++){
 			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
-
-				columns_temp[i].classList.add('dragover');
-				columns_temp[i].classList.remove('enlightened');
-
 				if($columns[i].slot_added != true){
-					// const slots_temp = $columns[i].slots;
-					// slots_temp.unshift({empty:true});
-					// $columns[i].slots = [...slots_temp];
 					$columns[i].slot_added = true;
 				}
 			}else{
-				columns_temp[i].classList.add('enlightened');
-				columns_temp[i].classList.remove('dragover');
-
 				if($columns[i].slot_added == true){
-					// const slots_temp = $columns[i].slots;
-					// if(slots_temp[0].empty == true){
-					// 	slots_temp.shift();
-					// 	$columns[i].slots = [...slots_temp];
-					// }
 					$columns[i].slot_added = false;
 				}
 			}
@@ -103,11 +87,7 @@
 			elem_dragged.style.removeProperty('left');
 		}
 
-		const columns_temp = document.getElementsByClassName('column');
-
 		for(let i=0; i<$columns.length;i++){
-			columns_temp[i].classList.remove('enlightened', 'dragover');
-
 			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
 				const card_temp = {empty:false, title:"New card"};
 				const slots_temp = $columns[i].slots;
@@ -120,24 +100,23 @@
 	};
 
 	function cardDragStart(event){
-		console.log(event.detail)
+		console.log('START');
 		let e = event.detail.event;
-		let elem = event.detail.elem;
-		console.log('CARD DRAG START', e);
-
 		e = e || window.event;
 		e.preventDefault();
-		elem_dragged = elem;
 
-		cOffX = e.clientX - elem.offsetLeft;
-		cOffY = e.clientY - elem.offsetTop;
-		rect_card = elem.getBoundingClientRect();
+		// Storing infos of the card dragged (coordinates, rectangle)
+		elem_dragged = event.detail.elem;
+		cOffX = e.clientX - elem_dragged.offsetLeft;
+		cOffY = e.clientY - elem_dragged.offsetTop;
+		rect_card = elem_dragged.getBoundingClientRect();
 
 		document.addEventListener('mousemove', cardDragMove);
 		document.addEventListener('mouseup', cardDragEnd);
 	}
 
 	function cardDragMove(e) {
+		console.log('MOVE');
 		e = e || window.event;
 		e.preventDefault();
 
@@ -150,84 +129,65 @@
 
 		const array_temp = elem_dragged.id.split('card-');
 		const array_temp_bis = array_temp[1].split('-col-');
-
-		const card_index = array_temp_bis[0];
 		const col_index = array_temp_bis[1];
-
-		const columns_temp = document.getElementsByClassName('column');
 
 		for(let i=0; i<$columns.length;i++){
 			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
-				columns_temp[i].classList.add('dragover');
-				columns_temp[i].classList.remove('enlightened');
-
-				if($columns[i].slot_added != true && col_index != i){
-					// const slots_temp = $columns[i].slots;
-					// slots_temp.unshift({empty:true});
-					// $columns[i].slots = [...slots_temp];
-					$columns[i].slot_added = true;
-				}
+				if($columns[i].slot_added != true && col_index != i){$columns[i].slot_added = true;}
 			}else{
-				columns_temp[i].classList.add('enlightened');
-				columns_temp[i].classList.remove('dragover');
-				
-				if($columns[i].slot_added == true){
-					// const slots_temp = $columns[i].slots;
-					// slots_temp.pop();
-					// $columns[i].slots = [...slots_temp];
-					$columns[i].slot_added = false;
-				}
+				if($columns[i].slot_added == true){$columns[i].slot_added = false;}
 			}
 		}
 	};
 
 	function cardDragEnd(e){
-		console.log('DRAG END');
-
+		console.log('END');
 		e = e || window.event;
 		e.preventDefault();
 		
-		const x_end = rect_card.left + (e.clientX - cOffX);
-		const y_end = rect_card.top + (e.clientY - cOffY);
-
+		// Removing event listeners
 		document.removeEventListener('mousemove', cardDragMove);
 		document.removeEventListener('mouseup', cardDragEnd);
 
+		const x_end = rect_card.left + (e.clientX - cOffX);
+		const y_end = rect_card.top + (e.clientY - cOffY);
 		const array_temp = elem_dragged.id.split('card-');
 		const array_temp_bis = array_temp[1].split('-col-');
 
 		const card_index = array_temp_bis[0];
 		const col_index = array_temp_bis[1];
-		// console.log('COL', col_index, 'CARD', card_index);
-		// console.log('XY', x_end, ',', y_end);
-
-		const columns_temp = document.getElementsByClassName('column');
 
 		for(let i=0; i<$columns.length;i++){
-			columns_temp[i].classList.remove('enlightened', 'dragover');
-
 			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
-				console.log('DANS COLONNE');
-				const card_temp = {empty:false, title:"New card"};
+				const card_temp = $columns[col_index][card_index];
+
+				// Copying columns
 				const columns_work = [... $columns];
+
+				// Removing card from column dragged from
 				columns_work[col_index].slots.splice(card_index, 1);
-				columns_work[col_index].slots.push({empty:true});
-				columns_work[i].slots.pop();
+
+				// Adding card to column dragged on
 				columns_work[i].slots.unshift(card_temp);
+				columns_work[i].slot_added = false;
 
 				$columns = [... columns_work];
-
-				console.log(columns);
 			}
 		}
-
 		elem_dragged.style.removeProperty('top');
 		elem_dragged.style.removeProperty('left');
 	}
 
-	function removeColumn(event){
-		console.log('REMOVE COLUMN :', event.detail.index_col);
+	// TODO : Possibilité d'ajouter une card à une position custom (uniquement au début pour l'instant)
+	function addCard(col_index:number, card_index:number=0){
+		console.log('ADDCARD');
+		const card_temp = {empty:false, animate:false, title:"New card", description:"test", color:"blue", category:"task", date:"02/02/2022"};
+		const columns_work = [... $columns];
+		columns_work[col_index].slots.unshift(card_temp);
+		$columns = [... columns_work];
+	}
 
+	function removeColumn(event){
 		const columns_temp = [... $columns];
 		columns_temp.splice(event.detail.index_col, 1);
 		$columns = [... columns_temp];
@@ -248,64 +208,48 @@
 			const col_index = $columns.length - 1 ;
 			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
 			for(let i=0; i<$number_of_slots; i++){
-				$columns[col_index].slots = {empty:true};
+				$columns[col_index].slots = {empty:true, animate:false};
 			}
 		}, 200)
 	}
 
 	function removeCard(event){
-		console.log('CARD', event.detail.card);
-		console.log('COL', event.detail.col);
 		const column_temp = $columns[event.detail.col];
-
-		// console.log(column_temp);
 		column_temp.cards.splice(event.detail.card,1);
 		$columns[event.detail.col].cards = [... column_temp.cards];
-	}
-
-	function addSlot(){
-		console.log('TEST');
-
-		const slots_temp = $columns[1].slots;
-		slots_temp.unshift({empty:true, animate:true});
-		$columns[1].slots = [... slots_temp];
-		// $columns[1].slots.unshift({empty:true});
+        dispatch('cardRemoved', {card_infos:event.detail.card, column:event.detail.col});  
 	}
 
 	onMount(() => {
 		const columns_temp = document.getElementsByClassName('column');
-		const columns_content = document.getElementsByClassName('content');
 
-		let width_card
+		let width_card;
 		for(let i=0; i<columns_temp.length; i++){
-			const rect_col  =  columns_content[i].getBoundingClientRect();
+			const rect_col  =  columns_temp[i].getBoundingClientRect();
 			$columns[i].rect = rect_col;
-			const width = rect_col.width;
+			// const width = rect_col.width;
 
-			$columns[i].number_of_slots = Math.floor(rect_col.height/$card_height);
+			// $columns[i].number_of_slots = Math.floor(rect_col.height/$card_height);
 
-			if(i==0){
-				number_of_slots.set(Math.floor(rect_col.height/$card_height));
-			}
+			// if(i==0){
+			// 	number_of_slots.set(Math.floor(rect_col.height/$card_height));
+			// }
 
-			for(let j=0; j<$number_of_slots; j++){
-				$columns[i].slots[j] = {empty:true};
-			}
+			// for(let j=0; j<$number_of_slots; j++){
+			// 	$columns[i].slots[j] = {empty:true};
+			// }
 		}
 
 		window.addEventListener('resize', function(){
-			console.log('RESIZED');
 			card_width.set(document.getElementsByClassName('column')[0].clientWidth -10);
 			card_height.set((document.getElementsByClassName('column')[0].clientHeight-10)/2);
 		})
-
-		console.log('MOUNTED', columns);
 	})
 </script>
 
 <main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="text-center p-4">
 	<div class="layout flex w-full h-full flex-col border-dashed border-2 border-gray-500">
-		<!-- Drag N Drop New card -->
+		<!-- TODO : Drag N Drop New card -->
 		{#if dragNew}
 			<div style="height:150px;" class="header flex justify-center w-full">
 				<div id="container w-full h-full flex items-center justify-center">
@@ -331,6 +275,7 @@
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
 					on:removeCard={removeCard}
+					on:addCard={(e) => {addCard(e.detail.index, 0)}}
 				/>
 			{/each}
 
