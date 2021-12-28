@@ -34,6 +34,14 @@
     {props_list}
     {cols_list}
 
-    on:cardRemoved
+    on:columnRemove
+    on:columnAdd
+
+    on:cardDragStart
+    on:cardDragMove
+    on:cardDragEnd
+    on:cardDragSuccess
+    on:cardDragFailed
+    on:cardAdd
 />
 

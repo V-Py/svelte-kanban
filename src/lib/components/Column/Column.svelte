@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {number_of_slots, columns} from '../../../stores/store.js';
+    import {columns} from '../../../stores/store.js';
     import {fly} from 'svelte/transition';
     import Card from '../Card.svelte';
     import OptionsColumn from'./OptionsColumn.svelte';
@@ -14,7 +14,6 @@
     export let title;
     export let cards;
     export let index_col;
-    export let number_slots;
     export let slots;
     export let show_fake_slot;
 
@@ -76,24 +75,31 @@
         {#if show_fake_slot}
             <div class="animate empty-slot flex bg-transparent z-1 relative w-full h-7 m-1.5" style="background:transparent;"></div>
         {/if}
-        {#each slots as slot, index}
-            <div class="{slot.animate == true ? 'animate' : ''} not-empty animate flex bg-transparent z-1 relative w-full h-7 m-1.5" in:fly="{{y:-200, duration:500}}">
-                {#if slot.empty == false}
-                    <Card
-                        id={index}
-                        id_col={index_col}
-                        on:mousedown="{handleMouseDown}"
-                        on:removeCard
 
-                        title={slot.title}
-                        description={slot.description}
-                        category={slot.category}
-                        color={slot.color}
-                        date={slot.date}
-                    />
-                {/if}
-            </div>
-        {/each}
+        {#if slots.length > 0}
+            {#each slots as slot, index}
+                <!-- <div class="{slot.animate == true ? 'animate' : ''} not-empty animate flex bg-transparent z-1 relative w-full h-7 m-1.5" in:fly="{{y:-200, duration:500}}"> -->
+                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate flex bg-transparent z-1 relative w-full h-7">
+                    {#if slot.empty == false}
+                        <Card
+                            id={index}
+                            id_col={index_col}
+                            on:mousedown="{handleMouseDown}"
+
+                            title={slot.title}
+                            description={slot.description}
+                            category={slot.category}
+                            color={slot.color}
+                            date={slot.date}
+
+                            on:cardPropModify
+                            on:cardPropSaved
+                            on:cardRemove
+                        />
+                    {/if}
+                </div>
+            {/each}
+        {/if}
     </div>
     <button class="bg-transparent text-gray-500 font-normal hover:bg-gray-200 mx-auto px-3 rounded-md" on:click={() => {dispatch('addCard', {index:index_col});  }}>
         Add a card <Icon data={plus} />

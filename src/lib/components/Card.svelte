@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
     import {fade, fly} from 'svelte/transition';
     import {onMount, getContext, createEventDispatcher} from 'svelte';
     import Fa from 'svelte-fa'
-    import { faEllipsisH, faSave} from '@fortawesome/free-solid-svg-icons';
-
+    import { faEllipsisH, faSave, faTrashAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
+    import {columns} from '../../../src/stores/store.js';
+import { debug } from 'svelte/internal';
     const dispatch = createEventDispatcher();
 
     onMount(() => {
@@ -14,27 +15,39 @@
     })
 
     function removeCard(e){
-        const array_temp = this.id.split('remove-');
-        const array_bis = array_temp[1].split("-col-");
-        const index_card = array_bis[0];
-        const index_col = array_bis[1];
-        dispatch('removeCard', {card:index_card, col:index_col});  
+        console.log('REMOVE CARD');
+        // debugger;
+		const column_temp = $columns[id_col];
+		column_temp.slots.splice(id, 1);
+		$columns[id_col].slots = [... column_temp.slots];
+        dispatch('cardRemove', {});  
+        
     }
 
-    function modifyDate(){
-        const modify_date = `modify-date-${id}-col-${id_col}`;
-        const input_date = `input-date-${id}-col-${id_col}`;
-        console.log(modify_date);
-        console.log(input_date);
-
-        document.getElementById(modify_date).style.display = 'none';
-        document.getElementById(input_date).style.display = '';
-        document.getElementById(input_date).focus();
+    function modifyProp(prop:string){
+        const modify = `modify-${prop}-${id}-col-${id_col}`;
+        const save = modify.replace('modify', 'save');
+        const input = modify.replace('modify', 'input');
+        document.getElementById(modify).style.display = 'none';
+        document.getElementById(input).style.display = '';
+        document.getElementById(input).focus();
+        document.getElementById(save).style.display = '';
+        dispatch('cardPropModify', {});  
     }
 
-    export let id;
-    export let id_col;
+    function saveProp(prop:string){
+        const modify = `modify-${prop}-${id}-col-${id_col}`;
+        const save = modify.replace('modify', 'save');
+        const input = modify.replace('modify', 'input');
+        document.getElementById(modify).style.display = '';
+        document.getElementById(input).style.display = 'none';
+        document.getElementById(save).style.display = 'none';
+        $columns[id_col].slots[id][prop] = document.getElementById(input).value;
+        dispatch('cardPropSaved', {});  
+    }
 
+    export let id:number;
+    export let id_col:number;
     export let title = 'New Card';
     export let color = 'gray';
     export let description = 'empty';
@@ -43,20 +56,22 @@
 </script>
 
 
-<div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card bg-white flex flex-col w-48 h-24 absolute p-2 ml-1.5 mt-1.5 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
+<div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card bg-white flex flex-col w-48 h-24 absolute p-2 ml-2 mt-1 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
     <div class="flex-1 w-full">
-        <div class="text-xs px-2 py-2 block cursor-pointer text-white rounded-full float-left" style="background:{color}; opacity:0.3;">{category}</div>
-        <button id="remove-{id}-col-{id_col}" class="remove bg-transparent border-transparent float-right hover:cursor-pointer hover:brightness-75" on:click="{removeCard}">
-            <Fa icon={faEllipsisH}/>
+        <div class="text-xs px-2 py-1 block cursor-pointer text-white rounded-md float-left" style="background:{color}; opacity:0.3;">{category}</div>
+        <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="remove bg-transparent border-transparent float-right hover:cursor-pointer hover:bg-gray-200 w-6 h-6 rounded-md flex justify-center items-center" on:click="{removeCard}">
+            <Fa icon={faTimes}/>
         </button>
     </div>
-    <div class="flex-1 w-full justify-center">
-        <div class="text-lg font-bold tracking-wider text-">{title}</div>
+    <div class="flex-1 w-full justify-center relative">
+        <button on:click={()=>{modifyProp('title')}} id="modify-title-{id}-col-{id_col}" class="bg-transparent text-lg font-bold tracking-wider hover:bg-gray-200 rounded-md px-3">{title}</button>
+        <input id="input-title-{id}-col-{id_col}" value={title} type="text" style="display:none;" class="text-center shadow appearance-none border rounded py-1 px-2 w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <button on:click={()=>{saveProp('title')}} id="save-title-{id}-col-{id_col}" style="display:none;" class="text-xs right-4 top-1 absolute bg-transparent w-6 h-6 rounded-full hover:bg-black hover:bg-opacity-20 flex justify-center items-center"><Fa icon={faSave} /> </button>
     </div>
     <div class="flex-1 w-full relative">
-        <button class="bg-transparent text-xs text-gray-500 float-left hover:bg-gray-200 px-3 rounded-md" id="modify-date-{id}-col-{id_col}" on:click={modifyDate}>{date}</button>
+        <button on:click={()=>{modifyProp('date')}} class="bg-transparent text-xs text-gray-500 float-left hover:bg-gray-200 px-3 rounded-md" id="modify-date-{id}-col-{id_col}">{date}</button>
         <input id="input-date-{id}-col-{id_col}" value={date} type="text" style="display:none;" class="text-xs shadow appearance-none border rounded py-1 px-2 w-20 float-left text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        <button class="right-12 top-0 absolute bg-transparent w-6 h-6 block rounded-full hover:bg-black hover:bg-opacity-20"><Fa icon={faSave} /> </button>
+        <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;" class="text-xs right-16 top-0 absolute bg-transparent w-6 h-6 flex justify-center items-center rounded-full hover:bg-black hover:bg-opacity-20 "><Fa icon={faSave} /> </button>
     </div>
 </div>
 

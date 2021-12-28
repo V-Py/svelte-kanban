@@ -6,12 +6,25 @@
     import Card from './components/Card.svelte';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
-	import {card_height, card_width, number_of_slots, main_width, main_height, columns} from "../stores/store";
+	import {card_height, card_width, main_width, main_height, columns} from "../stores/store";
 
 	// Properties of the Kanban
 	export let props_list;
 	export let cols_list;
 	export let dragNew;
+
+	// TODO
+	export let theme = 'light';
+	export let primary = 'empty';
+	export let secondary = 'empty';
+	export let third = 'empty';
+	export let fontPrimary = 'empty';
+	export let fontSecondary = 'empty';
+	export let lang = 'fr';
+	export let minimalist = false;
+	export let maxColumns = 5;
+
+
 
 	let elem_dragged;
 	let cOffX_new = 0;
@@ -101,6 +114,7 @@
 
 	function cardDragStart(event){
 		console.log('START');
+        dispatch('cardDragStart', {});  
 		let e = event.detail.event;
 		e = e || window.event;
 		e.preventDefault();
@@ -117,6 +131,8 @@
 
 	function cardDragMove(e) {
 		console.log('MOVE');
+        dispatch('cardDragMove', {});  
+
 		e = e || window.event;
 		e.preventDefault();
 
@@ -142,6 +158,9 @@
 
 	function cardDragEnd(e){
 		console.log('END');
+		let bool_drag_success = false;
+        dispatch('cardDragEnd', {});  
+
 		e = e || window.event;
 		e.preventDefault();
 		
@@ -159,21 +178,28 @@
 
 		for(let i=0; i<$columns.length;i++){
 			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
-				const card_temp = $columns[col_index][card_index];
+				const card_temp = $columns[col_index].slots[card_index];
 
 				// Copying columns
 				const columns_work = [... $columns];
 
 				// Removing card from column dragged from
 				columns_work[col_index].slots.splice(card_index, 1);
-
+		
 				// Adding card to column dragged on
 				columns_work[i].slots.unshift(card_temp);
 				columns_work[i].slot_added = false;
 
 				$columns = [... columns_work];
+
+				bool_drag_success = true;
+
 			}
 		}
+
+		const action_dispatch = (bool_drag_success ? 'cardDragSuccess' : 'cardDragFailed');
+		dispatch(action_dispatch, {});  
+
 		elem_dragged.style.removeProperty('top');
 		elem_dragged.style.removeProperty('left');
 	}
@@ -185,12 +211,16 @@
 		const columns_work = [... $columns];
 		columns_work[col_index].slots.unshift(card_temp);
 		$columns = [... columns_work];
+        dispatch('cardAdd', {});  
+
 	}
 
 	function removeColumn(event){
 		const columns_temp = [... $columns];
 		columns_temp.splice(event.detail.index_col, 1);
 		$columns = [... columns_temp];
+        dispatch('columnRemove', {});  
+
 	}
 
 	function addColumn(){
@@ -207,37 +237,18 @@
 		setTimeout(function(){
 			const col_index = $columns.length - 1 ;
 			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
-			for(let i=0; i<$number_of_slots; i++){
-				$columns[col_index].slots = {empty:true, animate:false};
-			}
-		}, 200)
+		}, 200);
+
+        dispatch('columnAdd', {});  	
 	}
 
-	function removeCard(event){
-		const column_temp = $columns[event.detail.col];
-		column_temp.cards.splice(event.detail.card,1);
-		$columns[event.detail.col].cards = [... column_temp.cards];
-        dispatch('cardRemoved', {card_infos:event.detail.card, column:event.detail.col});  
-	}
 
 	onMount(() => {
 		const columns_temp = document.getElementsByClassName('column');
 
-		let width_card;
 		for(let i=0; i<columns_temp.length; i++){
 			const rect_col  =  columns_temp[i].getBoundingClientRect();
 			$columns[i].rect = rect_col;
-			// const width = rect_col.width;
-
-			// $columns[i].number_of_slots = Math.floor(rect_col.height/$card_height);
-
-			// if(i==0){
-			// 	number_of_slots.set(Math.floor(rect_col.height/$card_height));
-			// }
-
-			// for(let j=0; j<$number_of_slots; j++){
-			// 	$columns[i].slots[j] = {empty:true};
-			// }
 		}
 
 		window.addEventListener('resize', function(){
@@ -268,14 +279,16 @@
 					cards={column.cards}
 					slots={column.slots}
 					title={column.title}
-					number_slots={column.number_of_slots}
 					{index_col}
 					show_fake_slot={column.slot_added}
 
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
-					on:removeCard={removeCard}
 					on:addCard={(e) => {addCard(e.detail.index, 0)}}
+					on:cardPropSaved
+					on:cardPropModify
+					on:cardRemove
+					
 				/>
 			{/each}
 
