@@ -11,5 +11,5 @@ npm not ready either
 
 # API
 
-onCardModify(e.detail => {prop, col, card, value})
-onCardSave(e.detail => {prop, col, card, value})
+onCardPropModify(e.detail => {prop, col, card, value})
+onCardPropSave(e.detail => {prop, col, card, value})

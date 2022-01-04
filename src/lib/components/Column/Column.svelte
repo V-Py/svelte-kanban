@@ -16,6 +16,7 @@
     export let index_col;
     export let slots;
     export let show_fake_slot;
+    export let categories_list;
 
     const dispatch = createEventDispatcher();
 
@@ -87,12 +88,12 @@
                         <Card
                             id={index}
                             id_col={index_col}
+                            {categories_list}
                             on:mousedown="{handleMouseDown}"
 
                             title={slot.title}
                             description={slot.description}
                             category={slot.category}
-                            color={slot.color}
                             date={slot.date}
 
                             on:cardPropModify
