@@ -4,7 +4,7 @@
     import Fa from 'svelte-fa'
     import { faEllipsisH, faSave, faTrashAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
     import {columns} from '../../../src/stores/store.js';
-import { debug } from 'svelte/internal';
+
     const dispatch = createEventDispatcher();
 
     onMount(() => {
@@ -21,7 +21,6 @@ import { debug } from 'svelte/internal';
 		column_temp.slots.splice(id, 1);
 		$columns[id_col].slots = [... column_temp.slots];
         dispatch('cardRemove', {});  
-        
     }
 
     function modifyProp(prop:string){
@@ -32,7 +31,7 @@ import { debug } from 'svelte/internal';
         document.getElementById(input).style.display = '';
         document.getElementById(input).focus();
         document.getElementById(save).style.display = '';
-        dispatch('cardPropModify', {});  
+        dispatch('cardPropModify', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
     }
 
     function saveProp(prop:string){
@@ -42,8 +41,8 @@ import { debug } from 'svelte/internal';
         document.getElementById(modify).style.display = '';
         document.getElementById(input).style.display = 'none';
         document.getElementById(save).style.display = 'none';
-        $columns[id_col].slots[id][prop] = document.getElementById(input).value;
-        dispatch('cardPropSaved', {});  
+        $columns[id_col].slots[id][prop] = (<HTMLInputElement>document.getElementById(input)).value;
+        dispatch('cardPropSaved', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
     }
 
     export let id:number;

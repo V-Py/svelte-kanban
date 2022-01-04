@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Test from '$lib/Test.svelte';
     import Kanban from '$lib/Kanban.svelte';
     
     let props_list = [
@@ -24,6 +23,7 @@
             value:"second"
         }
     ]
+
 </script>
 
 
@@ -43,5 +43,7 @@
     on:cardDragSuccess
     on:cardDragFailed
     on:cardAdd
+    on:cardPropSaved
+    on:cardPropModify
 />
 
