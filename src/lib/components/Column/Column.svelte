@@ -52,11 +52,11 @@
 </script>
 
 <div class="column w-52 min-w-52 max-w-52 bg-gray-100 flex flex-col rounded mx-1.5 my-3 border-transparent" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
-    <div class="title h-20 max-h-20 min-h-20 tracking-wider font-bold text-base flex justify-center items-center relative">
+    <div class="title tracking-wider font-bold text-base flex justify-start items-center relative">
         {#if bool_show_options}
-        <button class="bg-transparent hover:bg-gray-200 py-2 px-3 rounded-md" id="title-column{index_col}" on:click={modifyColumnHandler}>{title.toUpperCase()}</button>
+        <button class="bg-transparent hover:bg-gray-200 py-2 px-3 rounded-md" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
         {:else}
-        <div id="container-column{index_col}">
+        <div id="container-column{index_col}" class="block">
             <input type="text" id="input-colum{index_col}" class="text-center padding-1 w-6/12" value={title} />
             <button id="save-column{index_col} "class="save-column text-center bg-transparent border-transparent text-gray-700 w-8 h-8 rounded-full absolute top-0 left-44 hover:bg-black hover:bg-opacity-10 flex justify-center items-center" on:click={saveColumn}>
                 <Icon data={faSave}/>
@@ -71,6 +71,9 @@
         />
     </div>
     <!-- h-full -->
+    <div class="flex justify-start items-center ml-3 mb-1 text-gray-500 text-sm">
+        {slots.length} Card{slots.length>1 ? "s" : ""}
+    </div>
     <div class="content flex flex-col justify-start items-center"> 
         {#if show_fake_slot}
             <div class="animate empty-slot flex bg-transparent z-1 relative w-full h-7 m-1.5" style="background:transparent;"></div>
