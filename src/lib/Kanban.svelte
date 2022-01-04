@@ -9,8 +9,34 @@
 	import {card_height, card_width, main_width, main_height, columns} from "../stores/store";
 
 	// Properties of the Kanban
-	export let props_list;
-	export let cols_list;
+	export let cols_list = [{
+            label:"Todo",
+            value:"todo"
+        },{
+            label:"Done",
+            value:"done"
+    }];
+	export let categories_list = [{
+            label:"new",
+			color:'white',
+            bgColor:"#0A99FF"
+        },{   
+            label:"important",
+			color:'white',
+            bgColor:"#EA0B38"
+        },{
+            label:"task",
+			color:'black',
+            bgColor:"#00F5DC"
+        },{
+            label:"personal",
+			color:'white',
+            bgColor:"#629387"
+        },{
+            label:"work",
+			color:'black',
+            bgColor:"#13F644"
+	}];
 	export let dragNew;
 
 	// TODO
@@ -23,8 +49,6 @@
 	export let lang = 'fr';
 	export let minimalist = false;
 	export let maxColumns = 5;
-
-
 
 	let elem_dragged;
 	let cOffX_new = 0;
@@ -206,13 +230,11 @@
 
 	// TODO : Possibilité d'ajouter une card à une position custom (uniquement au début pour l'instant)
 	function addCard(col_index:number, card_index:number=0){
-		console.log('ADDCARD');
-		const card_temp = {empty:false, animate:false, title:"New card", description:"test", color:"blue", category:"task", date:"02/02/2022"};
+		const card_temp = {empty:false, animate:false, title:"New card", description:"test", category:categories_list[0], date:"02/02/2022"};
 		const columns_work = [... $columns];
 		columns_work[col_index].slots.unshift(card_temp);
 		$columns = [... columns_work];
         dispatch('cardAdd', {});  
-
 	}
 
 	function removeColumn(event){
@@ -267,7 +289,7 @@
 					<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
 						<NewCard 
 							on:mousedown={newCardDragStart}
-							{props_list}
+							{categories_list}
 						/>
 					</div>
 				</div>
@@ -276,6 +298,7 @@
 		<div class="kanban-container flex-1 w-full flex justify-start">
 			{#each $columns as column, index_col}
 				<Column
+					{categories_list}
 					cards={column.cards}
 					slots={column.slots}
 					title={column.title}

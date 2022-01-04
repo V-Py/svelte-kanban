@@ -5,6 +5,7 @@
     import { faEllipsisH, faSave, faTrashAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
     import {columns} from '../../../src/stores/store.js';
 
+    let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
 
     onMount(() => {
@@ -44,20 +45,37 @@
         $columns[id_col].slots[id][prop] = (<HTMLInputElement>document.getElementById(input)).value;
         dispatch('cardPropSaved', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
     }
+ 
+    function changeCategory(cat_index:number){
+        const oldValue = $columns[id_col].slots[id].category;
+        $columns[id_col].slots[id].category = categories_list[cat_index];
+        bool_show_cats_list = false;
+        dispatch('cardPropSaved', {prop:'category', col:id_col, card:id, oldValue, newValue:categories_list[cat_index]}); 
+    }
 
     export let id:number;
     export let id_col:number;
     export let title = 'New Card';
-    export let color = 'gray';
     export let description = 'empty';
-    export let category = 'default';
+    export let category = {label:'default', bgColor:'gray', color:'white'};
     export let date = '01/01/2021';
+    export let categories_list;
 </script>
 
 
 <div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card bg-white flex flex-col w-48 h-24 absolute p-2 ml-2 mt-1 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
-    <div class="flex-1 w-full">
-        <div class="text-xs px-2 py-1 block cursor-pointer text-white rounded-md float-left" style="background:{color}; opacity:0.3;">{category}</div>
+    <div class="flex-1 w-full relative">
+        <button class="text-xs px-2 py-1 block cursor-pointer rounded-md float-left" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
+        {#if bool_show_cats_list}
+            <div class="absolute top-7 left-0 flex flex-col rounded-md z-10 overflow-hidden bg-white shadow-lg">
+                {#each categories_list as cat_temp, cat_index}
+                    <button class="flex justify-start items-center text-xs p-2 bg-transparent text-gray-500 hover:bg-black hover:bg-opacity-10" on:click={()=>{changeCategory(cat_index)}}>
+                        <div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color:{cat_temp.bgColor}"></div>
+                        {cat_temp.label}
+                    </button>
+                {/each}
+            </div>
+        {/if}
         <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="remove bg-transparent border-transparent float-right hover:cursor-pointer hover:bg-gray-200 w-6 h-6 rounded-md flex justify-center items-center" on:click="{removeCard}">
             <Fa icon={faTimes}/>
         </button>

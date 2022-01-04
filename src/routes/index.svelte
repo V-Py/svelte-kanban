@@ -1,29 +1,12 @@
 <script lang="ts">
     import Kanban from '$lib/Kanban.svelte';
     
-    let props_list = [
-        {
-            label:"first",
-            color:"purple"
-        },{   
-            label:"second",
-            color:"green"
-        },{
-            label:"third",
-            color:"red"
-        }
-    ]
+    // let categories_list;
+    // let cols_list;
 
-    let cols_list = [
-        {
-            label:"First",
-            value:"first"
-        },{
-            label:"Second",
-            value:"second"
-        }
-    ]
-
+    function handleSave(e){
+        console.log('SAVE', e);
+    }
 </script>
 
 
@@ -31,9 +14,6 @@
 
 <Kanban 
     dragNew = {false}
-    {props_list}
-    {cols_list}
-
     on:columnRemove
     on:columnAdd
 
@@ -43,7 +23,7 @@
     on:cardDragSuccess
     on:cardDragFailed
     on:cardAdd
-    on:cardPropSaved
+    on:cardPropSaved={handleSave}
     on:cardPropModify
 />
 

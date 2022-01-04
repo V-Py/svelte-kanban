@@ -4,7 +4,7 @@
     import Fa from 'svelte-fa'
     import {faPen, faSave } from '@fortawesome/free-solid-svg-icons';
 
-    export let props_list;
+    export let categories_list;
 
 
     function modifyCard(){
@@ -17,8 +17,8 @@
     // Prop
     // Picture
     let title = 'Titre';
-    let prop_chosen = 0;
-    let show_props_list = false;
+    let cat_chosen = 0;
+    let show_categories_list = false;
     let show_title = true;
     
     onMount(()=> {});
@@ -39,11 +39,11 @@
     </div>
     <div class="flex flex-1 w-full items-center justify-evenly relative">
         <div class="text-gray float-left hover:cursor-pointer hover:bg-black hover:bg-opacity-20 p-1" style="font-size:10px;">09/12/2021</div>
-        <div on:click={() => {show_props_list = !show_props_list}} class="status block ml-7 rounded-full px-0.25 py-0.5 text-white text-xs w-12 h-5 hover:cursor-pointer hover:brightness-75" style="background:{props_list[prop_chosen].color}">{props_list[prop_chosen].label}</div>
-        {#if show_props_list}
+        <div on:click={() => {show_categories_list = !show_categories_list}} class="status block ml-7 rounded-full px-0.25 py-0.5 text-white text-xs w-12 h-5 hover:cursor-pointer hover:brightness-75" style="background:{categories_list[cat_chosen].color}">{categories_list[cat_chosen].label}</div>
+        {#if show_categories_list}
         <div class="block absolute bg-white w-24 top-8 left-28 z-10 rounded-md" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
-            {#each props_list as prop_temp, index}
-                <li on:click={() => {prop_chosen = index; show_props_list = false;}} class="list-none p-1 hover:cursor-pointer hover:bg-black hover:bg-opacity-10 {index == prop_chosen ? 'font-bold' : ''}">{prop_temp.label} </li>
+            {#each categories_list as cat_temp, index}
+                <li on:click={() => {cat_chosen = index; show_categories_list = false;}} class="list-none p-1 hover:cursor-pointer hover:bg-black hover:bg-opacity-10 {index == cat_chosen ? 'font-bold' : ''}">{cat_temp.label} </li>
             {/each}
         </div>
         {/if}
