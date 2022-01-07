@@ -8,6 +8,10 @@
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
 	import {card_height, card_width, main_width, main_height, columns} from "../stores/store";
 
+	const HEIGHT_CARD_CONTAINER = 120;
+	const STARTING_POINT_TOP = 98;
+	const HEIGHT_CARD = 96;
+	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
 	// Properties of the Kanban
 	export let cols_list = [{
             label:"Todo",
@@ -40,15 +44,15 @@
 	export let dragNew;
 
 	// TODO
-	export let theme = 'light';
-	export let primary = 'empty';
-	export let secondary = 'empty';
-	export let third = 'empty';
-	export let fontPrimary = 'empty';
-	export let fontSecondary = 'empty';
-	export let lang = 'fr';
-	export let minimalist = false;
-	export let maxColumns = 5;
+	export let theme 			= 'light';
+	export let primary 			= 'empty';
+	export let secondary 		= 'empty';
+	export let third 			= 'empty';
+	export let fontPrimary 		= 'empty';
+	export let fontSecondary 	= 'empty';
+	export let lang 			= 'fr';
+	export let minimalist 		= false;
+	export let maxColumns 		= 5;
 
 	let elem_dragged;
 	let cOffX_new = 0;
@@ -57,7 +61,11 @@
 	let cOffY     = 0;
 	let rect_new_card;
 	let rect_card;
-	// let columns = [];
+	let card_top_coord = {x:0, y:0};
+	let card_origin = -1;
+	let col_origin = -1;
+	let tracking_last_empty_card = {col:-1, pos:-1};
+
     const dispatch = createEventDispatcher();
 
 	cols_list.forEach(function(column, index){
@@ -67,7 +75,6 @@
 			rect:{},
 			cards:[],
 			slots:[],
-			slot_added:false
 		}
 	})
 
@@ -136,8 +143,7 @@
 		}
 	};
 
-	function cardDragStart(event){
-		console.log('START');
+	function cardDragStart(event){	
         dispatch('cardDragStart', {});  
 		let e = event.detail.event;
 		e = e || window.event;
@@ -148,42 +154,106 @@
 		cOffX = e.clientX - elem_dragged.offsetLeft;
 		cOffY = e.clientY - elem_dragged.offsetTop;
 		rect_card = elem_dragged.getBoundingClientRect();
+		col_origin = event.detail.col;
+		// Stocker la position du milieu top de la card au départ
+		card_top_coord.x = (rect_card.right + rect_card.left)/2;
+		card_top_coord.y = rect_card.top;
 
 		document.addEventListener('mousemove', cardDragMove);
 		document.addEventListener('mouseup', cardDragEnd);
 	}
 
 	function cardDragMove(e) {
-		console.log('MOVE');
         dispatch('cardDragMove', {});  
 
 		e = e || window.event;
 		e.preventDefault();
 
-		const x_live = (e.clientX - cOffX);
+		// Position live par rapport au click de départ
+		const x_live = (e.clientX - cOffX); 
 		const y_live = (e.clientY - cOffY);
-		const x_test = rect_card.left + x_live;
-		const y_test = rect_card.top + y_live;
 		elem_dragged.style.top = y_live.toString() + 'px';
 		elem_dragged.style.left = x_live.toString() + 'px';
+
+
+		const x_card_top = card_top_coord.x + x_live; // card_top_coord.y (98) + e.clientY (100) - c0ffY (100)
+		const y_card_top = card_top_coord.y + y_live;
 
 		const array_temp = elem_dragged.id.split('card-');
 		const array_temp_bis = array_temp[1].split('-col-');
 		const col_index = array_temp_bis[1];
 
 		for(let i=0; i<$columns.length;i++){
-			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
-				if($columns[i].slot_added != true && col_index != i){$columns[i].slot_added = true;}
-			}else{
-				if($columns[i].slot_added == true){$columns[i].slot_added = false;}
+
+			if((x_card_top >= $columns[i].rect.left) && (x_card_top <= $columns[i].rect.right) && (y_card_top >= $columns[i].rect.top) && (y_card_top <= $columns[i].rect.bottom)){
+				let bool_position_order_found = false; // Boolean signaling we found the order position of the card in the column (ie)
+				let position_order = 0; // Position order of the card in the column
+				let j = 1; // variable to increment to navigate between the cards of the column
+
+				// If at least one card is present in the column
+				if($columns[i].slots.length > 0){
+					// 1- checking if the point is between the first card
+					if(y_card_top < REAL_STARTING_POINT_TOP) bool_position_order_found = true; // Position will stay at 0
+					// 2- Searching the position order of the card between the cards of the column
+					while(bool_position_order_found == false && j <= $columns[i].slots.length){
+						if(y_card_top <= (REAL_STARTING_POINT_TOP + j*HEIGHT_CARD_CONTAINER)){
+							bool_position_order_found = true;
+							position_order = j;
+							break;
+						}
+						j++;
+					}
+
+					// 3- If the boolean still at false => the card will be in last position
+					if(!bool_position_order_found) position_order = $columns[i].slots.length;
+				}
+
+				// TODO : case to exclude = same column as starting card
+				// checking if the last empty slot is the same as the one found now (ie, we don't need to do anything) 
+				// if((tracking_last_empty_card.col == i && tracking_last_empty_card.pos == position_order) || rect_card.) return;
+				if(tracking_last_empty_card.col == i && tracking_last_empty_card.pos == position_order){
+					console.log('WE RETURN BECAUSE WE MOVED ON THE SAME COLUMN AT THE SAME POSITION');
+					return;
+				}else if (i == col_origin){
+					console.log('WE RETURN BECAUSE WE MOVED ON THE ORIGIN COLUMN OF THE DRAGGED CARD');
+					return;
+				}
+
+				// Copying columns
+				const columns_work = [... $columns];
+
+				// if the last empty is not empty and not the same as the one we are going to add, we need to delete it
+				console.log('PARAMETERS', `i [${i}] - col_origin [${col_origin}] - pos_order [${position_order}] - COL [${tracking_last_empty_card.col}] - POS [${tracking_last_empty_card.pos}] -`)
+
+				if(tracking_last_empty_card.col != -1){
+					console.log(`WE DELETE THE EMPTY CARD AT [${tracking_last_empty_card.col}, ${tracking_last_empty_card.pos}]`);
+					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.pos, 1)
+				}
+
+				// Adding empty slot to the right column at the right position
+				let bool_add_empty = true;
+				console.log('CHECKING IF COL EMPTY TO ADD EMPTY CARD', JSON.stringify(columns_work[i]));
+				for(let j=0; j<columns_work[i].slots.length; j++){
+					if(columns_work[i].slots[j].empty == true){
+						console.log('WE FOUND ONE EMPTY CARD ALREADY EXISTING');
+						bool_add_empty = false;
+					}
+				}
+
+
+				console.log(`WE ADD EMPTY CARD AT [${i}, ${position_order}]`);
+				if(bool_add_empty) columns_work[i].slots.splice(position_order, 0, {empty:true});
+
+				tracking_last_empty_card = {col:i, pos:position_order};// updating the last empty
+
+				$columns = [... columns_work];
 			}
 		}
 	};
 
 	function cardDragEnd(e){
-		console.log('END');
-		let bool_drag_success = false;
         dispatch('cardDragEnd', {});  
+		let bool_drag_success = false;
 
 		e = e || window.event;
 		e.preventDefault();
@@ -192,16 +262,39 @@
 		document.removeEventListener('mousemove', cardDragMove);
 		document.removeEventListener('mouseup', cardDragEnd);
 
-		const x_end = rect_card.left + (e.clientX - cOffX);
-		const y_end = rect_card.top + (e.clientY - cOffY);
-		const array_temp = elem_dragged.id.split('card-');
-		const array_temp_bis = array_temp[1].split('-col-');
+		const x_card_top 		= card_top_coord.x + (e.clientX - cOffX);
+		const y_card_top	 	= card_top_coord.y + (e.clientY - cOffY);
 
-		const card_index = array_temp_bis[0];
-		const col_index = array_temp_bis[1];
+		const array_temp 		= elem_dragged.id.split('card-');
+		const array_temp_bis 	= array_temp[1].split('-col-');
+		const card_index 		= array_temp_bis[0];
+		const col_index 		= array_temp_bis[1]; // == col_origin
 
 		for(let i=0; i<$columns.length;i++){
-			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
+			if((x_card_top >= $columns[i].rect.left) && (x_card_top <= $columns[i].rect.right) && (y_card_top >= $columns[i].rect.top) && (y_card_top <= $columns[i].rect.bottom)){
+				let bool_position_order_found = false; // Boolean signaling we found the order position of the card in the column (ie)
+				let position_order = 0; // Position order of the card in the column
+				let j = 1; // variable to increment to navigate between the cards of the column
+
+				// If at least one card is present in the column
+				if($columns[i].slots.length > 0){
+					// 1- checking if the point is between the first card
+					if(y_card_top < REAL_STARTING_POINT_TOP) bool_position_order_found = true; // Position will stay at 0
+					// 2- Searching the position order of the card between the cards of the column
+					while(bool_position_order_found == false && j <= $columns[i].slots.length){
+						if(y_card_top <= (REAL_STARTING_POINT_TOP + j*HEIGHT_CARD_CONTAINER)){
+							bool_position_order_found = true;
+							position_order = j;
+							break;
+						}
+						j++;
+					}
+
+					// 3- If the boolean still at false => the card will be in last position
+					if(!bool_position_order_found) position_order = $columns[i].slots.length;
+				}
+
+
 				const card_temp = $columns[col_index].slots[card_index];
 
 				// Copying columns
@@ -209,11 +302,24 @@
 
 				// Removing card from column dragged from
 				columns_work[col_index].slots.splice(card_index, 1);
-		
-				// Adding card to column dragged on
-				columns_work[i].slots.unshift(card_temp);
-				columns_work[i].slot_added = false;
 
+				if(tracking_last_empty_card.col != -1){ // deleting all the empty cards of the column
+					// let array_index_slots = [];
+					// columns_work[tracking_last_empty_card.col].slots.forEach(function(slot_temp, index_slot){
+					// 	if(slot_temp.empty == true) array_index_slots.push(index_slot);
+					// })
+
+					// array_index_slots.sort(function(a, b) {return b - a;});
+					// array_index_slots.forEach(function(index_temp){
+					// 	columns_work[tracking_last_empty_card.col].slots.splice(array_index_slots, 1); 
+					// })
+					console.log('WE DELETE EMPTY CARD', `${tracking_last_empty_card.col} - ${tracking_last_empty_card.pos-1}`);
+					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.pos, 1); // if empty card exist, delete it
+				} 
+				tracking_last_empty_card = {col:-1, pos:-1}; // no more empty card to track => reinitialize
+		
+				// Adding card to column dragged on at the right position
+				columns_work[i].slots.splice(position_order, 0, card_temp);
 				$columns = [... columns_work];
 
 				bool_drag_success = true;
@@ -266,6 +372,10 @@
 
 
 	onMount(() => {
+		// document.addEventListener('click', function(e){
+		// 	console.log('CLICK', e);
+		// })
+
 		const columns_temp = document.getElementsByClassName('column');
 
 		for(let i=0; i<columns_temp.length; i++){
@@ -297,13 +407,13 @@
 		{/if}
 		<div class="kanban-container flex-1 w-full flex justify-start">
 			{#each $columns as column, index_col}
+
 				<Column
 					{categories_list}
 					cards={column.cards}
 					slots={column.slots}
 					title={column.title}
 					{index_col}
-					show_fake_slot={column.slot_added}
 
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
