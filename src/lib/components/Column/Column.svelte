@@ -24,7 +24,7 @@
         if(e.target instanceof HTMLButtonElement){
             return;
         }
-        dispatch('cardMouseDown', {event:e, elem:this});  
+        dispatch('cardMouseDown', {event:e, elem:this, col:index_col});  
     };
 
     function modifyColumnHandler(){
@@ -76,9 +76,9 @@
         {slots.length} Card{slots.length>1 ? "s" : ""}
     </div>
     <div class="content flex flex-col justify-start items-center"> 
-        {#if show_fake_slot}
+        <!-- {#if show_fake_slot}
             <div class="animate empty-slot flex bg-transparent z-1 relative w-full h-7 m-1.5" style="background:transparent;"></div>
-        {/if}
+        {/if} -->
 
         {#if slots.length > 0}
             {#each slots as slot, index}
@@ -100,6 +100,8 @@
                             on:cardPropSaved
                             on:cardRemove
                         />
+                    {:else}
+                        <div class="animate empty-slot flex bg-black bg-opacity-10 z-1 relative w-full h-6 m-1.5 p-1"></div>
                     {/if}
                 </div>
             {/each}
