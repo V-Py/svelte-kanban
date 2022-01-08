@@ -20,11 +20,9 @@
 
     const dispatch = createEventDispatcher();
 
-    function handleMouseDown(e){
-        if(e.target instanceof HTMLButtonElement){
-            return;
-        }
-        dispatch('cardMouseDown', {event:e, elem:this, col:index_col});  
+    function handleMouseDown(e, index_card:number){
+        if(e.target instanceof HTMLButtonElement) return;
+        dispatch('cardMouseDown', {event:e, col:index_col, card:index_card});  
     };
 
     function modifyColumnHandler(){
@@ -89,7 +87,7 @@
                             id={index}
                             id_col={index_col}
                             {categories_list}
-                            on:mousedown="{handleMouseDown}"
+                            on:mousedown="{(e) => {handleMouseDown(e, index)}}"
 
                             title={slot.title}
                             description={slot.description}
