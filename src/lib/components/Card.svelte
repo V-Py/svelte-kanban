@@ -3,7 +3,7 @@
     import {onMount, getContext, createEventDispatcher} from 'svelte';
     import Fa from 'svelte-fa'
     import { faEllipsisH, faSave, faTrashAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
-    import {columns} from '../../../src/stores/store.js';
+    import {columns} from '$lib/stores/store';
 
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
@@ -93,7 +93,7 @@
 </div>
 
 <style type="text/scss">
-	@import './src/styles/colors';
+	@import './src/lib/styles/colors';
     .draggable{
 		cursor:grab;
 	}

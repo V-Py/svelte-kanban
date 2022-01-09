@@ -1,6 +1,5 @@
 <script>
     import {onMount, getContext} from 'svelte';
-    import {card_height, card_width} from '../../stores/store.js';
     import Fa from 'svelte-fa'
     import {faPen, faSave } from '@fortawesome/free-solid-svg-icons';
 
@@ -51,7 +50,7 @@
 </div>
 
 <style type="text/scss">
-	@import './src/styles/colors';
+	@import './src/lib/styles/colors';
 	.draggable{
 		cursor:grab;
 	}

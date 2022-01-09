@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {columns} from '../../../stores/store.js';
+    import {columns} from '$lib/stores/store';
     import {fly} from 'svelte/transition';
     import Card from '../Card.svelte';
     import OptionsColumn from'./OptionsColumn.svelte';
@@ -111,7 +111,7 @@
 </div>
 
 <style type="text/scss">
-    @import './src/styles/colors';
+    @import './src/lib/styles/colors';
     .animate{
         animation: growingSlot .3s ease-out forwards;
     }

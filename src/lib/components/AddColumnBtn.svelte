@@ -17,5 +17,5 @@
 </div>
 
 <style type="text/scss">
-	@import './src/styles/colors';
+	@import './src/lib/styles/colors';
 </style>

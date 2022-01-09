@@ -5,8 +5,9 @@
 	import NewCard from "./components/NewCard.svelte";
     import Card from './components/Card.svelte';
 	import Column from './components/Column/Column.svelte';
-	import AddColumnBtn from './components/AddColumnBtn.svelte';
-	import {card_height, card_width, main_width, main_height, columns} from "../stores/store";
+	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
+	import {card_height, card_width, main_width, main_height, columns} from "$lib/stores/store";
+	// import {card_height, card_width, main_width, main_height, columns} from "$stores/store";
 
 	const HEIGHT_CARD_CONTAINER = 120;
 	const STARTING_POINT_TOP = 98;
@@ -434,7 +435,7 @@
 
 
 <style type="text/scss">
-	@import './src/styles/colors';
+	@import './src/lib/styles/colors';
 	main {
 		background:$MAIN_BG;
 	}
