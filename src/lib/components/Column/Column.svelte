@@ -112,8 +112,13 @@
     </button>
 </div>
 
-<style type="text/scss">
+<style type="text/css">
     @import './src/lib/styles/colors';
+
+    .column{
+        @apply w-52 min-w-52 max-w-52 bg-gray-100 flex flex-col rounded mx-1.5 my-3 border-transparent;
+    }
+    
     .animate{
         animation: growingSlot .3s ease-out forwards;
     }
