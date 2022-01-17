@@ -391,12 +391,7 @@
 
 
 	onMount(() => {
-		// document.addEventListener('click', function(e){
-		// 	console.log('CLICK', e);
-		// })
-
 		const columns_temp = document.getElementsByClassName('column');
-
 		for(let i=0; i<columns_temp.length; i++){
 			const rect_col  =  columns_temp[i].getBoundingClientRect();
 			$columns[i].rect = rect_col;
@@ -409,11 +404,11 @@
 	})
 </script>
 
-<main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="text-center p-4">
-	<div class="layout flex w-full h-full flex-col border-dashed border-2 border-gray-500">
+<main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="">
+	<div class="layout">
 		<!-- TODO : Drag N Drop New card -->
 		{#if dragNew}
-			<div style="height:150px;" class="header flex justify-center w-full">
+			<div class="header">
 				<div id="container w-full h-full flex items-center justify-center">
 					<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
 						<NewCard 
@@ -424,9 +419,8 @@
 				</div>
 			</div>
 		{/if}
-		<div class="kanban-container flex-1 w-full flex justify-start">
+		<div class="kanban-container">
 			{#each $columns as column, index_col}
-
 				<Column
 					{categories_list}
 					cards={column.cards}
@@ -441,8 +435,7 @@
 					on:cardPropModify
 					on:cardRemove
 					on:moveCardUp={moveCardUp}
-					on:moveCardDown={moveCardDown}
-					
+					on:moveCardDown={moveCardDown}	
 				/>
 			{/each}
 
@@ -450,11 +443,7 @@
 				on:addColumn={addColumn}
 			/>
 		</div>
-
-		<!-- <div class="card bg-white flex flex-col w-48 h-24 absolute p-2 right-9 top-8 border-1 border-black border-opacity-10 rounded z-2 draggable">
-			{}
-		</div> -->
-		<div style="height:75px;"class="footer mt-2.5"></div>
+		<div class="footer"></div>
 	</div>
 </main>
 
@@ -463,14 +452,34 @@
 	@import './src/lib/styles/colors';
 	main {
 		background:$MAIN_BG;
+		text-align:center;
+		padding:1rem;
+	}
+
+	.layout{
+		display:flex;
+		width:100%;
+		height:100%;
+		flex-direction: column;
+		border: 2px rgb(107, 114, 128) dashed;
 	}
 	.header{
 		background:$HEADER_BG;
+		height:150px;
+		display:flex;
+		justify-content: center;
+		width:100%;
 	}
 	.footer{
 		background:$FOOTER_BG;
+		height:75px;
+		margin-top:0.625rem;
 	}
 	.kanban-container{
 		background:$HEADER_BG;
+		display:flex;
+		flex:1;
+		width:100%;
+		justify-content: flex-start;
 	}
 </style>

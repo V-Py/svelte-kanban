@@ -36,23 +36,11 @@
     }
 </script>
 
-<div class="absolute left-44 ml-2 top-1.5">
+<div class="options-column brigh">
     {#if bool_show_options}
-        <button id="options-column{index_col}" class="bg-transparent text-gray-700 border-transparent w-4 h-4 hover:cursor-pointer hover:brightness-90" on:click="{removeColumn}">
+        <button id="options-column{index_col}" class="button-options" on:click="{removeColumn}">
             <Fa icon={faTrashAlt}/>
         </button>
-
-        <!-- <button id="options-column{index_col}" class="bg-transparent text-gray-700 border-transparent w-4 h-4 hover:cursor-pointer hover:brightness-90" on:click="{showOptionsColumn}">
-            <Fa icon={faEllipsisV}/>
-        </button>
-        <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; z-index:4;" class="modal-options absolute w-32 max-w-32 h-20 max-h-20 bg-white rounded-md top-3 flex flex-col font-bold font-size text-sm justify-around">
-            <button id="modify-column{index_col}" class="action leading-8 h-8 flex justify-start items-center text-gray-700 tracking-normal bg-transparent border-transparent p-2 hover:cursor-pointer hover:bg-black hover:bg-opacity-10" on:click={modifyColumn}>
-                <Fa icon={faPen}/> <span class="ml-2">Modifier</span>
-            </button>
-            <button id="delete-column{index_col}" class="action leading-8 h-8 flex justify-start items-center text-gray-700 tracking-normal bg-transparent border-transparent p-2 hover:bg-black hover:bg-opacity-10" on:click={removeColumn}>
-                <Fa icon={faTrashAlt}/> <span class="ml-2">Supprimer</span>
-            </button>
-        </div> -->
     {/if}
 </div>
 
@@ -60,6 +48,26 @@
     @import './src/lib/styles/colors';
     .modal-options:not(.show-options){
         display:none;
+    }
+
+    .options-column{
+        position:absolute;
+        left:11rem;
+        margin-left:0.5rem;
+        top:0.375rem;
+    }
+
+    .button-options{
+        background:transparent;
+        border:transparent;
+        color:rgb(55, 65, 81);
+        width:1rem;
+        height:1rem;
+    }
+
+    .button-options:hover{
+        cursor:pointer;
+        filter:brightness(.9);
     }
 
 </style>

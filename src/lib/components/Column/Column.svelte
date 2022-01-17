@@ -50,14 +50,14 @@
 
 </script>
 
-<div class="column w-52 min-w-52 max-w-52 bg-gray-100 flex flex-col rounded mx-1.5 my-3 border-transparent" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
-    <div class="title tracking-wider font-bold text-base flex justify-start items-center relative">
+<div class="column" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
+    <div class="title">
         {#if bool_show_options}
-        <button class="bg-transparent hover:bg-gray-200 py-2 px-3 rounded-md" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
+        <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
         {:else}
-        <div id="container-column{index_col}" class="block">
-            <input type="text" id="input-colum{index_col}" class="text-center padding-1 w-6/12" value={title} />
-            <button id="save-column{index_col} "class="save-column text-center bg-transparent border-transparent text-gray-700 w-8 h-8 rounded-full absolute top-0 left-44 hover:bg-black hover:bg-opacity-10 flex justify-center items-center" on:click={saveColumn}>
+        <div id="container-column{index_col}" class="title-container" style="display:block">
+            <input type="text" id="input-colum{index_col}" class="title-input" value={title} />
+            <button id="save-column{index_col} "class="save-column" on:click={saveColumn}>
                 <Icon data={faSave}/>
             </button>
         </div>
@@ -69,19 +69,15 @@
             {bool_show_options}
         />
     </div>
-    <!-- h-full -->
-    <div class="flex justify-start items-center ml-3 mb-1 text-gray-500 text-sm">
+
+    <div class="cards-count">
         {slots.length} Card{slots.length>1 ? "s" : ""}
     </div>
-    <div class="content flex flex-col justify-start items-center"> 
-        <!-- {#if show_fake_slot}
-            <div class="animate empty-slot flex bg-transparent z-1 relative w-full h-7 m-1.5" style="background:transparent;"></div>
-        {/if} -->
 
+    <div class="content"> 
         {#if slots.length > 0}
             {#each slots as slot, index}
-                <!-- <div class="{slot.animate == true ? 'animate' : ''} not-empty animate flex bg-transparent z-1 relative w-full h-7 m-1.5" in:fly="{{y:-200, duration:500}}"> -->
-                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate flex bg-transparent z-1 relative w-full h-7">
+                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate">
                     {#if slot.empty == false}
                         <Card
                             id={index}
@@ -101,24 +97,131 @@
                             on:moveCardDown
                         />
                     {:else}
-                        <div class="animate empty-slot flex bg-black bg-opacity-10 z-1 relative w-full h-6 m-1.5 p-1"></div>
+                        <div class="animate empty-slot"></div>
                     {/if}
                 </div>
             {/each}
         {/if}
     </div>
-    <button class="bg-transparent text-gray-500 font-normal hover:bg-gray-200 mx-auto px-3 rounded-md" on:click={() => {dispatch('addCard', {index:index_col});  }}>
+    <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }}>
         Add a card <Icon data={plus} />
     </button>
 </div>
 
-<style type="text/css">
+<style type="text/scss">
     @import './src/lib/styles/colors';
 
     .column{
-        @apply w-52 min-w-52 max-w-52 bg-gray-100 flex flex-col rounded mx-1.5 my-3 border-transparent;
+        width:13rem;
+        min-width:13rem;
+        max-width:13rem;
+        display:flex;
+        flex-direction: column;
+        border-radius:0.375rem;
+        margin: 0.75rem 0.375rem;
+        border-color: transparent;
+        background-color: rgb(243, 244, 246);
     }
-    
+
+    .column .title{
+        font-style:bold;
+        display:flex;
+        justify-content: flex-start;
+        align-items: center;
+        position:relative;
+        letter-spacing:0.05em;
+        font-size:1rem;
+    }
+
+    .button-title{
+        background-color: transparent;
+        padding: 0.5rem 0.75rem;
+        border-radius:0.375rem;
+    }
+
+    .button-title:hover{
+        background-color: rgb(229, 231, 235);
+    }
+
+    .add-card{
+        background-color:transparent;
+        color:rgb(107, 114, 128);
+        font-weight:400;
+        margin-left:auto;
+        margin-right:auto;
+        padding-left: 0.75rem;
+        padding-right:0.75rem;
+        border-radius:0.375rem;
+    }
+
+    .add-card:hover{
+        background-color: rgb(229, 231, 235);
+    }
+
+    .empty-slot{
+        display:flex;
+        background-color: rgba(0,0,0,0.1);
+        z-index:1;
+        position:relative;
+        width:100%;
+        height:1.5rem;
+        margin:0.375rem;
+        padding:0.25rem;
+    }
+
+    .not-empty{
+        display:flex;
+        background:transparent;
+        z-index:1;
+        position:relative;
+        width:100%;
+        height:1.75rem;
+    }
+
+    .content{
+        display:flex;
+        flex-direction:column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .cards-count{
+        display:flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-left:0.75rem;
+        margin-bottom:0.25rem;
+        color:rgb(107, 114, 128);
+        font-size:0.875rem;
+        line-height:1.25rem;
+    }
+
+    .title-input{
+        text-align: center;
+        padding:0.25rem;
+        width:50%;
+    }
+
+    .save-column{
+        text-align:center;
+        background:transparent;
+        border:transparent;
+        color:rgb(55, 65, 81);
+        width:2rem;
+        height:2rem;
+        border-radius:50%;
+        position:absolute;
+        top:0px;
+        left:11rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .save-column:hover{
+        background:rgba(0,0,0,0.1);
+    }
+
     .animate{
         animation: growingSlot .3s ease-out forwards;
     }

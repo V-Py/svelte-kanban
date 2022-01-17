@@ -63,51 +63,213 @@
 </script>
 
 
-<div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card bg-white flex flex-col w-48 h-24 absolute p-2 ml-2 mt-1 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
-    <div class="flex-1 w-full relative">
-        <button class="text-xs px-2 py-1 block cursor-pointer rounded-md float-left" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
+<div id="card-{id}-col-{id_col}" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card draggable" draggable=true on:mousedown>
+    <div class="card-part">
+        <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
         {#if bool_show_cats_list}
-            <div class="absolute top-7 left-0 flex flex-col rounded-md z-10 overflow-hidden bg-white shadow-lg">
+            <div class="categories-list">
                 {#each categories_list as cat_temp, cat_index}
-                    <button class="flex justify-start items-center text-xs p-2 bg-transparent text-gray-500 hover:bg-black hover:bg-opacity-10" on:click={()=>{changeCategory(cat_index)}}>
-                        <div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color:{cat_temp.bgColor}"></div>
+                    <button class="category-button" on:click={()=>{changeCategory(cat_index)}}>
+                        <div class="category-circle" style="background-color:{cat_temp.bgColor}"></div>
                         {cat_temp.label}
                     </button>
                 {/each}
             </div>
         {/if}
-        <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="remove bg-transparent border-transparent float-right hover:cursor-pointer hover:bg-gray-200 w-6 h-6 rounded-md flex justify-center items-center" on:click="{removeCard}">
+        <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="card-remove" on:click="{removeCard}">
             <Fa icon={faTimes}/>
         </button>
     </div>
-    <div class="flex-1 w-full justify-center relative">
-        <button on:click={()=>{modifyProp('title')}} id="modify-title-{id}-col-{id_col}" class="bg-transparent text-lg font-bold tracking-wider hover:bg-gray-200 rounded-md px-3">{title}</button>
-        <input id="input-title-{id}-col-{id_col}" value={title} type="text" style="display:none;" class="text-center shadow appearance-none border rounded py-1 px-2 w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        <button on:click={()=>{saveProp('title')}} id="save-title-{id}-col-{id_col}" style="display:none;" class="text-xs right-4 top-1 absolute bg-transparent w-6 h-6 rounded-full hover:bg-black hover:bg-opacity-20 flex justify-center items-center"><Fa icon={faSave} /> </button>
+    <div class="card-part" style="justify-content:center;">
+        <button on:click={()=>{modifyProp('title')}} id="modify-title-{id}-col-{id_col}" class="button-title">{title}</button>
+        <input id="input-title-{id}-col-{id_col}" value={title} type="text" style="display:none;" class="input-title">
+        <button on:click={()=>{saveProp('title')}} id="save-title-{id}-col-{id_col}" style="display:none;right:1rem; top:0.25rem;" class="save-button"><Fa icon={faSave} /> </button>
     </div>
-    <div class="flex-1 w-full relative">
-        <button on:click={()=>{modifyProp('date')}} class="bg-transparent text-xs text-gray-500 float-left hover:bg-gray-200 px-3 rounded-md" id="modify-date-{id}-col-{id_col}">{date}</button>
-        <input id="input-date-{id}-col-{id_col}" value={date} type="text" style="display:none;" class="text-xs shadow appearance-none border rounded py-1 px-2 w-20 float-left text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;" class="text-xs right-16 top-0 absolute bg-transparent w-6 h-6 flex justify-center items-center rounded-full hover:bg-black hover:bg-opacity-20 "><Fa icon={faSave} /> </button>
+    <div class="card-part">
+        <button on:click={()=>{modifyProp('date')}} class="button-date" id="modify-date-{id}-col-{id_col}">{date}</button>
+        <input id="input-date-{id}-col-{id_col}" value={date} type="text" style="display:none;" class="input-date">
+        <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;right:4rem;" class="save-button"><Fa icon={faSave} /> </button>
     </div>
 
-    <button style="display:none" class="card-arrows absolute -top-1 left-20 bg-transparent hover:bg-black hover:bg-opacity-10 hover:cursor-pointer w-5 h-5 rounded flex justify-center items-center" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
+    <button style="display:none; top:-0.25rem" class="card-arrows" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
         <Fa icon={faChevronUp} /> 
     </button>
 
-    <button style="display:none" class="card-arrows absolute top-20 left-20 bg-transparent hover:bg-black hover:bg-opacity-10 hover:cursor-pointer w-5 h-5 rounded flex justify-center items-center" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
+    <button style="display:none; top:5rem;" class="card-arrows" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
         <Fa icon={faChevronDown} /> 
     </button>
 </div>
 
 <style type="text/scss">
 	@import './src/lib/styles/colors';
+    .card{
+        background:white;
+        display:flex;
+        flex-direction: column;
+        width:12rem;
+        height:6rem;
+        position: absolute;
+        padding:0.5rem;
+        margin-left:0.5rem;
+        margin-top:0.25rem;
+        border:1px solid rgba(0,0,0,0.1);
+        border-radius: 0.25rem;
+        z-index:2
+    }
+
+    .card-category{
+        font-size: 0.75rem;
+        line-height: 1rem;
+        padding:0.25rem 0.5rem;
+        display:block;
+        cursor:pointer;
+        border-radius:0.375rem;
+        float:left;
+    }
+
+    .categories-list{
+        position:absolute;
+        top:1.75rem;
+        left:0px;
+        display:flex;
+        flex-direction: column;
+        border-radius: 0.375rem;
+        z-index: 10;
+        overflow:hidden;
+        background:white;
+        box-shadow:0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-remove{
+        background:transparent;
+        border:transparent;
+        float:right;
+        width:1.5rem;
+        height:1.5rem;
+        border-radius: 0.375rem;
+        justify-content: center;
+        align-items: center;
+        display:flex;
+    }
+
+    .card-remove:hover{
+        cursor:pointer;
+        background:rgb(229, 231, 235);
+    }
+
+    .save-button{
+        font-size: 0.75rem;
+        line-height: 1rem;
+        position:absolute;
+        background-color: transparent;
+        width: 1.5rem;
+        height:1.5rem;
+        display:flex;
+        justify-content:center;
+        align-items: center;
+        border-radius: 50%;
+    }
+
+    .save-button:hover{
+        background:rgba(0,0,0,0.2);
+    }
+
+    .input-date, .input-title{
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        padding:0.25rem 0.5rem;
+        width:5rem;
+        float:left;
+        border-radius:0.25rem;
+        border:1px;
+        appearance: none;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        color:rgb(55, 65, 81);
+    }
+    .input-date:focus{
+        outline: none;
+    }
+
+    .input-title{
+        text-align:center;
+    }
+
+    .button-title{
+        background:transparent;
+        font-weight:bold;
+        border-radius: 0.375rem;
+        padding-left:0.75rem;
+        padding-right:0.75rem;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        letter-spacing: 0.05em;
+    }
+    .button-title:hover, .button-date:hover{
+        background-color:rgb(209, 213, 219);;
+    }
+
+    .button-date{
+        background:transparent;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        float:left;
+        border-radius:0.375rem;
+        padding-left:0.75rem;
+        padding-right:0.75rem;
+        color:rgb(107, 114, 128);
+    }
+
+    .category-circle{
+        display:inline-block;
+        border-radius: 50%;
+        width:0.75rem;
+        height:0.75rem;
+        margin-right:0.25rem;
+    }
+
+    .category-button{
+        display:flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        padding:0.5rem;
+        background: transparent;
+        color:rgb(107, 114, 128);
+    }
+
+    .category-button:hover{
+        background: rgba(0,0,0,0.1);
+    }
+
     .draggable{
 		cursor:grab;
 	}
-
+    
     .card:hover .card-arrows, .card:active .card-arrows{
         display:flex !important;
+    }
+
+    .card-part{
+        display:flex;
+        width:100%;
+        position:relative;
+    }
+
+    .card-arrows{
+        position:absolute;
+        left:5rem;
+        background:transparent;
+        width:1.25rem;
+        height:1.25rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.25rem;
+    }
+    .card-arrows:hover{
+        background:rgba(0,0,0,0.1);
+        cursor:pointer;
     }
 
 </style>
