@@ -1,6 +1,6 @@
 {
-	"name": "@v-py/kanban-svelte",
-	"version": "0.0.65",
+	"name": "kanban-svelte",
+	"version": "0.0.68",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",

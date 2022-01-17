@@ -114,7 +114,8 @@
         margin-top:0.25rem;
         border:1px solid rgba(0,0,0,0.1);
         border-radius: 0.25rem;
-        z-index:2
+        z-index:2;
+        overflow:inherit;
     }
 
     .card-category{
