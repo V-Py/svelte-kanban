@@ -366,6 +366,29 @@
         dispatch('columnAdd', {});  	
 	}
 
+	function moveCardUp(event){
+		if(event.detail.card == 0 )return;
+		const card = $columns[event.detail.col].slots[event.detail.card]
+		
+		const columns_work = [...$columns];
+		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
+		columns_work[event.detail.col].slots.splice((event.detail.card-1), 0, card);
+		columns.set(columns_work);
+        dispatch('moveCardUp', {});  	
+	}
+
+	function moveCardDown(event){
+		const numEvents = ($columns[event.detail.col].slots.length -1);
+		if(event.detail.card == numEvents) return;
+	
+		const card = $columns[event.detail.col].slots[event.detail.card]
+		const columns_work = [...$columns];
+		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
+		columns_work[event.detail.col].slots.splice((event.detail.card+1), 0, card);
+		columns.set(columns_work);
+        dispatch('moveCardDown', {});  	
+	}
+
 
 	onMount(() => {
 		// document.addEventListener('click', function(e){
@@ -417,6 +440,8 @@
 					on:cardPropSaved
 					on:cardPropModify
 					on:cardRemove
+					on:moveCardUp={moveCardUp}
+					on:moveCardDown={moveCardDown}
 					
 				/>
 			{/each}

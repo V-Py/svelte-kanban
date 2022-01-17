@@ -2,7 +2,7 @@
     import {fade, fly} from 'svelte/transition';
     import {onMount, getContext, createEventDispatcher} from 'svelte';
     import Fa from 'svelte-fa'
-    import { faEllipsisH, faSave, faTrashAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
+    import { faEllipsisH, faSave, faTrashAlt, faTimes, faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
     import {columns} from '$lib/stores/store';
 
     let bool_show_cats_list = false;
@@ -63,7 +63,7 @@
 </script>
 
 
-<div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card bg-white flex flex-col w-48 h-24 absolute p-2 ml-2 mt-1 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
+<div id="card-{id}-col-{id_col}"  style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="testcustom card bg-white flex flex-col w-48 h-24 absolute p-2 ml-2 mt-1 border-1 border-black border-opacity-10 rounded z-2 draggable" draggable=true on:mousedown>
     <div class="flex-1 w-full relative">
         <button class="text-xs px-2 py-1 block cursor-pointer rounded-md float-left" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
         {#if bool_show_cats_list}
@@ -90,6 +90,14 @@
         <input id="input-date-{id}-col-{id_col}" value={date} type="text" style="display:none;" class="text-xs shadow appearance-none border rounded py-1 px-2 w-20 float-left text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;" class="text-xs right-16 top-0 absolute bg-transparent w-6 h-6 flex justify-center items-center rounded-full hover:bg-black hover:bg-opacity-20 "><Fa icon={faSave} /> </button>
     </div>
+
+    <button style="display:none" class="customarrows absolute -top-1 left-20 bg-transparent hover:bg-black hover:bg-opacity-10 hover:cursor-pointer w-5 h-5 rounded flex justify-center items-center" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
+        <Fa icon={faChevronUp} /> 
+    </button>
+
+    <button style="display:none" class="customarrows absolute top-20 left-20 bg-transparent hover:bg-black hover:bg-opacity-10 hover:cursor-pointer w-5 h-5 rounded flex justify-center items-center" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
+        <Fa icon={faChevronDown} /> 
+    </button>
 </div>
 
 <style type="text/scss">
@@ -97,5 +105,9 @@
     .draggable{
 		cursor:grab;
 	}
+
+    .testcustom:hover .customarrows, .testcustom:active .customarrows{
+        display:flex !important;
+    }
 
 </style>

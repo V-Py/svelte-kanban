@@ -1,8 +1,5 @@
 <script lang="ts">
     import Kanban from '$lib/Kanban.svelte';
-    
-    // let categories_list;
-    // let cols_list;
 
     function handleSave(e){
         console.log('SAVE', e);
@@ -25,5 +22,8 @@
     on:cardAdd
     on:cardPropSaved={handleSave}
     on:cardPropModify
+
+    on:moveCardUp
+    on:moveCardDown
 />
 

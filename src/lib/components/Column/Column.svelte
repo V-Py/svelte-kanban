@@ -97,6 +97,8 @@
                             on:cardPropModify
                             on:cardPropSaved
                             on:cardRemove
+                            on:moveCardUp
+                            on:moveCardDown
                         />
                     {:else}
                         <div class="animate empty-slot flex bg-black bg-opacity-10 z-1 relative w-full h-6 m-1.5 p-1"></div>
