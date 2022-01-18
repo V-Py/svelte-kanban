@@ -172,7 +172,7 @@
     .not-empty{
         display:flex;
         background:transparent;
-        z-index:1;
+        // z-index:1;
         position:relative;
         width:100%;
         height:1.75rem;

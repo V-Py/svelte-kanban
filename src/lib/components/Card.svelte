@@ -65,20 +65,24 @@
 
 <div id="card-{id}-col-{id_col}" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card draggable" draggable=true on:mousedown>
     <div class="card-part">
-        <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
-        {#if bool_show_cats_list}
-            <div class="categories-list">
-                {#each categories_list as cat_temp, cat_index}
-                    <button class="category-button" on:click={()=>{changeCategory(cat_index)}}>
-                        <div class="category-circle" style="background-color:{cat_temp.bgColor}"></div>
-                        {cat_temp.label}
-                    </button>
-                {/each}
-            </div>
-        {/if}
-        <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="card-remove" on:click="{removeCard}">
-            <Fa icon={faTimes}/>
-        </button>
+        <div style="flex:1; display:flex;justfiy-content:flex-start; align-items:center;">
+            <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
+            {#if bool_show_cats_list}
+                <div class="categories-list">
+                    {#each categories_list as cat_temp, cat_index}
+                        <button class="category-button" on:click={()=>{changeCategory(cat_index)}}>
+                            <div class="category-circle" style="background-color:{cat_temp.bgColor}"></div>
+                            {cat_temp.label}
+                        </button>
+                    {/each}
+                </div>
+            {/if}
+        </div>
+        <div style="flex:1; display:flex;justify-content:flex-end; align-items:center;">
+            <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="card-remove" on:click="{removeCard}">
+                <Fa icon={faTimes}/>
+            </button>
+        </div>
     </div>
     <div class="card-part" style="justify-content:center;">
         <button on:click={()=>{modifyProp('title')}} id="modify-title-{id}-col-{id_col}" class="button-title">{title}</button>
@@ -91,11 +95,11 @@
         <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;right:4rem;" class="save-button"><Fa icon={faSave} /> </button>
     </div>
 
-    <button style="display:none; top:-0.25rem" class="card-arrows" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
+    <button style="display:none; top:0rem" class="card-arrows" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
         <Fa icon={faChevronUp} /> 
     </button>
 
-    <button style="display:none; top:5rem;" class="card-arrows" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
+    <button style="display:none; top:4.75rem;" class="card-arrows" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
         <Fa icon={faChevronDown} /> 
     </button>
 </div>
@@ -114,7 +118,7 @@
         margin-top:0.25rem;
         border:1px solid rgba(0,0,0,0.1);
         border-radius: 0.25rem;
-        z-index:2;
+        z-index:inherit;
         overflow:inherit;
     }
 
