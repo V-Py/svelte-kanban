@@ -1,10 +1,13 @@
 <h1 align="center">
-  <img src="/src/kanbanicon.png" alt="Svelte Kanban" height=60>
+  <img src="https://raw.githubusercontent.com/V-Py/svelte-kanban/master/src/kanbanicon.png" alt="Svelte Kanban" height=60>
   <br>&ensp;Svelte Kanban
 </h1>
 
 <h4 align="center">
-[![NPM version](https://img.shields.io/npm/v/svelte-kanban?color=blue&logo=NPM)](https://npmjs.com/package/svelte-kanban)
+<a href="https://www.npmjs.com/package/svelte-kanban"><img src="https://img.shields.io/npm/v/svelte-kanban.svg"/></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"/></a>
+<!-- TODO POST IT ON MADE WITH SVELTE -->
+<!-- <a href="https://madewithsvelte.com/p/svelte-tags-input/shield-link"><img src="https://madewithsvelte.com/storage/repo-shields/2151-shield.svg"/></a> -->
 </h4>
 
 <div class="hide-in-docs">
@@ -18,7 +21,7 @@
 <slot />
 
 ## Key Features
-- **ToDo:**
+- **Work in progress ...:**
 <!-- - **Single / multiple select:** pass `maxSelect={1}` prop to only allow one selection
 - **Dropdowns:** scrollable lists for large numbers of options
 - **Searchable:** start typing to filter options
