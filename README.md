@@ -19,18 +19,6 @@
 **Svelte Kanban made in pure CSS with FontAwesome icons**
 
 <slot />
-
-## Key Features
-- **Work in progress ...:**
-<!-- - **Single / multiple select:** pass `maxSelect={1}` prop to only allow one selection
-- **Dropdowns:** scrollable lists for large numbers of options
-- **Searchable:** start typing to filter options
-- **Tagging:** selected options are recorded as tags within the text input
-- **Server-side rendering:** no reliance on browser objects like `window` or `document`
-- **Configurable:** see [props](#props)
-- **No dependencies:** needs only Svelte as dev dependency
-- **Keyboard friendly** for mouse-less form completion -->
-
 ## Installation
 
 ```sh
@@ -61,10 +49,21 @@ Full list of props/bindable variables for this component:
 | `lang`        | 'en'                                              | String to specify the language of the kanban, only french and english supported atm (`en`/`fr`). |
 | `colsList`   | `['Todo','Done']`                                                     | Array of string to define the default columns.|
 | `catsList`      | `[{'new',color:'white', bgColor:"#0A99FF"},{label:'important',color:'white',bgColor:"#EA0B38"},{label:'task',color:'black',bgColor:"#00F5DC"},{label:'personal',color:'white',bgColor:"#629387"},{label:'work',color:'black',bgColor:"#13F644"}]` | Array of objects `(label:string, color:string, bgColor:string)`defining the categories available for the cards.|
-| `maxColumns`   | `5` | Max number of columns the user can display on the kanban.|
+| `maxColumns` (unavailable yet)  | `5` | Max number of columns the user can display on the kanban.|
+| `minimalist`   (unavailable yet)| `false` | Boolean, if set to true, the card will be minimalist version with only a title and a delete button.|
 
 </div>
 
+## Styling props
+ /!\ NOT AVAILABLE ATM /!\ COMING ASAP
+| name             | default                                                    | description                                                                                                                                                                                    |
+| :--------------- | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme`        | 'light'                                              | string: specify the theme you want to used light/dark |
+| `primary`   | `null`                                                     | string : if you want to specify the primary background color (behind the kanbans columns / card background)|
+| `secondary`   | `null` | string : if you want to specify the secondary background color (kanbans columns)|
+| `third`   | `null` | string : if you want to specify the secondary background color (no usage atm)|
+| `fontPrimary`   | `null` | string : if you want to specify the primary font color (col title, card title)|
+| `fontSecondary`   | `null` | string : if you want to specify the secondary font color (cards count, new task, date text)|
 ## Events
 
 `Kanban.svelte` dispatches the following events:
@@ -95,24 +94,6 @@ Full list of props/bindable variables for this component:
   on:columnAdd={(e) => alert(`You ${e.detail.type}ed '${e.detail.option.label}'`)}
   on:cardDragStart={(e) => alert(`You are moving the card at the '${e.detail.option.label}' position on the column n° ${}`)}
 />
-```
-
-## Styling
-
-Coming soon (...)
-<!-- There are 3 ways to style this component.
-
-### With CSS variables
-
-The first, if you only want to make small adjustments, allows you to pass the following CSS variables directly to the component as props.
-
-- `border: var(--sms-border, 1pt solid lightgray)`: Border around top-level `div.multiselect`. Change this to e.g. to `1px solid red` to indicate this form field is in an invalid state.
-- `border-radius: var(--sms-border-radius, 5pt)`: `div.multiselect` border radius.
-
-For example, to change the background color of the options dropdown: -->
-
-```svelte
-<Kanban --sms-options-bg="white" />
 ```
 
 ## Dev Mode
