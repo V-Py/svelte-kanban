@@ -1,6 +1,6 @@
 {
-	"name": "kanban-svelte",
-	"version": "0.0.68",
+	"name": "svelte-kanban",
+	"version": "0.0.70",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
@@ -12,16 +12,16 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/V-Py/kanban-svelte"
+		"url": "https://github.com/V-Py/svelte-kanban"
 	},
 	"bugs": {
-		"url": "https://github.com/V-Py/kanban-svelte/issues"
+		"url": "https://github.com/V-Py/svelte-kanban/issues"
 	},
 	"author": {
 		"name": "Valentin Py",
 		"email": "valentin.pyb@gmail.com",
 		"url": "https://github.com/V-Py"
-	  },
+	},
 	"keywords": [
 		"svelte",
 		"kanban",
@@ -58,6 +58,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fortawesome/free-regular-svg-icons": "^5.15.4",
 		"node-sass": "^6.0.1",
 		"svelte-awesome": "^2.4.2",
 		"svelte-fa": "^2.4.0",

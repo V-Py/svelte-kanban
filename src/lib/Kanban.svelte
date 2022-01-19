@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from "svelte";
-	import { element } from "svelte/internal";
-	import {fade} from "svelte/transition";
 	import NewCard from "./components/NewCard.svelte";
-    import Card from './components/Card.svelte';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
-	import {card_height, card_width, main_width, main_height, columns} from "$lib/stores/store";
+	import {card_height, card_width, main_width, main_height, columns, globalLang} from "$lib/stores/store";
+	import {Lang} from '$lib/class/Lang';
 	// import {card_height, card_width, main_width, main_height, columns} from "$stores/store";
 
 	const HEIGHT_CARD_CONTAINER = 120;
@@ -14,47 +12,41 @@
 	const HEIGHT_CARD = 96;
 	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
 	// Properties of the Kanban
-	export let cols_list = [{
-            label:"Todo",
-            value:"todo"
-        },{
-            label:"Done",
-            value:"done"
-    }];
-	export let categories_list = [{
-            label:"new",
-			color:'white',
-            bgColor:"#0A99FF"
-        },{   
-            label:"important",
-			color:'white',
-            bgColor:"#EA0B38"
-        },{
-            label:"task",
-			color:'black',
-            bgColor:"#00F5DC"
-        },{
-            label:"personal",
-			color:'white',
-            bgColor:"#629387"
-        },{
-            label:"work",
-			color:'black',
-            bgColor:"#13F644"
-	}];
 	export let dragNew;
-
-	// TODO
 	export let theme 			= 'light';
 	export let primary 			= 'empty';
 	export let secondary 		= 'empty';
 	export let third 			= 'empty';
 	export let fontPrimary 		= 'empty';
 	export let fontSecondary 	= 'empty';
-	export let lang 			= 'fr';
+	export let lang 			= 'en';
 	export let minimalist 		= false;
 	export let maxColumns 		= 5;
+	const tempLang = new Lang(lang);
+	export let colsList = [tempLang.getStr('Todo'),tempLang.getStr('Done')];
+	export let categories_list = [{
+            label:tempLang.getStr('new'),
+			color:'white',
+            bgColor:"#0A99FF"
+        },{   
+            label:tempLang.getStr('important'),
+			color:'white',
+            bgColor:"#EA0B38"
+        },{
+            label:tempLang.getStr('task'),
+			color:'black',
+            bgColor:"#00F5DC"
+        },{
+            label:tempLang.getStr('personal'),
+			color:'white',
+            bgColor:"#629387"
+        },{
+            label:tempLang.getStr('work'),
+			color:'black',
+            bgColor:"#13F644"
+	}];
 
+	// Local property (ie used to track dragNdrop of the cards)
 	let elem_dragged;
 	let cOffX_new = 0;
 	let cOffY_new = 0;
@@ -70,9 +62,9 @@
 
     const dispatch = createEventDispatcher();
 
-	cols_list.forEach(function(column, index){
+	colsList.forEach(function(column, index){
 		$columns[index] = {
-			title:column.label,
+			title:column,
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
 			cards:[],
@@ -147,7 +139,7 @@
 
 	function cardDragStart(event){	
 		console.log('START', event);
-        dispatch('cardDragStart', {});  
+        dispatch('cardDragStart', {card:event.detail.card, col:event.detail.col, event:event.detail.event});  
 		let e = event.detail.event;
 		e = e || window.event;
 		e.preventDefault();
@@ -181,7 +173,9 @@
 	}
 
 	function cardDragMove(e) {
-        dispatch('cardDragMove', {});  
+		console.log('MOVING', e);
+        dispatch('cardDragMove', {card:dragged_card_infos.index, col:dragged_card_infos.col, event:e});  
+		// 'cardDragStart', {card:event.detail.card, col:event.detail.col, event:event.detail.event});
 
 		e = e || window.event;
 		e.preventDefault();
@@ -265,7 +259,7 @@
 	};
 
 	function cardDragEnd(e){
-        dispatch('cardDragEnd', {});  
+        dispatch('cardDragEnd', {card:dragged_card_infos.index, col:dragged_card_infos.col, event:e});  
 		let bool_drag_success = false;
 		e = e || window.event;
 		e.preventDefault();
@@ -274,6 +268,8 @@
 		document.removeEventListener('mouseup', cardDragEnd);
 		const x_card_top 		= card_top_coord.x + (e.clientX - cOffX);
 		const y_card_top	 	= card_top_coord.y + (e.clientY - cOffY);
+		let newCol;
+		let newPos;
 
 		for(let i=0; i<$columns.length;i++){
 			if((x_card_top >= $columns[i].rect.left) && (x_card_top <= $columns[i].rect.right) && (y_card_top >= $columns[i].rect.top) && (y_card_top <= $columns[i].rect.bottom)){
@@ -309,42 +305,42 @@
 				columns_work[dragged_card_infos.col].slots.splice(dragged_card_infos.index, 1);
 
 				if(tracking_last_empty_card.col != -1){ // deleting all the empty cards of the column
-					console.log('WE DELETE EMPTY CARD', `${tracking_last_empty_card.col} - ${tracking_last_empty_card.index-1}`);
 					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.index, 1); // if empty card exist, delete it
 				} 
 				tracking_last_empty_card = {col:-1, index:-1}; // no more empty card to track => reinitialize
 		
 				// Adding card to column dragged on at the right position
+				
 				columns_work[i].slots.splice(position_order, 0, card_temp);
 				$columns = [... columns_work];
-
+				newCol = i;
+				newPos = position_order;
 				bool_drag_success = true;
-
 			}
 		}
 
 		const action_dispatch = (bool_drag_success ? 'cardDragSuccess' : 'cardDragFailed');
-		dispatch(action_dispatch, {});  
+		let propsDispatch = (bool_drag_success ? {old_col:dragged_card_infos.col, old_pos:dragged_card_infos.index, new_col:newCol, new_pos:newPos} : {col:dragged_card_infos.col, pos:dragged_card_infos.index});
+		dispatch(action_dispatch, propsDispatch);  
 
 		elem_dragged.style.removeProperty('top');
 		elem_dragged.style.removeProperty('left');
 	}
 
-	// TODO : Possibilité d'ajouter une card à une position custom (uniquement au début pour l'instant)
 	function addCard(col_index:number, card_index:number=0){
 		const card_temp = {empty:false, animate:false, title:"New card", description:"test", category:categories_list[0], date:"02/02/2022"};
 		const columns_work = [... $columns];
 		columns_work[col_index].slots.unshift(card_temp);
 		$columns = [... columns_work];
-        dispatch('cardAdd', {});  
+        dispatch('cardAdd', {col:col_index});  
 	}
 
 	function removeColumn(event){
 		const columns_temp = [... $columns];
+		const name = columns_temp[event.detail.index_col];
 		columns_temp.splice(event.detail.index_col, 1);
 		$columns = [... columns_temp];
-        dispatch('columnRemove', {});  
-
+        dispatch('columnRemove', {position:event.detail.index_col, name});  
 	}
 
 	function addColumn(){
@@ -356,6 +352,7 @@
 			slots:[]
 		}
 
+		const posAdd = $columns.length;
 		$columns = [... $columns, col_temp];
 
 		setTimeout(function(){
@@ -363,7 +360,7 @@
 			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
 		}, 200);
 
-        dispatch('columnAdd', {});  	
+        dispatch('columnAdd', {position:posAdd});  	
 	}
 
 	function moveCardUp(event){
@@ -374,7 +371,7 @@
 		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
 		columns_work[event.detail.col].slots.splice((event.detail.card-1), 0, card);
 		columns.set(columns_work);
-        dispatch('moveCardUp', {});  	
+        dispatch('moveCardUp', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card-1});  	
 	}
 
 	function moveCardDown(event){
@@ -386,11 +383,13 @@
 		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
 		columns_work[event.detail.col].slots.splice((event.detail.card+1), 0, card);
 		columns.set(columns_work);
-        dispatch('moveCardDown', {});  	
+        dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1});  	
 	}
 
 
 	onMount(() => {
+		if(lang) globalLang.set(new Lang(lang)); //
+
 		const columns_temp = document.getElementsByClassName('column');
 		for(let i=0; i<columns_temp.length; i++){
 			const rect_col  =  columns_temp[i].getBoundingClientRect();
@@ -442,10 +441,16 @@
 			<AddColumnBtn
 				on:addColumn={addColumn}
 			/>
+
+			<!-- <div class=circle>
+				<div class='horizontal-plus'></div>
+				<div class='vertical-plus'></div>
+			</div> -->
 		</div>
 		<div class="footer"></div>
 	</div>
 </main>
+
 
 
 <style type="text/scss">
@@ -454,6 +459,7 @@
 		background:$MAIN_BG;
 		text-align:center;
 		padding:1rem;
+		perspective:1000px;
 	}
 
 	.layout{
@@ -481,5 +487,36 @@
 		flex:1;
 		width:100%;
 		justify-content: flex-start;
+	}
+
+	.circle {
+		border-radius: 50%;
+		width: 100px;
+		height: 100px;
+		background-color: #f92a71;
+		opacity: 0.8;
+		background-size: 40px 40px;
+		background-image: repeating-linear-gradient(45deg, #000000 0, #000000 4px, #f92a71 0, #f92a71 50%);
+		margin-left:100px;
+		border:2px solid black;
+	}
+
+	.horizontal-plus {
+		position: relative;
+		background-color: #83ec47;
+		width: 75%;
+		height: 25%;
+		left: 12.5%;
+		top: 37.5%;
+		// border:2px solid black;
+	}
+	.vertical-plus {
+		position: relative;
+		background-color: #83ec47;
+		width: 25%;
+		height: 75%;
+		left: 37.5%;
+		top: -12.5%;
+		// border:2px solid black;
 	}
 </style>

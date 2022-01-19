@@ -3,7 +3,7 @@
     import {onMount, getContext, createEventDispatcher} from 'svelte';
     import Fa from 'svelte-fa'
     import { faEllipsisH, faSave, faTrashAlt, faTimes, faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
-    import {columns, globalLang} from '$lib/stores/store';
+    import {columns} from '$lib/stores/store';
 
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
@@ -55,7 +55,7 @@
 
     export let id:number;
     export let id_col:number;
-    export let title = $globalLang.getStr('NewCard');
+    export let title = 'New Card';
     export let description = 'empty';
     export let category = {label:'default', bgColor:'gray', color:'white'};
     export let date = '01/01/2021';
@@ -106,6 +106,7 @@
 
 <style type="text/scss">
 	@import './src/lib/styles/colors';
+
     .card{
         background:white;
         display:flex;

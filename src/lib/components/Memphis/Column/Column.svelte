@@ -8,7 +8,6 @@
     import Icon from 'svelte-awesome';
     import { faSave } from '@fortawesome/free-solid-svg-icons';
     import { plus } from 'svelte-awesome/icons';
-    import {globalLang} from '$lib/stores/store';
 
     let bool_show_options = true;
 
@@ -105,7 +104,7 @@
         {/if}
     </div>
     <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }}>
-        {$globalLang.getStr('AddACard')} <Icon data={plus} />
+        Add a card <Icon data={plus} />
     </button>
 </div>
 
@@ -168,12 +167,12 @@
         height:1.5rem;
         margin:0.375rem;
         padding:0.25rem;
-        border-radius: 0.375rem;
     }
 
     .not-empty{
         display:flex;
         background:transparent;
+        // z-index:1;
         position:relative;
         width:100%;
         height:1.75rem;

@@ -8,7 +8,7 @@
 
 <div style="position:relative;">
     <button id="add-column" class="add-column" on:click={() => {dispatch('addColumn', {});}}>
-        <Fa icon={faPlus}/>
+        <Fa icon={faPlus} class="test" size="lg"/>
     </button>
 </div>
 
@@ -20,10 +20,6 @@
         left:0.75rem;
         top:2rem;
         display:block;
-        background-color:rgba(255,255,255,0.5);
-        // border-color: rgb(107, 114, 128);
-        border:1px solid darkgray;
-
         width:3rem;
         height:3rem;
         border-radius: 50%;
@@ -31,6 +27,10 @@
         justify-content: center;
         align-items: center;
         cursor:pointer;
+        border:3px solid black;
+        background-color: #f92a71;
+        opacity: 0.9;
+        // background: repeating-linear-gradient( 45deg, #0d0f31, #0d0f31 3.5px, #f92a71 3.5px, #f92a71 17.5px );
     }
 
     .add-column:hover{
