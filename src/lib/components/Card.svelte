@@ -1,10 +1,18 @@
 <script lang="ts">
     import {fade, fly} from 'svelte/transition';
     import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import Fa from 'svelte-fa'
-    import { faEllipsisH, faSave, faTrashAlt, faTimes, faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
     import {columns, globalLang} from '$lib/stores/store';
 
+    // Material icon
+    // chevron down
+    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 9.593L11.5 15.25l5.657-5.657l-.707-.707l-4.95 4.95l-4.95-4.95l-.707.707z" fill="currentColor"></path></svg>
+    // chevron up
+    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 15.407L11.5 9.75l5.657 5.657l-.707.707l-4.95-4.95l-4.95 4.95l-.707-.707z" fill="currentColor"></path></svg>
+    // save
+    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M6 4h10.586L20 7.414V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3zm0 1a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7.914L16.086 5H15v5H6V5zm1 0v4h7V5H7zm5 7a3 3 0 1 1 0 6a3 3 0 0 1 0-6zm0 1a2 2 0 1 0 0 4a2 2 0 0 0 0-4z" fill="currentColor"></path></svg>
+    // FOntAwesome
+    // times
+    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fa-solid" width="22" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 352 512"><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" fill="currentColor"></path></svg>
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
 
@@ -80,27 +88,31 @@
         </div>
         <div style="flex:1; display:flex;justify-content:flex-end; align-items:center;">
             <button on:click={removeCard} id="remove-{id}-col-{id_col}" class="card-remove" on:click="{removeCard}">
-                <Fa icon={faTimes}/>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--la" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M7.219 5.781L5.78 7.22L14.563 16L5.78 24.781L7.22 26.22L16 17.437l8.781 8.782l1.438-1.438L17.437 16l8.782-8.781L24.78 5.78L16 14.563z" fill="currentColor"></path></svg>
             </button>
         </div>
     </div>
     <div class="card-part" style="justify-content:center;">
         <button on:click={()=>{modifyProp('title')}} id="modify-title-{id}-col-{id_col}" class="button-title">{title}</button>
         <input id="input-title-{id}-col-{id_col}" value={title} type="text" style="display:none;" class="input-title">
-        <button on:click={()=>{saveProp('title')}} id="save-title-{id}-col-{id_col}" style="display:none;right:1rem; top:0.25rem;" class="save-button"><Fa icon={faSave} /> </button>
+        <button on:click={()=>{saveProp('title')}} id="save-title-{id}-col-{id_col}" style="display:none;right:1rem; top:0.25rem;" class="save-button">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M15 9H5V5h10m-3 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3a3 3 0 0 1-3 3m5-16H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" fill="currentColor"></path></svg>
+        </button>
     </div>
     <div class="card-part">
         <button on:click={()=>{modifyProp('date')}} class="button-date" id="modify-date-{id}-col-{id_col}">{date}</button>
         <input id="input-date-{id}-col-{id_col}" value={date} type="text" style="display:none;" class="input-date">
-        <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;right:4rem;" class="save-button"><Fa icon={faSave} /> </button>
+        <button on:click={()=>{saveProp('date')}} id="save-date-{id}-col-{id_col}" style="display:none;right:4rem;" class="save-button">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M15 9H5V5h10m-3 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3a3 3 0 0 1-3 3m5-16H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" fill="currentColor"></path></svg>
+        </button>
     </div>
 
     <button style="display:none; top:0rem" class="card-arrows" on:click={() => {dispatch('moveCardUp', {col:id_col, card:id})}}>
-        <Fa icon={faChevronUp} /> 
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 15.407L11.5 9.75l5.657 5.657l-.707.707l-4.95-4.95l-4.95 4.95l-.707-.707z" fill="currentColor"></path></svg>
     </button>
 
     <button style="display:none; top:4.75rem;" class="card-arrows" on:click={() => {dispatch('moveCardDown', {col:id_col, card:id})}}>
-        <Fa icon={faChevronDown} /> 
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 9.593L11.5 15.25l5.657-5.657l-.707-.707l-4.95 4.95l-4.95-4.95l-.707.707z" fill="currentColor"></path></svg>
     </button>
 </div>
 
@@ -172,7 +184,7 @@
         display:flex;
         justify-content:center;
         align-items: center;
-        border-radius: 50%;
+        border-radius: 0.375rem;
     }
 
     .save-button:hover{
@@ -180,10 +192,10 @@
     }
 
     .input-date, .input-title{
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         line-height: 1.25rem;
-        padding:0.25rem 0.5rem;
-        width:5rem;
+        padding: 0.25rem 0.3rem;
+        width: 4rem;
         float:left;
         border-radius:0.25rem;
         border:1px;

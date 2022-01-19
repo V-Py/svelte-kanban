@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from "svelte";
-	import NewCard from "./components/NewCard.svelte";
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
 	import {card_height, card_width, main_width, main_height, columns, globalLang} from "$lib/stores/store";
@@ -12,7 +11,6 @@
 	const HEIGHT_CARD = 96;
 	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
 	// Properties of the Kanban
-	export let dragNew;
 	export let theme 			= 'light';
 	export let primary 			= 'empty';
 	export let secondary 		= 'empty';
@@ -405,19 +403,6 @@
 
 <main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="">
 	<div class="layout">
-		<!-- TODO : Drag N Drop New card -->
-		{#if dragNew}
-			<div class="header">
-				<div id="container w-full h-full flex items-center justify-center">
-					<div class="new-card-slot" style="position:relative;top:0px;left:0px;width:300px;height:100%;margin-top:10px;">
-						<NewCard 
-							on:mousedown={newCardDragStart}
-							{categories_list}
-						/>
-					</div>
-				</div>
-			</div>
-		{/if}
 		<div class="kanban-container">
 			{#each $columns as column, index_col}
 				<Column

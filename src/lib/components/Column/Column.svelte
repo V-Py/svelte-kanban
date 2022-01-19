@@ -4,10 +4,6 @@
     import {fly} from 'svelte/transition';
     import Card from '../Card.svelte';
     import OptionsColumn from'./OptionsColumn.svelte';
-    // import Fa from 'svelte-fa';
-    import Icon from 'svelte-awesome';
-    import { faSave } from '@fortawesome/free-solid-svg-icons';
-    import { plus } from 'svelte-awesome/icons';
     import {globalLang} from '$lib/stores/store';
 
     let bool_show_options = true;
@@ -59,7 +55,7 @@
         <div id="container-column{index_col}" class="title-container" style="display:block">
             <input type="text" id="input-colum{index_col}" class="title-input" value={title} />
             <button id="save-column{index_col} "class="save-column" on:click={saveColumn}>
-                <Icon data={faSave}/>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M15 9H5V5h10m-3 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3a3 3 0 0 1-3 3m5-16H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" fill="currentColor"></path></svg>
             </button>
         </div>
         {/if}
@@ -105,7 +101,8 @@
         {/if}
     </div>
     <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }}>
-        {$globalLang.getStr('AddACard')} <Icon data={plus} />
+        <span>{$globalLang.getStr('AddACard')} </span>
+        <svg style="display:inline-block" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="22" height="22" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5 13v-1h6V6h1v6h6v1h-6v6h-1v-6H5z" fill="currentColor"></path></svg>
     </button>
 </div>
 
@@ -153,6 +150,8 @@
         padding-left: 0.75rem;
         padding-right:0.75rem;
         border-radius:0.375rem;
+        display:flex;
+        align-items: center;
     }
 
     .add-card:hover{

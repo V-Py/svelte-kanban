@@ -19,6 +19,5 @@
 
     on:moveCardUp={(e) => {console.log('moveCardUp', e)}}
     on:moveCardDown={(e) => {console.log('moveCardDown', e)}}
-    lang="fr"
 />
 
