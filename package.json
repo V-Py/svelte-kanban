@@ -1,6 +1,6 @@
 {
 	"name": "svelte-kanban",
-	"version": "0.0.73",
+	"version": "0.0.8",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
@@ -55,7 +55,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fortawesome/free-regular-svg-icons": "^5.15.4",
 		"node-sass": "^6.0.1",
 		"svelte2tsx": "^0.4.10"
 	}
