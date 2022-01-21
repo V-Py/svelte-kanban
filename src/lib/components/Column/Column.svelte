@@ -52,7 +52,7 @@
         {#if bool_show_options}
         <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
         {:else}
-        <div id="container-column{index_col}" class="title-container" style="display:block">
+        <div id="container-column{index_col}" class="title-container" style="">
             <input type="text" id="input-colum{index_col}" class="title-input" value={title} />
             <button id="save-column{index_col} "class="save-column" on:click={saveColumn}>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M15 9H5V5h10m-3 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3a3 3 0 0 1-3 3m5-16H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" fill="currentColor"></path></svg>
@@ -135,6 +135,8 @@
         background-color: transparent;
         padding: 0.5rem 0.75rem;
         border-radius:0.375rem;
+        border:none;
+        cursor:pointer;
     }
 
     .button-title:hover{
@@ -152,6 +154,8 @@
         border-radius:0.375rem;
         display:flex;
         align-items: center;
+        border:none;
+        cursor:pointer;
     }
 
     .add-card:hover{
@@ -200,7 +204,20 @@
         text-align: center;
         padding:0.25rem;
         width:50%;
+        border:none;
+        margin-top:5px;
+        border-radius:0.375rem;
     }
+
+    .title-input:focus{
+        outline:none;
+    }
+
+    .title-container{
+        display:flex;
+        justify-content: flex-end;
+    }
+
 
     .save-column{
         text-align:center;
@@ -209,13 +226,14 @@
         color:rgb(55, 65, 81);
         width:2rem;
         height:2rem;
-        border-radius:50%;
+        border-radius:0.375rem;
         position:absolute;
         top:0px;
-        left:11rem;
+        left:10.5rem;
         display:flex;
         justify-content: center;
         align-items: center;
+        cursor:pointer;
     }
 
     .save-column:hover{

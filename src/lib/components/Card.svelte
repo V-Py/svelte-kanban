@@ -1,31 +1,11 @@
 <script lang="ts">
-    import {fade, fly} from 'svelte/transition';
-    import {onMount, getContext, createEventDispatcher} from 'svelte';
+    import {createEventDispatcher} from 'svelte';
     import {columns, globalLang} from '$lib/stores/store';
 
-    // Material icon
-    // chevron down
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 9.593L11.5 15.25l5.657-5.657l-.707-.707l-4.95 4.95l-4.95-4.95l-.707.707z" fill="currentColor"></path></svg>
-    // chevron up
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5.843 15.407L11.5 9.75l5.657 5.657l-.707.707l-4.95-4.95l-4.95 4.95l-.707-.707z" fill="currentColor"></path></svg>
-    // save
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M6 4h10.586L20 7.414V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3zm0 1a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7.914L16.086 5H15v5H6V5zm1 0v4h7V5H7zm5 7a3 3 0 1 1 0 6a3 3 0 0 1 0-6zm0 1a2 2 0 1 0 0 4a2 2 0 0 0 0-4z" fill="currentColor"></path></svg>
-    // FOntAwesome
-    // times
-    // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fa-solid" width="22" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 352 512"><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" fill="currentColor"></path></svg>
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
 
-    onMount(() => {
-        const id_card = "card-"+id+"-col-"+id_col;
-        document.getElementById(id_card).addEventListener('touchstart', function(e){
-            // TODO
-        })
-    })
-
     function removeCard(e){
-        console.log('REMOVE CARD');
-        // debugger;
 		const column_temp = $columns[id_col];
 		column_temp.slots.splice(id, 1);
 		$columns[id_col].slots = [... column_temp.slots];
@@ -122,8 +102,10 @@
         background:white;
         display:flex;
         flex-direction: column;
-        width:12rem;
-        height:6rem;
+        // width:12rem;
+        // height:6rem;
+        width: 11rem;
+        height: 5.5rem;
         position: absolute;
         padding:0.5rem;
         margin-left:0.5rem;
@@ -142,6 +124,8 @@
         cursor:pointer;
         border-radius:0.375rem;
         float:left;
+        border:none;
+        cursor:pointer;
     }
 
     .categories-list{
@@ -185,6 +169,9 @@
         justify-content:center;
         align-items: center;
         border-radius: 0.375rem;
+        border:none;
+        cursor:pointer;
+        color: rgb(75, 85, 99);
     }
 
     .save-button:hover{
@@ -194,7 +181,7 @@
     .input-date, .input-title{
         font-size: 0.65rem;
         line-height: 1.25rem;
-        padding: 0.25rem 0.3rem;
+        padding: 0.2rem 0.3rem;
         width: 4rem;
         float:left;
         border-radius:0.25rem;
@@ -202,8 +189,10 @@
         appearance: none;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
         color:rgb(55, 65, 81);
+        border:none;
+        cursor:pointer;
     }
-    .input-date:focus{
+    .input-date:focus, .input-title:focus{
         outline: none;
     }
 
@@ -215,12 +204,15 @@
         background:transparent;
         font-weight:bold;
         border-radius: 0.375rem;
-        padding-left:0.75rem;
-        padding-right:0.75rem;
+        padding-left:0.5rem;
+        padding-right:0.5rem;
         font-size: 1.125rem;
-        line-height: 1.75rem;
+        line-height: 1.5rem;
         letter-spacing: 0.05em;
+        border:none;
+        cursor:pointer;
     }
+
     .button-title:hover, .button-date:hover{
         background-color:rgb(209, 213, 219);;
     }
@@ -234,6 +226,8 @@
         padding-left:0.75rem;
         padding-right:0.75rem;
         color:rgb(107, 114, 128);
+        border:none;
+        cursor:pointer;
     }
 
     .category-circle{
@@ -253,6 +247,8 @@
         padding:0.5rem;
         background: transparent;
         color:rgb(107, 114, 128);
+        border:none;
+        cursor:pointer;
     }
 
     .category-button:hover{
@@ -277,13 +273,19 @@
         position:absolute;
         left:5rem;
         background:transparent;
-        width:1.25rem;
-        height:1.25rem;
+        // width:1.25rem;
+        // height:1.25rem;
+        width:1.75rem;
+        height:1.75rem;
+
         display:flex;
         justify-content: center;
         align-items: center;
         border-radius: 0.25rem;
+        border:none;
+        cursor:pointer;
     }
+    
     .card-arrows:hover{
         background:rgba(0,0,0,0.1);
         cursor:pointer;

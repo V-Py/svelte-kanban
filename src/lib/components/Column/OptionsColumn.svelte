@@ -40,6 +40,7 @@
         width:1rem;
         height:1rem;
         transform:rotate(0deg);
+        cursor:pointer;
     }
 
     .button-options:hover{

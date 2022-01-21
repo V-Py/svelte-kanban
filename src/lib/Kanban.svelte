@@ -8,8 +8,10 @@
 
 	const HEIGHT_CARD_CONTAINER = 120;
 	const STARTING_POINT_TOP = 98;
-	const HEIGHT_CARD = 96;
+	// const HEIGHT_CARD = 96;
+	const HEIGHT_CARD = 105;
 	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
+
 	// Properties of the Kanban
 	export let theme 			= 'light';
 	export let primary 			= 'empty';
@@ -136,7 +138,6 @@
 	};
 
 	function cardDragStart(event){	
-		console.log('START', event);
         dispatch('cardDragStart', {card:event.detail.card, col:event.detail.col, event:event.detail.event});  
 		let e = event.detail.event;
 		e = e || window.event;
@@ -171,7 +172,6 @@
 	}
 
 	function cardDragMove(e) {
-		console.log('MOVING', e);
         dispatch('cardDragMove', {card:dragged_card_infos.index, col:dragged_card_infos.col, event:e});  
 		// 'cardDragStart', {card:event.detail.card, col:event.detail.col, event:event.detail.event});
 
@@ -212,45 +212,25 @@
 					if(!bool_position_order_found) position_order = $columns[i].slots.length;
 				}
 
-				// TODO : case to exclude = same column as starting card
 				// checking if the last empty slot is the same as the one found now (ie, we don't need to do anything) 
 				// if((tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) || rect_card.) return;
-				if(tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order){
-					console.log('WE RETURN BECAUSE WE MOVED ON THE SAME COLUMN AT THE SAME POSITION');
-					return;
-				}
-				else if (i == dragged_card_infos.col){
-					console.log('WE RETURN BECAUSE WE MOVED ON THE ORIGIN COLUMN OF THE DRAGGED CARD');
-					return;
-				}
+				if(tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) return;
+				if(i == dragged_card_infos.col) return;
 
 				// Copying columns
 				const columns_work = [... $columns];
 
 				// if the last empty is not empty and not the same as the one we are going to add, we need to delete it
-				console.log('PARAMETERS', `i [${i}] - col_origin [${dragged_card_infos.col}] - pos_order [${position_order}] - COL [${tracking_last_empty_card.col}] - POS [${tracking_last_empty_card.index}] -`)
-
-				if(tracking_last_empty_card.col != -1){
-					console.log(`WE DELETE THE EMPTY CARD AT [${tracking_last_empty_card.col}, ${tracking_last_empty_card.index}]`);
-					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.index, 1)
-				}
+				if(tracking_last_empty_card.col != -1) columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.index, 1)
 
 				// Adding empty slot to the right column at the right position
 				let bool_add_empty = true;
-				console.log('CHECKING IF COL EMPTY TO ADD EMPTY CARD', JSON.stringify(columns_work[i]));
 				for(let j=0; j<columns_work[i].slots.length; j++){
-					if(columns_work[i].slots[j].empty == true){
-						console.log('WE FOUND ONE EMPTY CARD ALREADY EXISTING');
-						bool_add_empty = false;
-					}
+					if(columns_work[i].slots[j].empty == true) bool_add_empty = false;
 				}
 
-
-				console.log(`WE ADD EMPTY CARD AT [${i}, ${position_order}]`);
 				if(bool_add_empty) columns_work[i].slots.splice(position_order, 0, {empty:true});
-
 				tracking_last_empty_card = {col:i, index:position_order};// updating the last empty
-
 				$columns = [... columns_work];
 			}
 		}
@@ -444,7 +424,7 @@
 		background:$MAIN_BG;
 		text-align:center;
 		padding:1rem;
-		perspective:1000px;
+		font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	}
 
 	.layout{
