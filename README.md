@@ -16,7 +16,7 @@
 
 </div>
 
-**Svelte Kanban made in pure CSS with FontAwesome icons**
+**A simple Svelte Kanban made in pure CSS**
 
 <slot />
 ## Installation
