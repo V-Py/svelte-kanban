@@ -12,7 +12,7 @@
 
 <div class="hide-in-docs">
 
-**[Live demo](https://www.google.com)**.
+**[Live demo](https://kanban-demo.vercel.app/)**.
 
 </div>
 
