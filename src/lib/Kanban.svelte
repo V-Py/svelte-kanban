@@ -364,20 +364,20 @@
         dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1});  	
 	}
 
-
-	onMount(() => {
-		if(lang) globalLang.set(new Lang(lang)); //
-
+	function handleResize(entries){
 		const columns_temp = document.getElementsByClassName('column');
 		for(let i=0; i<columns_temp.length; i++){
 			const rect_col  =  columns_temp[i].getBoundingClientRect();
 			$columns[i].rect = rect_col;
 		}
+	}
 
-		window.addEventListener('resize', function(){
-			card_width.set(document.getElementsByClassName('column')[0].clientWidth -10);
-			card_height.set((document.getElementsByClassName('column')[0].clientHeight-10)/2);
-		})
+
+	onMount(() => {
+		if(lang) globalLang.set(new Lang(lang)); //
+		// we only need to observe the first column since all the columns have the same size atm
+		let resizer = new ResizeObserver(handleResize)
+		resizer.observe(document.getElementsByClassName('column')[0])
 	})
 </script>
 

@@ -9,7 +9,7 @@
     on:cardDragStart
     on:cardDragMove
     on:cardDragEnd
-    on:cardDragSuccesss
+    on:cardDragSuccess
     on:cardDragFailed
     on:cardAdd
     on:cardPropSaved
