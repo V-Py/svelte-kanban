@@ -18,7 +18,7 @@
 
 **A simple Svelte Kanban made in pure CSS**
 
-<img src="https://raw.githubusercontent.com/V-Py/svelte-kanban/master/src/kanbancapture.png" alt="Svelte Kanban">
+<img src="https://raw.githubusercontent.com/V-Py/svelte-kanban/master/static/kanbancapture.PNG" alt="Svelte Kanban">
 <slot />
 ## Installation
 
