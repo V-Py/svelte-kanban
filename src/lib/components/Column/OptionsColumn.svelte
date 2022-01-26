@@ -29,7 +29,6 @@
     .options-column{
         position:absolute;
         left:11rem;
-        margin-left:0.5rem;
         top:0.375rem;
     }
 

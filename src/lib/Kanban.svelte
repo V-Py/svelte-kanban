@@ -386,6 +386,7 @@
 		<div class="kanban-container">
 			{#each $columns as column, index_col}
 				<Column
+					{theme}
 					{categories_list}
 					cards={column.cards}
 					slots={column.slots}
@@ -404,13 +405,10 @@
 			{/each}
 
 			<AddColumnBtn
+				{theme}
 				on:addColumn={addColumn}
 			/>
 
-			<!-- <div class=circle>
-				<div class='horizontal-plus'></div>
-				<div class='vertical-plus'></div>
-			</div> -->
 		</div>
 		<div class="footer"></div>
 	</div>
