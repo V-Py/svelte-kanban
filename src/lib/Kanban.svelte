@@ -305,10 +305,11 @@
 		elem_dragged.style.removeProperty('left');
 	}
 
-	function addCard(col_index:number, card_index:number=0){
+	function addCard(col_index:number){
 		const card_temp = {empty:false, animate:false, title:"New card", description:"test", category:categories_list[0], date:"02/02/2022"};
 		const columns_work = [... $columns];
-		columns_work[col_index].slots.unshift(card_temp);
+		// columns_work[col_index].slots.unshift(card_temp);
+		columns_work[col_index].slots.push(card_temp);
 		$columns = [... columns_work];
         dispatch('cardAdd', {col:col_index});  
 	}
@@ -395,7 +396,7 @@
 
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
-					on:addCard={(e) => {addCard(e.detail.index, 0)}}
+					on:addCard={(e) => {addCard(e.detail.index)}}
 					on:cardPropSaved
 					on:cardPropModify
 					on:cardRemove
