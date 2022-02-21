@@ -75,7 +75,7 @@
 			title:column.name,
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
-			slots:column.cards,
+			slots:column.cards || [],
 		}
 	})
 
