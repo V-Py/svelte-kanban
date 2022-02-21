@@ -9,7 +9,6 @@
     let bool_show_options = true;
 
     export let title;
-    export let cards;
     export let index_col;
     export let slots;
     export let show_fake_slot;

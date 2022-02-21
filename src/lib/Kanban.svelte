@@ -23,7 +23,6 @@
 	export let minimalist 		= false;
 	export let maxColumns 		= 5;
 	const tempLang = new Lang(lang);
-	export let colsList = [tempLang.getStr('Todo'),tempLang.getStr('Done')];
 	export let categories_list = [{
             label:tempLang.getStr('new'),
 			color:'white',
@@ -45,6 +44,16 @@
 			color:'black',
             bgColor:"#13F644"
 	}];
+	export let colsList = [{
+			name:tempLang.getStr('Todo'),
+			// cards:[{empty:false, animate:false, title:"Title1", description:"test", category:{label:tempLang.getStr('new'),color:'white',bgColor:"#0A99FF"}, date:"02/02/2022"}]
+			cards:[],
+		},{
+			name:tempLang.getStr('Done'), 
+			// cards:[{empty:false, animate:false, title:"Title2", description:"test", category:categories_list[0], date:"02/02/2022"}]
+			cards:[]
+	}];
+
 
 	// Local property (ie used to track dragNdrop of the cards)
 	let elem_dragged;
@@ -61,14 +70,12 @@
 	let tracking_last_empty_card = {col:-1, index:-1};
 
     const dispatch = createEventDispatcher();
-
 	colsList.forEach(function(column, index){
 		$columns[index] = {
-			title:column,
+			title:column.name,
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
-			cards:[],
-			slots:[],
+			slots:column.cards,
 		}
 	})
 
@@ -129,7 +136,6 @@
 			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
 				const card_temp = {empty:false, title:"New card"};
 				const slots_temp = $columns[i].slots;
-				// slots_temp.shift();
 				$columns[i].slot_added = false;
 				slots_temp.unshift(card_temp)
 				$columns[i].slots = [...slots_temp];
@@ -327,7 +333,6 @@
 			title:'New column',
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
 			rect:{},
-			cards:[],
 			slots:[]
 		}
 
@@ -389,7 +394,6 @@
 				<Column
 					{theme}
 					{categories_list}
-					cards={column.cards}
 					slots={column.slots}
 					title={column.title}
 					{index_col}
