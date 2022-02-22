@@ -397,7 +397,7 @@
 					slots={column.slots}
 					title={column.title}
 					{index_col}
-
+					on:columnSaveTitle={(e)=>{dispatch('columnSaveTitle', {title:e.detail.title, columns:$columns})}}
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
 					on:addCard={(e) => {addCard(e.detail.index)}}
