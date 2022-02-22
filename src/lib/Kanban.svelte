@@ -304,7 +304,7 @@
 		}
 
 		const action_dispatch = (bool_drag_success ? 'cardDragSuccess' : 'cardDragFailed');
-		let propsDispatch = (bool_drag_success ? {old_col:dragged_card_infos.col, old_pos:dragged_card_infos.index, new_col:newCol, new_pos:newPos, columns:colsList} : {col:dragged_card_infos.col, pos:dragged_card_infos.index});
+		let propsDispatch = (bool_drag_success ? {old_col:dragged_card_infos.col, old_pos:dragged_card_infos.index, new_col:newCol, new_pos:newPos, columns:$columns} : {col:dragged_card_infos.col, pos:dragged_card_infos.index});
 		dispatch(action_dispatch, propsDispatch);  
 
 		elem_dragged.style.removeProperty('top');
@@ -317,7 +317,7 @@
 		// columns_work[col_index].slots.unshift(card_temp);
 		columns_work[col_index].slots.push(card_temp);
 		$columns = [... columns_work];
-        dispatch('cardAdd', {col:col_index, columns:colsList});  
+        dispatch('cardAdd', {col:col_index, columns:$columns});  
 	}
 
 	function removeColumn(event){
@@ -325,7 +325,7 @@
 		const name = columns_temp[event.detail.index_col];
 		columns_temp.splice(event.detail.index_col, 1);
 		$columns = [... columns_temp];
-        dispatch('columnRemove', {position:event.detail.index_col, name, columns:colsList, columns:colsList});  
+        dispatch('columnRemove', {position:event.detail.index_col, name, columns:$columns, columns:$columns});  
 	}
 
 	function addColumn(){
@@ -344,7 +344,7 @@
 			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
 		}, 200);
 
-        dispatch('columnAdd', {position:posAdd, columns:colsList});  	
+        dispatch('columnAdd', {position:posAdd, columns:$columns});  	
 	}
 
 	function moveCardUp(event){
@@ -355,7 +355,7 @@
 		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
 		columns_work[event.detail.col].slots.splice((event.detail.card-1), 0, card);
 		columns.set(columns_work);
-        dispatch('moveCardUp', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card-1, columns:colsList});  	
+        dispatch('moveCardUp', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card-1, columns:$columns});  	
 	}
 
 	function moveCardDown(event){
@@ -367,7 +367,7 @@
 		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
 		columns_work[event.detail.col].slots.splice((event.detail.card+1), 0, card);
 		columns.set(columns_work);
-        dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1, columns:colsList});  	
+        dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1, columns:$columns});  	
 	}
 
 	function handleResize(entries){
@@ -403,7 +403,7 @@
 					on:addCard={(e) => {addCard(e.detail.index)}}
 					on:cardPropSaved
 					on:cardPropModify
-					on:cardRemove
+					on:cardRemove={()=>{dispatch('cardRemove', {columns:$columns})}}
 					on:moveCardUp={moveCardUp}
 					on:moveCardDown={moveCardDown}	
 				/>
