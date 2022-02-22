@@ -401,7 +401,7 @@
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
 					on:addCard={(e) => {addCard(e.detail.index)}}
-					on:cardPropSaved
+					on:cardPropSaved={(e) => {dispatch('cardPropSaved', {prop:e.detail.prop, col:e.detail.col, card:e.detail.card, value:e.detail.value, columns:$columns})}}
 					on:cardPropModify
 					on:cardRemove={()=>{dispatch('cardRemove', {columns:$columns})}}
 					on:moveCardUp={moveCardUp}
