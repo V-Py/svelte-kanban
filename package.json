@@ -1,6 +1,6 @@
 {
 	"name": "svelte-kanban",
-	"version": "0.0.913",
+	"version": "0.0.915",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",

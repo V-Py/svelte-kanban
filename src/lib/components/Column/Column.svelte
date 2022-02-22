@@ -42,6 +42,7 @@
         $columns[index_col].title = new_title;
         bool_show_options = true;
 
+        dispatch('columnSaveTitle', {title:new_title})
     }
 
 </script>
@@ -201,11 +202,13 @@
 
     .title-input{
         text-align: center;
-        padding:0.25rem;
+        padding:0.125rem 0.25rem;
         width:50%;
         border:none;
         margin-top:5px;
-        border-radius:0.375rem;
+        // border-radius:0.375rem;
+        background:transparent;
+        border-bottom:1px solid black;
     }
 
     .title-input:focus{
@@ -214,7 +217,7 @@
 
     .title-container{
         display:flex;
-        justify-content: flex-end;
+        justify-content: center;
     }
 
 
