@@ -2,9 +2,8 @@
 	import { onMount, createEventDispatcher } from "svelte";
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
-	import {card_height, card_width, main_width, main_height, columns, globalLang} from "$lib/stores/store";
+	import {columns, globalLang} from "$lib/stores/store";
 	import {Lang} from '$lib/class/Lang';
-	// import {card_height, card_width, main_width, main_height, columns} from "$stores/store";
 
 	const HEIGHT_CARD_CONTAINER = 120;
 	const STARTING_POINT_TOP = 98;
@@ -336,6 +335,7 @@
 			slots:[]
 		}
 
+		if($columns.length == maxColumns) return;
 		const posAdd = $columns.length;
 		$columns = [... $columns, col_temp];
 
@@ -387,7 +387,7 @@
 	})
 </script>
 
-<main style='width:{$main_width ? $main_width : "100%"};height:{$main_height ? $main_height : "100%"}' class="">
+<main class="{theme}">
 	<div class="layout">
 		<div class="kanban-container">
 			{#each $columns as column, index_col}
@@ -423,8 +423,11 @@
 
 <style type="text/scss">
 	@import './src/lib/styles/colors';
+	// @import './../app.css';
+
 	main {
-		background:$MAIN_BG;
+		height:100%;
+		width:100%;
 		text-align:center;
 		padding:1rem;
 		font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -438,53 +441,28 @@
 		// border: 2px rgb(107, 114, 128) dashed;
 	}
 	.header{
-		background:$HEADER_BG;
 		height:150px;
 		display:flex;
 		justify-content: center;
 		width:100%;
 	}
+
 	.footer{
-		background:$FOOTER_BG;
 		height:75px;
 		margin-top:0.625rem;
 	}
+
 	.kanban-container{
-		background:$HEADER_BG;
 		display:flex;
 		flex:1;
 		width:100%;
 		justify-content: flex-start;
 	}
 
-	.circle {
-		border-radius: 50%;
-		width: 100px;
-		height: 100px;
-		background-color: #f92a71;
-		opacity: 0.8;
-		background-size: 40px 40px;
-		background-image: repeating-linear-gradient(45deg, #000000 0, #000000 4px, #f92a71 0, #f92a71 50%);
-		margin-left:100px;
-		border:2px solid black;
+	main.light, .light .kanban-container, .light .footer, .light .header{
+		background:#fff;
 	}
-
-	.horizontal-plus {
-		position: relative;
-		background-color: #83ec47;
-		width: 75%;
-		height: 25%;
-		left: 12.5%;
-		top: 37.5%;
-		// border:2px solid black;
-	}
-	.vertical-plus {
-		position: relative;
-		background-color: #83ec47;
-		width: 25%;
-		height: 75%;
-		left: 37.5%;
-		top: -12.5%;
-		// border:2px solid black;
+	main.dark, .dark .kanban-container, .dark .footer, .dark .header{
+		background:var(--dark-bg);
 	}
 </style>

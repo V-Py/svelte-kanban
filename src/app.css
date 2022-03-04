@@ -3,6 +3,13 @@
 @tailwind components;
 @tailwind utilities; */
 
+:root{
+    --light-bg:rgb(243, 244, 246);
+    --dark-bg:#052C39;
+    --light-column-bg:rgb(243, 244, 246);
+    --dark-column-bg:#031D26;
+    --light-gray-font:rgb(107, 114, 128);
+}
 
 html, body{
     height:100%;
