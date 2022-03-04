@@ -13,6 +13,7 @@
     export let slots;
     export let show_fake_slot;
     export let categories_list;
+    export let theme;
 
     const dispatch = createEventDispatcher();
 
@@ -47,7 +48,7 @@
 
 </script>
 
-<div class="column" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
+<div class="column {theme}" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
     <div class="title">
         {#if bool_show_options}
         <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
@@ -118,7 +119,14 @@
         border-radius:0.375rem;
         margin: 0.75rem 0.375rem;
         border-color: transparent;
-        background-color: rgb(243, 244, 246);
+    }
+
+    .column.light{
+        background-color: var(--light-column-bg);
+    }
+
+    .column.dark{
+        background-color: var(--dark-column-bg);
     }
 
     .column .title{
@@ -139,13 +147,22 @@
         cursor:pointer;
     }
 
+    .light .button-title{
+        color:inherit;
+    }
+
+    .dark .button-title{
+        color:var(--light-gray-font);
+        color:white;
+    }
+
     .button-title:hover{
         background-color: rgb(229, 231, 235);
     }
 
     .add-card{
         background-color:transparent;
-        color:rgb(107, 114, 128);
+        color:var(--light-gray-font);
         font-weight:400;
         margin-left:auto;
         margin-right:auto;
@@ -206,9 +223,18 @@
         width:50%;
         border:none;
         margin-top:5px;
-        // border-radius:0.375rem;
         background:transparent;
-        border-bottom:1px solid black;
+        border-bottom:1px solid;
+    }
+
+    .light .title-input{
+        color:inherit;
+        border-color:black;
+    }
+
+    .dark .title-input{
+        color:#fff;
+        border-color:white;
     }
 
     .title-input:focus{

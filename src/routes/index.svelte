@@ -1,14 +1,9 @@
 <script lang="ts">
     import Kanban from '$lib/Kanban.svelte';
-
-    function testFunction(e){
-        console.log('TEST',e);
-    }
 </script>
 
-
 <Kanban 
-    on:columnSaveTitle={testFunction}
+    on:columnSaveTitle
     on:columnRemove
     on:columnAdd
     on:cardDragStart
