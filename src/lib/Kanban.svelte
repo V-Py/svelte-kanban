@@ -12,7 +12,7 @@
 	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
 
 	// Properties of the Kanban
-	export let theme 			= 'dark';
+	export let theme 			= 'light';
 	export let primary 			= 'empty';
 	export let secondary 		= 'empty';
 	export let third 			= 'empty';

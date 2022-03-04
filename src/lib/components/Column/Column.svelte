@@ -152,7 +152,6 @@
     }
 
     .dark .button-title{
-        color:var(--light-gray-font);
         color:white;
     }
 
