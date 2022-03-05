@@ -42,7 +42,6 @@
         const new_title = document.getElementById(input_id).value;
         $columns[index_col].title = new_title;
         bool_show_options = true;
-
         dispatch('columnSaveTitle', {title:new_title})
     }
 
@@ -51,21 +50,24 @@
 <div class="column {theme}" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
     <div class="title">
         {#if bool_show_options}
-        <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
+            <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
         {:else}
-        <div id="container-column{index_col}" class="title-container" style="">
             <input type="text" id="input-colum{index_col}" class="title-input" value={title} />
-            <button id="save-column{index_col} "class="save-column" on:click={saveColumn}>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="15" height="15" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M15 9H5V5h10m-3 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3a3 3 0 0 1 3 3a3 3 0 0 1-3 3m5-16H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" fill="currentColor"></path></svg>
-            </button>
-        </div>
         {/if}
+
         <OptionsColumn
             on:removeColumn
             on:modifyColumn={modifyColumnHandler}
+            on:saveColumn={saveColumn}
             {index_col}
             {bool_show_options}
         />
+        <button class="column-arrows left" on:click={() => {dispatch('moveColumn', {direction:'left', index:index_col})}}>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6l6 6l1.41-1.41L10.83 12z"></path></svg>
+        </button>
+        <button class="column-arrows right" on:click={() => {dispatch('moveColumn', {direction:'right', index:index_col})}}>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6z"></path></svg>
+        </button>
     </div>
 
     <div class="cards-count">
@@ -100,6 +102,7 @@
                 </div>
             {/each}
         {/if}
+
     </div>
     <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }}>
         <span>{$globalLang.getStr('AddACard')} </span>
@@ -119,6 +122,8 @@
         border-radius:0.375rem;
         margin: 0.75rem 0.375rem;
         border-color: transparent;
+        // position:relative;
+        // z-index:1;
     }
 
     .column.light{
@@ -132,7 +137,7 @@
     .column .title{
         font-style:bold;
         display:flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         position:relative;
         letter-spacing:0.05em;
@@ -245,6 +250,37 @@
         justify-content: center;
     }
 
+    .title:hover .column-arrows{
+        display:flex !important;
+    }
+
+    .column-arrows{
+        position:absolute;
+        // top:0.375rem;
+        background:transparent;
+        width:1.75rem;
+        height:1.75rem;
+        display:none;
+        justify-content: center;
+        align-items: center;
+        // border-radius: 0.25rem;
+        border-radius: 50%;
+        border:none;
+        cursor:pointer;
+    }
+
+    .column-arrows.left{
+        left:2.5rem
+    }
+
+    .column-arrows.right{
+        right:2.5rem;
+    }
+
+    .column-arrows:hover{
+        background:rgba(0,0,0,0.1);
+        cursor:pointer;
+    }
 
     .save-column{
         text-align:center;

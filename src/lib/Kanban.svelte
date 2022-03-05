@@ -378,6 +378,19 @@
 		}
 	}
 
+	function moveColumn(e){
+		const direction = e.detail.direction;
+		const index = e.detail.index;
+		if(direction == 'left' && index == 0) return;
+		if(direction == 'right' && index == ($columns.length-1)) return;
+		const newIndex = index + (direction == 'right' ? 1 : -1);
+		let columns_work = [...$columns];
+		const col = columns_work[index];
+		columns_work.splice(index,1);
+		columns_work.splice(newIndex, 0, col)
+		columns.set(columns_work);
+		dispatch('columnMoved', {old_pos:index, new_pos:newIndex});
+	}
 
 	onMount(() => {
 		if(lang) globalLang.set(new Lang(lang)); //
@@ -405,7 +418,8 @@
 					on:cardPropModify
 					on:cardRemove={()=>{dispatch('cardRemove', {columns:$columns})}}
 					on:moveCardUp={moveCardUp}
-					on:moveCardDown={moveCardDown}	
+					on:moveCardDown={moveCardDown}
+					on:moveColumn={moveColumn}	
 				/>
 			{/each}
 

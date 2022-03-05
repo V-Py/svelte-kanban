@@ -287,15 +287,13 @@
         position:absolute;
         left:5rem;
         background:transparent;
-        // width:1.25rem;
-        // height:1.25rem;
         width:1.75rem;
         height:1.75rem;
-
         display:flex;
         justify-content: center;
         align-items: center;
-        border-radius: 0.25rem;
+        // border-radius: 0.25rem;
+        border-radius: 50%;
         border:none;
         cursor:pointer;
     }
