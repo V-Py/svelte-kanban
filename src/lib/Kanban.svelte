@@ -242,6 +242,9 @@
 	};
 
 	function cardDragEnd(e){
+
+		console.log(`CARD ADDED IN COL ${dragged_card_infos.col} IN POSITION ? ${dragged_card_infos.index}`);
+
         dispatch('cardDragEnd', {card:dragged_card_infos.index, col:dragged_card_infos.col, event:e});  
 		let bool_drag_success = false;
 		e = e || window.event;
@@ -279,6 +282,7 @@
 				}
 
 
+
 				const card_temp = $columns[dragged_card_infos.col].slots[dragged_card_infos.index];
 
 				// Copying columns
@@ -286,12 +290,18 @@
 
 				// Removing card from column dragged from
 				columns_work[dragged_card_infos.col].slots.splice(dragged_card_infos.index, 1);
+				console.log('LAST EMPTY CARD', tracking_last_empty_card);
 
 				if(tracking_last_empty_card.col != -1){ // deleting all the empty cards of the column
+					if(tracking_last_empty_card.index == columns_work[tracking_last_empty_card.col].slots.length) tracking_last_empty_card.index--;
 					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.index, 1); // if empty card exist, delete it
 				} 
 				tracking_last_empty_card = {col:-1, index:-1}; // no more empty card to track => reinitialize
-		
+				
+				// console.log('POSITION ORDER', position_order, 'columns work', columns_work[i].slots.length);
+
+				// if(position_order == 1 && columns_work[i].slots.length == 0) position_order = 0;
+
 				// Adding card to column dragged on at the right position
 				
 				columns_work[i].slots.splice(position_order, 0, card_temp);
@@ -306,11 +316,13 @@
 		let propsDispatch = (bool_drag_success ? {old_col:dragged_card_infos.col, old_pos:dragged_card_infos.index, new_col:newCol, new_pos:newPos, columns:$columns} : {col:dragged_card_infos.col, pos:dragged_card_infos.index});
 		dispatch(action_dispatch, propsDispatch);  
 
+		console.log(`ACTION [${action_dispatch}] OLD COL [${dragged_card_infos.col}] IN POSITION OLD POS [${dragged_card_infos.index}] NEW COL [${newCol}] NEW POS [${newPos}]`);
+
 		elem_dragged.style.removeProperty('top');
 		elem_dragged.style.removeProperty('left');
 	}
 
-	function addCard(col_index:number){
+	function addCard(col_index:number){		
 		const card_temp = {empty:false, animate:false, title:"New card", description:"test", category:categories_list[0], date:"02/02/2022"};
 		const columns_work = [... $columns];
 		// columns_work[col_index].slots.unshift(card_temp);
@@ -378,6 +390,19 @@
 		}
 	}
 
+	function moveColumn(e){
+		const direction = e.detail.direction;
+		const index = e.detail.index;
+		if(direction == 'left' && index == 0) return;
+		if(direction == 'right' && index == ($columns.length-1)) return;
+		const newIndex = index + (direction == 'right' ? 1 : -1);
+		let columns_work = [...$columns];
+		const col = columns_work[index];
+		columns_work.splice(index,1);
+		columns_work.splice(newIndex, 0, col)
+		columns.set(columns_work);
+		dispatch('columnMoved', {old_pos:index, new_pos:newIndex});
+	}
 
 	onMount(() => {
 		if(lang) globalLang.set(new Lang(lang)); //
@@ -405,7 +430,8 @@
 					on:cardPropModify
 					on:cardRemove={()=>{dispatch('cardRemove', {columns:$columns})}}
 					on:moveCardUp={moveCardUp}
-					on:moveCardDown={moveCardDown}	
+					on:moveCardDown={moveCardDown}
+					on:moveColumn={moveColumn}	
 				/>
 			{/each}
 
