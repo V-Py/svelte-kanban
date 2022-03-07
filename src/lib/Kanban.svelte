@@ -412,7 +412,7 @@
 	})
 </script>
 
-<main class="{theme}">
+<div class="kanban {theme}">
 	<div class="layout">
 		<div class="kanban-container">
 			{#each $columns as column, index_col}
@@ -443,16 +443,19 @@
 		</div>
 		<div class="footer"></div>
 	</div>
-</main>
+</div>
 
 
 
 <style type="text/scss">
-	@import './src/lib/styles/colors';
-	// @import './../app.css';
-    @import '../app.css';
-
-	main {
+	:root{
+		--light-bg:rgb(243, 244, 246);
+		--dark-bg:#052C39;
+		--light-column-bg:rgb(243, 244, 246);
+		--dark-column-bg:#031D26;
+		--light-gray-font:rgb(107, 114, 128);
+	}
+	.kanban {
 		height:100%;
 		width:100%;
 		text-align:center;
@@ -486,10 +489,10 @@
 		justify-content: flex-start;
 	}
 
-	main.light, .light .kanban-container, .light .footer, .light .header{
+	.kanban.light, .light .kanban-container, .light .footer, .light .header{
 		background:#fff;
 	}
-	main.dark, .dark .kanban-container, .dark .footer, .dark .header{
+	.kanban.dark, .dark .kanban-container, .dark .footer, .dark .header{
 		background:var(--dark-bg);
 	}
 </style>
