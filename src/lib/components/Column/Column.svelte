@@ -112,6 +112,7 @@
 
 <style type="text/scss">
     @import './src/lib/styles/colors';
+    @import '../../../app.css';
 
     .column{
         width:13rem;

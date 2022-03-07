@@ -27,6 +27,7 @@
 
 <style type="text/scss">
     @import './src/lib/styles/colors';
+    @import '../../../app.css';
     .modal-options:not(.show-options){
         display:none;
     }

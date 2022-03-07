@@ -15,6 +15,7 @@
 
 <style type="text/scss">
 	@import './src/lib/styles/colors';
+    @import '../../app.css';
 
     .add-column{
         position:absolute;

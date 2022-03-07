@@ -450,6 +450,7 @@
 <style type="text/scss">
 	@import './src/lib/styles/colors';
 	// @import './../app.css';
+    @import '../app.css';
 
 	main {
 		height:100%;
