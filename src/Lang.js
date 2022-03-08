@@ -1,6 +1,6 @@
 
 export class Lang {
-    lang:string;
+    lang;
 
     constructor(lang = 'en') {
         this.lang = lang;
@@ -39,7 +39,7 @@ export class Lang {
     };
 
 
-    getStr(str:string){
+    getStr(str){
         return Lang[this.lang][str];
     }
 }

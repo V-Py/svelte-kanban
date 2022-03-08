@@ -3,7 +3,7 @@
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
 	import {columns, globalLang} from "$lib/stores/store";
-	import {Lang} from '$lib/class/Lang';
+	import {Lang} from './class/Lang';
 
     const dispatch = createEventDispatcher();
 
