@@ -3,10 +3,12 @@
     const dispatch = createEventDispatcher();
 
     export let theme;
+    export let fontPrimary;
+    export let secondary;
 </script>
 
 <div style="position:relative;">
-    <button id="add-column" class="add-column {theme}" on:click={() => {dispatch('addColumn', {});}}>
+    <button id="add-column" class="add-column {theme}" on:click={() => {dispatch('addColumn', {});}} style:color="{fontPrimary}" style:background-color="{secondary}">
         <span class="button_top">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5 13v-1h6V6h1v6h6v1h-6v6h-1v-6H5z" fill="currentColor"></path></svg>
         </span>

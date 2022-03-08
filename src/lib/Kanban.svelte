@@ -5,19 +5,21 @@
 	import {columns, globalLang} from "$lib/stores/store";
 	import {Lang} from '$lib/class/Lang';
 
+    const dispatch = createEventDispatcher();
+
+	// Props used for setting up card size / dragNdrop
 	const HEIGHT_CARD_CONTAINER = 120;
 	const STARTING_POINT_TOP = 98;
-	// const HEIGHT_CARD = 96;
-	const HEIGHT_CARD = 105;
-	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // Le premier point de référence est le milieu de la première card (s'il y'en a une)
+	const HEIGHT_CARD = 105; // 96
+	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // The first point of reference is the middle of the first card (if there is one)
 
 	// Properties of the Kanban
 	export let theme 			= 'light';
-	export let primary 			= 'empty';
-	export let secondary 		= 'empty';
-	export let third 			= 'empty';
-	export let fontPrimary 		= 'empty';
-	export let fontSecondary 	= 'empty';
+	export let primary 			= null;
+	export let secondary 		= null;
+	export let third 			= null;
+	export let fontPrimary 		= null;
+	export let fontSecondary 	= null;
 	export let lang 			= 'en';
 	export let minimalist 		= false;
 	export let maxColumns 		= 5;
@@ -45,14 +47,11 @@
 	}];
 	export let colsList = [{
 			name:tempLang.getStr('Todo'),
-			// cards:[{empty:false, animate:false, title:"Title1", description:"test", category:{label:tempLang.getStr('new'),color:'white',bgColor:"#0A99FF"}, date:"02/02/2022"}]
 			cards:[],
 		},{
 			name:tempLang.getStr('Done'), 
-			// cards:[{empty:false, animate:false, title:"Title2", description:"test", category:categories_list[0], date:"02/02/2022"}]
 			cards:[]
 	}];
-
 
 	// Local property (ie used to track dragNdrop of the cards)
 	let elem_dragged;
@@ -68,7 +67,6 @@
 	let dragged_card_infos = {col:-1, index:-1, infos:{}};
 	let tracking_last_empty_card = {col:-1, index:-1};
 
-    const dispatch = createEventDispatcher();
 	colsList.forEach(function(column, index){
 		$columns[index] = {
 			title:column.name,
@@ -412,7 +410,7 @@
 	})
 </script>
 
-<div class="kanban {theme}">
+<div class="kanban {theme}" style:background="{primary}">
 	<div class="layout">
 		<div class="kanban-container">
 			{#each $columns as column, index_col}
@@ -422,6 +420,10 @@
 					slots={column.slots}
 					title={column.title}
 					{index_col}
+					{secondary}
+					{third}
+					{fontPrimary}
+					{fontSecondary}
 					on:columnSaveTitle={(e)=>{dispatch('columnSaveTitle', {title:e.detail.title, columns:$columns})}}
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
@@ -434,14 +436,17 @@
 					on:moveColumn={moveColumn}	
 				/>
 			{/each}
-
 			<AddColumnBtn
 				{theme}
+				{secondary}
+				{third}
+				{fontPrimary}
+				{fontSecondary}
 				on:addColumn={addColumn}
 			/>
 
 		</div>
-		<div class="footer"></div>
+		<div class="footer" style:background="{primary}"></div>
 	</div>
 </div>
 

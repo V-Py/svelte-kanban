@@ -55,10 +55,10 @@ Full list of props/bindable variables for this component:
 
 </div>
 
-## Styling props (* : available atm)
+## Styling props (update 08/03/2022 : AVAILABLE /!\)
 | name             | default                                                    | description                                                                                                                                                                                    |
 | :--------------- | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `theme*`        | 'light'                                              | string: specify the theme you want to used light/dark |
+| `theme`        | 'light'                                              | string: specify the theme you want to used light/dark|
 | `primary`   | `null`                                                     | string : if you want to specify the primary background color (behind the kanbans columns / card background)|
 | `secondary`   | `null` | string : if you want to specify the secondary background color (kanbans columns)|
 | `third`   | `null` | string : if you want to specify the secondary background color (no usage atm)|
@@ -71,8 +71,8 @@ Full list of props/bindable variables for this component:
 | name        | detail                                                                              | description                                                                                                                         |
 | ----------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `columnRemove`       | `{ position:number, name:string }`                                                                | Triggers when a column is removed.                                                                                            |
-| `columnAdd`    | `{ position: number }`                                                                | Triggers when a column is moved.                                                     |
-| `columnMoved`    | `{ old_pos:number, new_pos:number }`                                                                | Triggers when a column is added.                                                     |
+| `columnAdd`    | `{ position: number }`                                                                | Triggers when a column is added.                                                     |
+| `columnMoved`    | `{ old_pos:number, new_pos:number }`                                                                | Triggers when a column is moved.                                                     |
 | `cardDragStart` | `{card:number, col:number, event:Event}`                                                                 | Triggers when a card start being dragged. `col` = position of the column, `card` = position of the card in the column, `event`: mousedown event props |
 | `cardDragMove`    | `{card:number, col:number, event:Event}` | Triggers every time the card is moving (ie on every mousemove)                                              |
 | `cardDragEnd`      |`{card:number, col:number, event:Event}`| Triggers when the dragging of the card ended.|
