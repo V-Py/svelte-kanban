@@ -14,6 +14,9 @@
     export let show_fake_slot;
     export let categories_list;
     export let theme;
+    export let secondary;
+    export let fontPrimary;
+    export let fontSecondary;
 
     const dispatch = createEventDispatcher();
 
@@ -47,12 +50,12 @@
 
 </script>
 
-<div class="column {theme}" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
-    <div class="title">
+<div class="column {theme}" style:background="{secondary}" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
+    <div class="title" >
         {#if bool_show_options}
-            <button class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
+            <button style:color="{fontPrimary}" class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
         {:else}
-            <input type="text" id="input-colum{index_col}" class="title-input" value={title} />
+            <input style:color="{fontPrimary}" type="text" id="input-colum{index_col}" class="title-input" value={title} />
         {/if}
 
         <OptionsColumn
@@ -61,16 +64,17 @@
             on:saveColumn={saveColumn}
             {index_col}
             {bool_show_options}
+            {fontPrimary}
         />
-        <button class="column-arrows left" on:click={() => {dispatch('moveColumn', {direction:'left', index:index_col})}}>
+        <button class="column-arrows left" on:click={() => {dispatch('moveColumn', {direction:'left', index:index_col})}} style:color="{fontPrimary}">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6l6 6l1.41-1.41L10.83 12z"></path></svg>
         </button>
-        <button class="column-arrows right" on:click={() => {dispatch('moveColumn', {direction:'right', index:index_col})}}>
+        <button class="column-arrows right" on:click={() => {dispatch('moveColumn', {direction:'right', index:index_col})}} style:color="{fontPrimary}">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6z"></path></svg>
         </button>
     </div>
 
-    <div class="cards-count">
+    <div class="cards-count" style:color="{fontSecondary}">
         {slots.length} Card{slots.length>1 ? "s" : ""}
     </div>
 
@@ -104,7 +108,7 @@
         {/if}
 
     </div>
-    <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }}>
+    <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }} style:color="{fontSecondary}">
         <span>{$globalLang.getStr('AddACard')} </span>
         <svg style="display:inline-block" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi-light" width="22" height="22" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M5 13v-1h6V6h1v6h6v1h-6v6h-1v-6H5z" fill="currentColor"></path></svg>
     </button>
@@ -112,6 +116,7 @@
 
 <style type="text/scss">
     @import './src/lib/styles/colors';
+    // @import '../../../app.css';
 
     .column{
         width:13rem;
@@ -122,8 +127,6 @@
         border-radius:0.375rem;
         margin: 0.75rem 0.375rem;
         border-color: transparent;
-        // position:relative;
-        // z-index:1;
     }
 
     .column.light{
@@ -142,6 +145,7 @@
         position:relative;
         letter-spacing:0.05em;
         font-size:1rem;
+        margin-top:3px;
     }
 
     .button-title{
@@ -160,9 +164,6 @@
         color:white;
     }
 
-    .button-title:hover{
-        background-color: rgb(229, 231, 235);
-    }
 
     .add-card{
         background-color:transparent;
@@ -177,10 +178,11 @@
         align-items: center;
         border:none;
         cursor:pointer;
+        margin-bottom:5px;
     }
 
-    .add-card:hover{
-        background-color: rgb(229, 231, 235);
+    .add-card:hover, .button-title:hover{
+        background-color: rgba(0,0,0,0.1)
     }
 
     .empty-slot{
