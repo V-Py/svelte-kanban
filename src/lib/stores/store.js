@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import {Lang} from '$lib/class/Lang';
+import {Lang} from '../class/Lang';
 
 export const number_of_slots = writable(0);
 export const main_width = writable('');
