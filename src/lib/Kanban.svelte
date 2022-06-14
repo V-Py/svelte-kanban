@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from "svelte";
+    import {flip} from 'svelte/animate';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
 	import {columns, globalLang} from "$lib/stores/store";
@@ -76,70 +77,6 @@
 		}
 	})
 
-	function newCardDragStart(e) {
-		e = e || window.event;
-		e.preventDefault();
-		elem_dragged = this;
-
-		cOffX_new = e.clientX - this.offsetLeft;
-		cOffY_new = e.clientY - this.offsetTop;
-		rect_new_card = this.getBoundingClientRect();
-
-		document.addEventListener('mousemove', newCardDragMove);
-		document.addEventListener('mouseup', newCardDragEnd);
-	};
-
-	function newCardDragMove(e) {
-		e = e || window.event;
-		e.preventDefault();
-
-		const x_live = (e.clientX - cOffX_new);
-		const y_live = (e.clientY - cOffY_new);
-		const x_test = rect_new_card.left + x_live;
-		const y_test = rect_new_card.top + y_live;
-
-		elem_dragged.style.top = y_live.toString() + 'px';
-		elem_dragged.style.left = x_live.toString() + 'px';
-
-		for(let i=0; i<columns.length;i++){
-			if((x_test >= $columns[i].rect.left) && (x_test <= $columns[i].rect.right) && (y_test >= $columns[i].rect.top) && (y_test <= $columns[i].rect.bottom)){
-				if($columns[i].slot_added != true){
-					$columns[i].slot_added = true;
-				}
-			}else{
-				if($columns[i].slot_added == true){
-					$columns[i].slot_added = false;
-				}
-			}
-		}
-	};
-
-	function newCardDragEnd(e) {
-		e = e || window.event;
-		e.preventDefault();
-		
-		const x_end = rect_new_card.left + (e.clientX - cOffX_new);
-		const y_end = rect_new_card.top + (e.clientY - cOffY_new);
-
-		document.removeEventListener('mousemove', newCardDragMove);
-		document.removeEventListener('mouseup', newCardDragEnd);
-
-		if(!elem_dragged.classList.contains('card')){
-			elem_dragged.style.removeProperty('top');
-			elem_dragged.style.removeProperty('left');
-		}
-
-		for(let i=0; i<$columns.length;i++){
-			if((x_end >= $columns[i].rect.left) && (x_end <= $columns[i].rect.right) && (y_end >= $columns[i].rect.top) && (y_end <= $columns[i].rect.bottom)){
-				const card_temp = {empty:false, title:"New card"};
-				const slots_temp = $columns[i].slots;
-				$columns[i].slot_added = false;
-				slots_temp.unshift(card_temp)
-				$columns[i].slots = [...slots_temp];
-			}
-		}
-	};
-
 	function cardDragStart(event){	
         dispatch('cardDragStart', {card:event.detail.card, col:event.detail.col, event:event.detail.event});  
 		let e = event.detail.event;
@@ -155,8 +92,6 @@
 		cOffX = e.clientX - elem_dragged.offsetLeft;
 		cOffY = e.clientY - elem_dragged.offsetTop;
 		rect_card = elem_dragged.getBoundingClientRect();
-
-
 
 		// Stocker la position du milieu top de la card au départ
 		card_top_coord.x = (rect_card.right + rect_card.left)/2;
@@ -191,7 +126,6 @@
 		const y_card_top = card_top_coord.y + y_live;
 
 		for(let i=0; i<$columns.length;i++){
-
 			if((x_card_top >= $columns[i].rect.left) && (x_card_top <= $columns[i].rect.right) && (y_card_top >= $columns[i].rect.top) && (y_card_top <= $columns[i].rect.bottom)){
 				let bool_position_order_found = false; // Boolean signaling we found the order position of the card in the column (ie)
 				let position_order = 0; // Position order of the card in the column
@@ -218,6 +152,7 @@
 				// checking if the last empty slot is the same as the one found now (ie, we don't need to do anything) 
 				// if((tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) || rect_card.) return;
 				if(tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) return;
+
 				if(i == dragged_card_infos.col) return;
 
 				// Copying columns
@@ -240,9 +175,6 @@
 	};
 
 	function cardDragEnd(e){
-
-		console.log(`CARD ADDED IN COL ${dragged_card_infos.col} IN POSITION ? ${dragged_card_infos.index}`);
-
         dispatch('cardDragEnd', {card:dragged_card_infos.index, col:dragged_card_infos.col, event:e});  
 		let bool_drag_success = false;
 		e = e || window.event;
@@ -288,7 +220,7 @@
 
 				// Removing card from column dragged from
 				columns_work[dragged_card_infos.col].slots.splice(dragged_card_infos.index, 1);
-				console.log('LAST EMPTY CARD', tracking_last_empty_card);
+				// console.log('LAST EMPTY CARD', tracking_last_empty_card);
 
 				if(tracking_last_empty_card.col != -1){ // deleting all the empty cards of the column
 					if(tracking_last_empty_card.index == columns_work[tracking_last_empty_card.col].slots.length) tracking_last_empty_card.index--;
@@ -314,7 +246,7 @@
 		let propsDispatch = (bool_drag_success ? {old_col:dragged_card_infos.col, old_pos:dragged_card_infos.index, new_col:newCol, new_pos:newPos, columns:$columns} : {col:dragged_card_infos.col, pos:dragged_card_infos.index});
 		dispatch(action_dispatch, propsDispatch);  
 
-		console.log(`ACTION [${action_dispatch}] OLD COL [${dragged_card_infos.col}] IN POSITION OLD POS [${dragged_card_infos.index}] NEW COL [${newCol}] NEW POS [${newPos}]`);
+		// console.log(`ACTION [${action_dispatch}] OLD COL [${dragged_card_infos.col}] IN POSITION OLD POS [${dragged_card_infos.index}] NEW COL [${newCol}] NEW POS [${newPos}]`);
 
 		elem_dragged.style.removeProperty('top');
 		elem_dragged.style.removeProperty('left');
@@ -413,7 +345,7 @@
 <div class="kanban {theme}" style:background="{primary}">
 	<div class="layout">
 		<div class="kanban-container">
-			{#each $columns as column, index_col}
+			{#each $columns as column, index_col(column)}
 				<Column
 					{theme}
 					{categories_list}
