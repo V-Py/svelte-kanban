@@ -1,10 +1,10 @@
 <script lang="ts">
     import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {columns} from '$lib/stores/store';
-    import {fly} from 'svelte/transition';
-    import Card from '../Card.svelte';
-    import OptionsColumn from'./OptionsColumn.svelte';
-    import {globalLang} from '$lib/stores/store';
+    import {columns}        from '$lib/stores/store';
+    import {fly, scale}     from 'svelte/transition';
+    import Card             from '../Card.svelte';
+    import OptionsColumn    from'./OptionsColumn.svelte';
+    import {globalLang}     from '$lib/stores/store';
 
     let bool_show_options = true;
 
@@ -150,7 +150,7 @@
 
     .button-title{
         background-color: transparent;
-        padding: 0.5rem 0.75rem;
+        padding: 0.375rem 0.375rem;
         border-radius:0.375rem;
         border:none;
         cursor:pointer;
@@ -258,14 +258,12 @@
 
     .column-arrows{
         position:absolute;
-        // top:0.375rem;
         background:transparent;
-        width:1.75rem;
-        height:1.75rem;
+        width:1.625rem;
+        height:1.625rem;
         display:none;
         justify-content: center;
         align-items: center;
-        // border-radius: 0.25rem;
         border-radius: 50%;
         border:none;
         cursor:pointer;
