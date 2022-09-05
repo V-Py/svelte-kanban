@@ -50,7 +50,7 @@
 
 </script>
 
-<div class="column {theme}" style:background="{secondary}" in:fly="{{y:-200, duration:500}}" out:fly="{{y:200, duration:500}}">
+<div class="column {theme}" style:background="{secondary}" in:fly|local="{{y:-200, duration:500}}" out:fly|local="{{y:200, duration:500}}">
     <div class="title" >
         {#if bool_show_options}
             <button style:color="{fontPrimary}" class="button-title" id="title-column{index_col}" on:click={modifyColumnHandler}>{title}</button>
