@@ -75,7 +75,7 @@
     </div>
 
     <div class="cards-count" style:color="{fontSecondary}">
-        {slots.length} Card{slots.length>1 ? "s" : ""}
+        {slots.length} {$globalLang.getStr('Card')}{slots.length>1 ? "s" : ""}
     </div>
 
     <div class="content"> 

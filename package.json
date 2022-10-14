@@ -2,8 +2,8 @@
 	"name": "svelte-kanban",
 	"version": "0.0.952",
 	"scripts": {
-		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
+		"dev": "vite dev",
+		"build": "vite build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
@@ -55,6 +55,7 @@
 	"type": "module",
 	"dependencies": {
 		"sass": "^1.55.0",
-		"svelte2tsx": "^0.4.14"
+		"svelte2tsx": "^0.4.14",
+		"vite": "^3.1.8"
 	}
 }

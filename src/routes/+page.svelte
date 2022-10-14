@@ -2,6 +2,10 @@
     import Kanban from '$lib/Kanban.svelte';
 </script>
 
+<svelte:head>
+
+</svelte:head>
+
 <Kanban 
     on:columnSaveTitle
     on:columnRemove
@@ -16,5 +20,6 @@
     on:cardPropModify
     on:moveCardUp
     on:moveCardDown
+    lang="fr"
 />
 
