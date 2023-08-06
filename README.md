@@ -56,33 +56,36 @@ Full list of props/bindable variables for this component:
 </div>
 
 ## Styling props (update 08/03/2022 : AVAILABLE /!\)
-| name             | default                                                    | description                                                                                                                                                                                    |
-| :--------------- | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `theme`        | 'light'                                              | string: specify the theme you want to used light/dark|
-| `primary`   | `null`                                                     | string : if you want to specify the primary background color (behind the kanbans columns / card background)|
-| `secondary`   | `null` | string : if you want to specify the secondary background color (kanbans columns)|
-| `third`   | `null` | string : if you want to specify the secondary background color (no usage atm)|
-| `fontPrimary`   | `null` | string : if you want to specify the primary font color (col title, card title)|
-| `fontSecondary`   | `null` | string : if you want to specify the secondary font color (cards count, new task, date text)|
+
+| name            | default | description                                                                                                 |
+| :-------------- | :------ | :---------------------------------------------------------------------------------------------------------- |
+| `theme`         | 'light' | string: specify the theme you want to used light/dark                                                       |
+| `primary`       | `null`  | string : if you want to specify the primary background color (behind the kanbans columns / card background) |
+| `secondary`     | `null`  | string : if you want to specify the secondary background color (kanbans columns)                            |
+| `third`         | `null`  | string : if you want to specify the secondary background color (no usage atm)                               |
+| `fontPrimary`   | `null`  | string : if you want to specify the primary font color (col title, card title)                              |
+| `fontSecondary` | `null`  | string : if you want to specify the secondary font color (cards count, new task, date text)                 |
+
 ## Events
 
 `Kanban.svelte` dispatches the following events:
 
-| name        | detail                                                                              | description                                                                                                                         |
-| ----------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `columnRemove`       | `{ position:number, name:string }`                                                                | Triggers when a column is removed.                                                                                            |
-| `columnAdd`    | `{ position: number }`                                                                | Triggers when a column is added.                                                     |
-| `columnMoved`    | `{ old_pos:number, new_pos:number }`                                                                | Triggers when a column is moved.                                                     |
-| `cardDragStart` | `{card:number, col:number, event:Event}`                                                                 | Triggers when a card start being dragged. `col` = position of the column, `card` = position of the card in the column, `event`: mousedown event props |
-| `cardDragMove`    | `{card:number, col:number, event:Event}` | Triggers every time the card is moving (ie on every mousemove)                                              |
-| `cardDragEnd`      |`{card:number, col:number, event:Event}`| Triggers when the dragging of the card ended.|
-| `cardDragSuccess`      |`{old_col:number, old_pos:number, new_col:number, new_pos:number}`| Triggers when the drop of the card is a success (ie : the card has been moved to another column).|
-| `cardDragFailed`      |`{col:number, card:number}`| Triggers when the drop of the card is a fail (ie : the card has not been moved and stayed in the origin column).|
-| `cardAdd`      |`{col:number}`| Triggers when a card is added to a column.|
-| `cardPropModify`      |`{ card:number, col:number, prop:string, value:string}`| Triggers when a prop of a card is in edit mode.|
-| `cardPropSaved`      |`{ card:number, col:number, prop:string, value:string}`| Triggers when a prop of a card is saved.|
-| `moveCardUp`      |`{col:number, old_pos:number, new_pos:number}`| Triggers when a card is moved down inside a column.|
-| `moveCardDown`      |`{col:number, old_pos:number, new_pos:number}`| Triggers when a card is moved up inside a column.|
+| name              | detail                                                             | description                                                                                                                                           |
+| ----------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `columnRemove`    | `{ position:number, name:string }`                                 | Triggers when a column is removed.                                                                                                                    |
+| `columnAdd`       | `{ position: number }`                                             | Triggers when a column is added.                                                                                                                      |
+| `columnMoved`     | `{ old_pos:number, new_pos:number }`                               | Triggers when a column is moved.                                                                                                                      |
+| `cardDragStart`   | `{card:number, col:number, event:Event}`                           | Triggers when a card start being dragged. `col` = position of the column, `card` = position of the card in the column, `event`: mousedown event props |
+| `cardDragMove`    | `{card:number, col:number, event:Event}`                           | Triggers every time the card is moving (ie on every mousemove)                                                                                        |
+| `cardDragEnd`     | `{card:number, col:number, event:Event}`                           | Triggers when the dragging of the card ended.                                                                                                         |
+| `cardDragSuccess` | `{old_col:number, old_pos:number, new_col:number, new_pos:number}` | Triggers when the drop of the card is a success (ie : the card has been moved to another column).                                                     |
+| `cardDragFailed`  | `{col:number, card:number}`                                        | Triggers when the drop of the card is a fail (ie : the card has not been moved and stayed in the origin column).                                      |
+| `cardAdd`         | `{col:number}`                                                     | Triggers when a card is added to a column.                                                                                                            |
+| `cardPropModify`  | `{ card:number, col:number, prop:string, value:string}`            | Triggers when a prop of a card is in edit mode.                                                                                                       |
+| `cardPropSaved`   | `{ card:number, col:number, prop:string, value:string}`            | Triggers when a prop of a card is saved.                                                                                                              |
+| `moveCardUp`      | `{col:number, old_pos:number, new_pos:number}`                     | Triggers when a card is moved down inside a column.                                                                                                   |
+| `moveCardDown`    | `{col:number, old_pos:number, new_pos:number}`                     | Triggers when a card is moved up inside a column.                                                                                                     |
+
 ### Examples
 
 <!-- prettier-ignore -->
