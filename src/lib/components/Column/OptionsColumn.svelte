@@ -27,7 +27,7 @@
 </div>
 
 <style type="text/scss">
-    @import './src/lib/styles/colors';
+    @import '../../styles/colors.scss';
     /* @import '../../../app.css'; */
     
     .modal-options:not(.show-options){

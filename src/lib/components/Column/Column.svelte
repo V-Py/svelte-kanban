@@ -115,7 +115,7 @@
 </div>
 
 <style type="text/scss">
-    @import '../../styles/colors';
+    @import '../../styles/colors.scss';
     /* @import '../../../app.css'; */
 
     .column{
