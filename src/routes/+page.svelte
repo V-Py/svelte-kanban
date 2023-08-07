@@ -20,6 +20,5 @@
     on:cardPropModify
     on:moveCardUp
     on:moveCardDown
-    lang="fr"
+    lang="en"
 />
-
