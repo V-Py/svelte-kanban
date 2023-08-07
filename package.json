@@ -3,16 +3,21 @@
 	"version": "0.0.952",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "svelte-kit preview",
-		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --ignore-path .gitignore --check . && eslint --ignore-path .gitignore .",
-		"format": "prettier --ignore-path .gitignore --write ."
+		"build": "vite build && npm run package",
+		"preview": "vite preview",
+		"package": "svelte-kit sync && svelte-package && publint",
+		"prepublishOnly": "npm run package",
+		"test": "npm run test:integration && npm run test:unit",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint --report-unused-disable-directives .",
+		"format": "prettier --write .",
+		"test:integration": "playwright test",
+		"test:unit": "vitest"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/V-Py/svelte-kanban"
+		"url": "https://github.com/dev-guy/svelte-kanban"
 	},
 	"bugs": {
 		"url": "https://github.com/V-Py/svelte-kanban/issues"
@@ -31,10 +36,19 @@
 		"trello-like"
 	],
 	"exports": {
-		".": "./Kanban.svelte"
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js"
+		}
+	},
+	"peerDependencies": {
+		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.36.2",
+		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/kit": "^1.22.4",
+		"@sveltejs/package": "^2.2.0",
 		"@typescript-eslint/eslint-plugin": "^6.2.1",
 		"@typescript-eslint/parser": "^6.2.1",
 		"autoprefixer": "^10.4.14",
@@ -42,17 +56,21 @@
 		"eslint": "^8.46.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.32.4",
-        "postcss": "^8.4.27",
-        "postcss-load-config": "^4.0.1",
+		"postcss": "^8.4.27",
+		"postcss-load-config": "^4.0.1",
 		"prettier": "^3.0.1",
 		"prettier-plugin-svelte": "^3.0.3",
+		"publint": "^0.1.16",
 		"sass": "^1.64.2",
 		"svelte": "^4.1.2",
 		"svelte-check": "^3.4.6",
 		"svelte-preprocess": "^5.0.4",
 		"tslib": "^2.6.1",
 		"typescript": "^5.1.6",
-		"vite": "^4.4.8"
+		"vite": "^4.4.9",
+		"vitest": "^0.34.1"
 	},
-	"type": "module"
+	"type": "module",
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts"
 }
