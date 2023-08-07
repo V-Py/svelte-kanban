@@ -62,9 +62,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.4.6
     version: 3.4.6(postcss-load-config@4.0.1)(postcss@8.4.27)(sass@1.64.2)(svelte@4.1.2)
-  svelte-preprocess:
-    specifier: ^5.0.4
-    version: 5.0.4(postcss-load-config@4.0.1)(postcss@8.4.27)(sass@1.64.2)(svelte@4.1.2)(typescript@5.1.6)
   tslib:
     specifier: ^2.6.1
     version: 2.6.1

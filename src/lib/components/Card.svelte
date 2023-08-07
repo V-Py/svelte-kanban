@@ -113,14 +113,14 @@
 <style type="text/scss">
 	@import './src/lib/styles/colors';
 
-    // @import '../../app.css';
+    /* @import '../../app.css'; */
 
     .card{
         background:white;
         display:flex;
         flex-direction: column;
-        // width:12rem;
-        // height:6rem;
+        /* width:12rem; */
+        /* height:6rem; */
         width: 11rem;
         height: 5.5rem;
         position: absolute;
@@ -295,7 +295,7 @@
         display:flex;
         justify-content: center;
         align-items: center;
-        // border-radius: 0.25rem;
+        /* border-radius: 0.25rem; */
         border-radius: 50%;
         border:none;
         cursor:pointer;

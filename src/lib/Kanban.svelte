@@ -405,7 +405,7 @@
 		width:100%;
 		height:100%;
 		flex-direction: column;
-		// border: 2px rgb(107, 114, 128) dashed;
+		/* border: 2px rgb(107, 114, 128) dashed; */
 	}
 	.header{
 		height:150px;

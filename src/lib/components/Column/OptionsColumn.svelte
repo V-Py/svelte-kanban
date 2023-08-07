@@ -28,18 +28,19 @@
 
 <style type="text/scss">
     @import './src/lib/styles/colors';
-    // @import '../../../app.css';
+    /* @import '../../../app.css'; */
     
     .modal-options:not(.show-options){
         display:none;
     }
 
-    // .options-column{
+    /* .options-column{
     //     position:absolute;
     //     // left:11rem;
     //     right:0rem;
     //     top:0.375rem;
     // }
+    */
 
     .button-options{
         background:transparent;
