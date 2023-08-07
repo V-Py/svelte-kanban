@@ -1,4 +1,4 @@
-import { SvelteComponent } from "svelte";
+import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         theme: any;
@@ -15,6 +15,6 @@ declare const __propDef: {
 export type AddColumnBtnProps = typeof __propDef.props;
 export type AddColumnBtnEvents = typeof __propDef.events;
 export type AddColumnBtnSlots = typeof __propDef.slots;
-export default class AddColumnBtn extends SvelteComponent<AddColumnBtnProps, AddColumnBtnEvents, AddColumnBtnSlots> {
+export default class AddColumnBtn extends SvelteComponentTyped<AddColumnBtnProps, AddColumnBtnEvents, AddColumnBtnSlots> {
 }
 export {};

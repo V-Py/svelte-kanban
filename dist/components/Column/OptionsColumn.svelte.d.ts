@@ -1,4 +1,4 @@
-import { SvelteComponent } from "svelte";
+import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         index_col: any;
@@ -16,6 +16,6 @@ declare const __propDef: {
 export type OptionsColumnProps = typeof __propDef.props;
 export type OptionsColumnEvents = typeof __propDef.events;
 export type OptionsColumnSlots = typeof __propDef.slots;
-export default class OptionsColumn extends SvelteComponent<OptionsColumnProps, OptionsColumnEvents, OptionsColumnSlots> {
+export default class OptionsColumn extends SvelteComponentTyped<OptionsColumnProps, OptionsColumnEvents, OptionsColumnSlots> {
 }
 export {};
