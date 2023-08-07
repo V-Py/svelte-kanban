@@ -17,7 +17,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/dev-guy/svelte-kanban"
+		"url": "https://github.com/V-Py/svelte-kanban"
 	},
 	"bugs": {
 		"url": "https://github.com/V-Py/svelte-kanban/issues"
@@ -42,7 +42,7 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^3.54.0 || ^4.0.0"
+		"svelte": "^3.46.4 || ^4.0.0"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.36.2",
