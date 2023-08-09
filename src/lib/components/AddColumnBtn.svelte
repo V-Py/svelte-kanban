@@ -15,9 +15,9 @@
     </button>
 </div>
 
-<style type="text/scss">
-	@import '../styles/colors.scss';
-    /* @import '../../app.css'; */
+<style lang="scss">
+	@import '../styles/colors';
+    // @import '../../app.css';
 
     .add-column{
         position:absolute;

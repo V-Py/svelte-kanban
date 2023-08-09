@@ -35,6 +35,7 @@
 		"drag-n-drop",
 		"trello-like"
 	],
+	"files": ["./dist/**/*"],
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",

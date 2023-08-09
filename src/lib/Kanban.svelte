@@ -384,7 +384,7 @@
 
 
 
-<style type="text/scss">
+<style lang="scss">
 	:root{
 		--light-bg:rgb(243, 244, 246);
 		--dark-bg:#052C39;

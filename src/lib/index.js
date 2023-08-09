@@ -1,3 +1,3 @@
 import Kanban from '$lib/Kanban.svelte';
 
-export { Kanban };
+export default Kanban;

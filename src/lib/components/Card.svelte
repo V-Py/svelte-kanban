@@ -110,10 +110,10 @@
     </button>
 </div>
 
-<style type="text/scss">
-	@import '../styles/colors.scss';
+<style lang="scss">
+	@import '../styles/colors';
 
-    /* @import '../../app.css'; */
+    // @import '../../app.css';
 
     .card{
         background:white;
