@@ -1,17 +1,18 @@
 {
 	"name": "svelte-kanban",
-	"version": "0.0.952",
+	"version": "0.0.953",
 	"scripts": {
-		"dev": "vite dev",
 		"build": "vite build && npm run package",
-		"preview": "vite preview",
-		"package": "svelte-kit sync && svelte-package && publint",
-		"prepublishOnly": "npm run package",
-		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check . && eslint --report-unused-disable-directives .",
+		"dev": "vite dev",
 		"format": "prettier --write .",
+		"lint": "prettier --check . && eslint --report-unused-disable-directives .",
+		"package": "svelte-kit sync && svelte-package && publint",
+		"prepublishOnly": "npm run package",
+		"preview": "vite preview",
+		"pub": "npm publish --access=public",
+		"test": "npm run test:integration && npm run test:unit",
 		"test:integration": "playwright test",
 		"test:unit": "vitest"
 	},
@@ -35,7 +36,9 @@
 		"drag-n-drop",
 		"trello-like"
 	],
-	"files": ["./dist/**/*"],
+	"files": [
+		"./dist/**/*"
+	],
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
