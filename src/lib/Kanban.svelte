@@ -6,7 +6,7 @@
 	import {columns, globalLang} from '$lib/stores/store.js';
 	import {Lang} from './class/Lang.js';
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
 	// Props used for setting up card size / dragNdrop
 	const HEIGHT_CARD_CONTAINER = 120;
