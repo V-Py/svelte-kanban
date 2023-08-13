@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from "svelte";
-    import {flip} from 'svelte/animate';
+	import {flip} from 'svelte/animate';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
-	import {columns, globalLang} from "$lib/stores/store";
-	import {Lang} from './class/Lang';
+	import {columns, globalLang} from '$lib/stores/store.js';
+	import {Lang} from './class/Lang.js';
 
     const dispatch = createEventDispatcher();
 

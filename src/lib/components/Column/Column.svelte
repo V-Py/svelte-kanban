@@ -1,10 +1,10 @@
 <script lang="ts">
     import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {columns}        from '$lib/stores/store';
+    import {columns}        from '$lib/stores/store.js';
     import {fly, scale}     from 'svelte/transition';
     import Card             from '../Card.svelte';
     import OptionsColumn    from'./OptionsColumn.svelte';
-    import {globalLang}     from '$lib/stores/store';
+    import {globalLang}     from '$lib/stores/store.js';
 
     let bool_show_options = true;
 

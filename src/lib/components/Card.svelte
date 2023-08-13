@@ -1,6 +1,6 @@
 <script lang="ts">
     import {createEventDispatcher, onMount} from 'svelte';
-    import {columns, globalLang} from '$lib/stores/store';
+    import {columns, globalLang} from '$lib/stores/store.js';
 
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
