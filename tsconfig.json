@@ -11,11 +11,9 @@
 		"strict": true,
 		"moduleResolution": "NodeNext",
 		"paths": {
-			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"],
-			"$stores/*": ["src/lib/stores/*"]
+			"$lib": ["./src/lib"],
+			"$lib/*": ["./src/lib/*"],
+			"$stores/*": ["./src/lib/stores/*"]
 		}
-	},
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
-	"exclude": ["src/lib/stores/*"]
+	}
 }
