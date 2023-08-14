@@ -254,11 +254,11 @@
 
 	function addCard(col_index:number){		
 		const card_temp = {
- 			empty:false,
-			animate:false,
+ 			empty: false,
+			animate: false,
 			title: $globalLang.getStr('NewCard'),
 			description: $globalLang.getStr('new'),
-			category:categories_list[0],
+			category: categories_list[0],
 			date: new Date().toLocaleString().replace(/,.*/, '')
  		};
 		const columns_work = [... $columns];
