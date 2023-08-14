@@ -440,4 +440,3 @@
 		background:var(--dark-bg);
 	}
 </style>
-
