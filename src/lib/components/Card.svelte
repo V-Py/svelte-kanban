@@ -9,7 +9,7 @@
 		const column_temp = $columns[id_col];
 		column_temp.slots.splice(id, 1);
 		$columns[id_col].slots = [... column_temp.slots];
-        dispatch('cardRemove', {});  
+        dispatch('cardRemove', {});
     }
 
     function modifyProp(prop:string){
@@ -20,7 +20,7 @@
         document.getElementById(input).style.display = '';
         document.getElementById(input).focus();
         document.getElementById(save).style.display = '';
-        dispatch('cardPropModify', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
+        dispatch('cardPropModify', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});
     }
 
     function saveProp(prop:string){
@@ -31,14 +31,14 @@
         document.getElementById(input).style.display = 'none';
         document.getElementById(save).style.display = 'none';
         $columns[id_col].slots[id][prop] = (<HTMLInputElement>document.getElementById(input)).value;
-        dispatch('cardPropSaved', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
+        dispatch('cardPropSaved', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});
     }
- 
+
     function changeCategory(cat_index:number){
         const oldValue = $columns[id_col].slots[id].category;
         $columns[id_col].slots[id].category = categories_list[cat_index];
         bool_show_cats_list = false;
-        dispatch('cardPropSaved', {prop:'category', col:id_col, card:id, oldValue, newValue:categories_list[cat_index]}); 
+        dispatch('cardPropSaved', {prop:'category', col:id_col, card:id, oldValue, newValue:categories_list[cat_index]});
     }
 
     export let id:number;
@@ -67,7 +67,7 @@
 
 <div id="card-{id}-col-{id_col}" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card draggable" draggable=true on:mousedown>
     <div class="card-part">
-        <div style="flex:1; display:flex;justfiy-content:flex-start; align-items:center;">
+        <div style="flex:1; display:flex;justify-content:flex-start; align-items:center;">
             <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
             {#if bool_show_cats_list}
                 <div class="categories-list">
@@ -275,7 +275,7 @@
     .draggable{
 		cursor:grab;
 	}
-    
+
     .card:hover .card-arrows, .card:active .card-arrows{
         display:flex !important;
     }
@@ -300,7 +300,7 @@
         border:none;
         cursor:pointer;
     }
-    
+
     .card-arrows:hover{
         background:rgba(0,0,0,0.1);
         cursor:pointer;
