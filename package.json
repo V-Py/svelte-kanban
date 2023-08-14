@@ -1,6 +1,9 @@
 {
 	"name": "svelte-kanban",
-	"version": "0.0.953",
+	"version": "0.0.952",
+	"engines": {
+		"node": ">=16.14"
+	},
 	"scripts": {
 		"build": "vite build && npm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
