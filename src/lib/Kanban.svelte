@@ -253,7 +253,14 @@
 	}
 
 	function addCard(col_index:number){
-		const card_temp = {empty:false, animate:false, title: getStr('NewCard'), description: getStr('new'), category:categories_list[0], date: new Date().toLocaleString().replace(/,.*/, '')};
+		const card_temp = {
+ 			empty:false,
+			animate:false,
+			title: $globalLang.getStr('NewCard'),
+			description: $globalLang.getStr('new'),
+			category:categories_list[0],
+			date: new Date().toLocaleString().replace(/,.*/, '')
+ 		};
 		const columns_work = [... $columns];
 		// columns_work[col_index].slots.unshift(card_temp);
 		columns_work[col_index].slots.push(card_temp);
