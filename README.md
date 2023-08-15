@@ -24,6 +24,13 @@
 
 ```sh
 npm i svelte-kanban
+npm i --save-dev svelte svelte-preprocess sass
+```
+
+This is beyond the scope of this guide, but your build system (Vite, ESBuild, etc.) should use the `svelte-preprocess` plugin:
+
+```js
+  preprocess: sveltePreprocess()
 ```
 
 ## Usage
