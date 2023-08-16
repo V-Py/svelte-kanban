@@ -15,8 +15,8 @@
     </button>
 </div>
 
-<style type="text/scss">
-	@import './src/lib/styles/colors';
+<style lang="scss">
+	@import '../styles/colors';
     // @import '../../app.css';
 
     .add-column{

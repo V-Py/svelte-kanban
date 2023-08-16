@@ -1,6 +1,39 @@
+#######
+# MacOs
 .DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
+
+##############
+# Dependencies
+/node_modules
+
+#########################################
+# Lock files aren't used by package users
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+###################
+# Environment files
 .env
+.env.*
+!.env.example
+
+######################
+# Editor configuration
+*.swp
+/.vscode
+
+########################################
+# Created by scripts (dev/build/package)
+
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Source maps https://web.dev/source-maps/
+*.map
+
+/.svelte-kit
+/build
+/dist
+/package
+

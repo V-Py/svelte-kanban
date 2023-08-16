@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from "svelte";
-    import {flip} from 'svelte/animate';
+	import {flip} from 'svelte/animate';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from '$lib/components/AddColumnBtn.svelte';
-	import {columns, globalLang} from "$lib/stores/store";
-	import {Lang} from './class/Lang';
+	import {columns, globalLang} from '$lib/stores/store.js';
+	import {Lang} from './class/Lang.js';
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
 	// Props used for setting up card size / dragNdrop
 	const HEIGHT_CARD_CONTAINER = 120;
@@ -384,7 +384,7 @@
 
 
 
-<style type="text/scss">
+<style lang="scss">
 	:root{
 		--light-bg:rgb(243, 244, 246);
 		--dark-bg:#052C39;
@@ -405,7 +405,7 @@
 		width:100%;
 		height:100%;
 		flex-direction: column;
-		// border: 2px rgb(107, 114, 128) dashed;
+		/* border: 2px rgb(107, 114, 128) dashed; */
 	}
 	.header{
 		height:150px;

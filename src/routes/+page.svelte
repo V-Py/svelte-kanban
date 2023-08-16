@@ -22,4 +22,3 @@
     on:moveCardDown
     lang="fr"
 />
-
