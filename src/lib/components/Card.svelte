@@ -67,7 +67,7 @@
 
 <div id="card-{id}-col-{id_col}" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card draggable" draggable=true on:mousedown>
     <div class="card-part">
-        <div style="flex:1; display:flex;justfiy-content:flex-start; align-items:center;">
+        <div style="flex:1; display:flex;justify-content:flex-start; align-items:center;">
             <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
             {#if bool_show_cats_list}
                 <div class="categories-list">
