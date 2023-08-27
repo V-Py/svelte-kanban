@@ -25,7 +25,7 @@
 	export let minimalist 		= false;
 	export let maxColumns 		= 5;
 	const tempLang = new Lang(lang);
-	export let categories_list = [{
+	export let catsList = [{
             label:tempLang.getStr('new'),
 			color:'white',
             bgColor:"#0A99FF"
@@ -258,7 +258,7 @@
 			animate: false,
 			title: $globalLang.getStr('NewCard'),
 			description: $globalLang.getStr('new'),
-			category: categories_list[0],
+			category: catsList[0],
 			date: new Date().toLocaleString().replace(/,.*/, '')
  		};
 		const columns_work = [... $columns];
@@ -355,7 +355,7 @@
 			{#each $columns as column, index_col(column)}
 				<Column
 					{theme}
-					{categories_list}
+					{catsList}
 					slots={column.slots}
 					title={column.title}
 					{index_col}

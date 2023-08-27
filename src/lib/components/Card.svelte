@@ -36,9 +36,9 @@
  
     function changeCategory(cat_index:number){
         const oldValue = $columns[id_col].slots[id].category;
-        $columns[id_col].slots[id].category = categories_list[cat_index];
+        $columns[id_col].slots[id].category = catsList[cat_index];
         bool_show_cats_list = false;
-        dispatch('cardPropSaved', {prop:'category', col:id_col, card:id, oldValue, newValue:categories_list[cat_index]}); 
+        dispatch('cardPropSaved', {prop:'category', col:id_col, card:id, oldValue, newValue:catsList[cat_index]}); 
     }
 
     export let id:number;
@@ -47,7 +47,7 @@
     export let description = 'empty';
     export let category = {label:'default', bgColor:'gray', color:'white'};
     export let date = '01/01/2021';
-    export let categories_list;
+    export let catsList;
 
     function handleKeyUp(event, source:string){
         if(event.keyCode == 13) saveProp(source);
@@ -71,7 +71,7 @@
             <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
             {#if bool_show_cats_list}
                 <div class="categories-list">
-                    {#each categories_list as cat_temp, cat_index}
+                    {#each catsList as cat_temp, cat_index}
                         <button class="category-button" on:click={()=>{changeCategory(cat_index)}}>
                             <div class="category-circle" style="background-color:{cat_temp.bgColor}"></div>
                             {cat_temp.label}

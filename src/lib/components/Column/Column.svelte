@@ -12,7 +12,7 @@
     export let index_col;
     export let slots;
     export let show_fake_slot;
-    export let categories_list;
+    export let catsList;
     export let theme;
     export let secondary;
     export let fontPrimary;
@@ -86,7 +86,7 @@
                         <Card
                             id={index}
                             id_col={index_col}
-                            {categories_list}
+                            {catsList}
                             on:mousedown="{(e) => {handleMouseDown(e, index)}}"
 
                             title={slot.title}
