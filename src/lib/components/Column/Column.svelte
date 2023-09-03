@@ -81,7 +81,7 @@
     <div class="content"> 
         {#if slots.length > 0}
             {#each slots as slot, index}
-                <div class="not-empty animate">
+                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate">
                     {#if slot.empty == false}
                         <Card
                             id={index}
