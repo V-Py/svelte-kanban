@@ -38,4 +38,3 @@ Lang.fr = {
 	work: 'travail',
 	important: 'important'
 };
-//# sourceMappingURL=Lang.js.map
