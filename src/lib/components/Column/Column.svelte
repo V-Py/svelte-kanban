@@ -75,13 +75,13 @@
     </div>
 
     <div class="cards-count" style:color="{fontSecondary}">
-        {slots.length} {$globalLang.getStr('Card')}{slots.length>1 ? "s" : ""}
+        {slots.length} {$globalLang.getStr(slots.length === 1 ? 'Card':'Cards')}
     </div>
 
     <div class="content"> 
         {#if slots.length > 0}
             {#each slots as slot, index}
-                <div class="not-empty animate">
+                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate">
                     {#if slot.empty == false}
                         <Card
                             id={index}
