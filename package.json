@@ -1,6 +1,6 @@
 {
 	"name": "svelte-kanban",
-	"version": "0.0.952",
+	"version": "1.0.0",
 	"engines": {
 		"node": ">=16.14"
 	},
