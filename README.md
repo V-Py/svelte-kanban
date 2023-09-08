@@ -20,17 +20,12 @@
 
 <img src="https://raw.githubusercontent.com/V-Py/svelte-kanban/master/static/kanbancapture.PNG" alt="Svelte Kanban">
 <slot />
+
 ## Installation
 
 ```sh
-npm i svelte-kanban
-npm i --save-dev svelte svelte-preprocess sass
-```
-
-This is beyond the scope of this guide, but your build system (Vite, ESBuild, etc.) should use the `svelte-preprocess` plugin:
-
-```js
-  preprocess: sveltePreprocess()
+npm i --save svelte-kanban
+npm i --save-dev sass
 ```
 
 ## Usage
