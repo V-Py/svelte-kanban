@@ -50,7 +50,7 @@
     export let catsList;
 
     function handleKeyUp(event, source:string){
-        if(event.keyCode == 13) saveProp(source);
+        if(event.keyCode === 13) saveProp(source);
     }
 
     onMount(()=>{

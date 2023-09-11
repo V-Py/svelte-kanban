@@ -136,7 +136,7 @@
 					// 1- checking if the point is between the first card
 					if(y_card_top < REAL_STARTING_POINT_TOP) bool_position_order_found = true; // Position will stay at 0
 					// 2- Searching the position order of the card between the cards of the column
-					while(bool_position_order_found == false && j <= $columns[i].slots.length){
+					while(bool_position_order_found === false && j <= $columns[i].slots.length){
 						if(y_card_top <= (REAL_STARTING_POINT_TOP + j*HEIGHT_CARD_CONTAINER)){
 							bool_position_order_found = true;
 							position_order = j;
@@ -150,10 +150,9 @@
 				}
 
 				// checking if the last empty slot is the same as the one found now (ie, we don't need to do anything) 
-				// if((tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) || rect_card.) return;
-				if(tracking_last_empty_card.col == i && tracking_last_empty_card.index == position_order) return;
+				if(tracking_last_empty_card.col === i && tracking_last_empty_card.index === position_order) return;
 
-				if(i == dragged_card_infos.col) return;
+				if(i === dragged_card_infos.col) return;
 
 				// Copying columns
 				const columns_work = [... $columns];
@@ -164,7 +163,7 @@
 				// Adding empty slot to the right column at the right position
 				let bool_add_empty = true;
 				for(let j=0; j<columns_work[i].slots.length; j++){
-					if(columns_work[i].slots[j].empty == true) bool_add_empty = false;
+					if(columns_work[i].slots[j].empty === true) bool_add_empty = false;
 				}
 
 				if(bool_add_empty) columns_work[i].slots.splice(position_order, 0, {empty:true});
@@ -198,7 +197,7 @@
 					// 1- checking if the point is between the first card
 					if(y_card_top < REAL_STARTING_POINT_TOP) bool_position_order_found = true; // Position will stay at 0
 					// 2- Searching the position order of the card between the cards of the column
-					while(bool_position_order_found == false && j <= $columns[i].slots.length){
+					while(bool_position_order_found === false && j <= $columns[i].slots.length){
 						if(y_card_top <= (REAL_STARTING_POINT_TOP + j*HEIGHT_CARD_CONTAINER)){
 							bool_position_order_found = true;
 							position_order = j;
@@ -223,14 +222,10 @@
 				// console.log('LAST EMPTY CARD', tracking_last_empty_card);
 
 				if(tracking_last_empty_card.col != -1){ // deleting all the empty cards of the column
-					if(tracking_last_empty_card.index == columns_work[tracking_last_empty_card.col].slots.length) tracking_last_empty_card.index--;
+					if(tracking_last_empty_card.index === columns_work[tracking_last_empty_card.col].slots.length) tracking_last_empty_card.index--;
 					columns_work[tracking_last_empty_card.col].slots.splice(tracking_last_empty_card.index, 1); // if empty card exist, delete it
 				} 
 				tracking_last_empty_card = {col:-1, index:-1}; // no more empty card to track => reinitialize
-				
-				// console.log('POSITION ORDER', position_order, 'columns work', columns_work[i].slots.length);
-
-				// if(position_order == 1 && columns_work[i].slots.length == 0) position_order = 0;
 
 				// Adding card to column dragged on at the right position
 				
@@ -284,7 +279,7 @@
 			slots:[]
 		}
 
-		if($columns.length == maxColumns) return;
+		if($columns.length === maxColumns) return;
 		const posAdd = $columns.length;
 		$columns = [... $columns, col_temp];
 
@@ -297,7 +292,7 @@
 	}
 
 	function moveCardUp(event){
-		if(event.detail.card == 0 )return;
+		if(event.detail.card === 0 )return;
 		const card = $columns[event.detail.col].slots[event.detail.card]
 		
 		const columns_work = [...$columns];
@@ -309,7 +304,7 @@
 
 	function moveCardDown(event){
 		const numEvents = ($columns[event.detail.col].slots.length -1);
-		if(event.detail.card == numEvents) return;
+		if(event.detail.card === numEvents) return;
 	
 		const card = $columns[event.detail.col].slots[event.detail.card]
 		const columns_work = [...$columns];
@@ -330,9 +325,9 @@
 	function moveColumn(e){
 		const direction = e.detail.direction;
 		const index = e.detail.index;
-		if(direction == 'left' && index == 0) return;
-		if(direction == 'right' && index == ($columns.length-1)) return;
-		const newIndex = index + (direction == 'right' ? 1 : -1);
+		if(direction === 'left' && index === 0) return;
+		if(direction === 'right' && index === ($columns.length-1)) return;
+		const newIndex = index + (direction === 'right' ? 1 : -1);
 		let columns_work = [...$columns];
 		const col = columns_work[index];
 		columns_work.splice(index,1);
