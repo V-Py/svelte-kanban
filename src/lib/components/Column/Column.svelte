@@ -11,7 +11,6 @@
     export let title;
     export let index_col;
     export let slots;
-    export let show_fake_slot;
     export let catsList;
     export let theme;
     export let secondary;

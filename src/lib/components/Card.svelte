@@ -44,7 +44,7 @@
     export let id:number;
     export let id_col:number;
     export let title = $globalLang.getStr('NewCard');
-    export let description = 'empty';
+    // export let description = 'empty';
     export let category = {label:'default', bgColor:'gray', color:'white'};
     export let date = '01/01/2021';
     export let catsList;
@@ -55,17 +55,24 @@
 
     onMount(()=>{
         document.addEventListener('click', function(e){
-            if(e.target.classList.contains('card-category')) return;
-            if(e.target.classList.contains('category-button')) return;
-            if(e.target.classList.contains('categories-list')) return;
+            const target = e.target as HTMLElement;
+            if(target.classList.contains('card-category')) return;
+            if(target.classList.contains('category-button')) return;
+            if(target.classList.contains('categories-list')) return;
             bool_show_cats_list = false;
         })
-
     })
 </script>
 
 
-<div id="card-{id}-col-{id_col}" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="card draggable" draggable=true on:mousedown>
+<div 
+    id="card-{id}-col-{id_col}" 
+    style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" 
+    class="card draggable" 
+    role="button"
+    tabindex="0"
+    aria-label="Card" 
+    aria-roledescription="Card with infos and actions that can be dragged on the different columns" draggable=true on:mousedown>
     <div class="card-part">
         <div style="flex:1; display:flex;justify-content:flex-start; align-items:center;">
             <button class="card-category" style="background:{category.bgColor}; color:{category.color}" on:click={()=>{bool_show_cats_list = !bool_show_cats_list}}>{category.label}</button>
