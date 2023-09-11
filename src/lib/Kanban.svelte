@@ -22,7 +22,6 @@
 	export let fontPrimary 		= null;
 	export let fontSecondary 	= null;
 	export let lang 			= 'en';
-	export let minimalist 		= false;
 	export let maxColumns 		= 5;
 	const tempLang = new Lang(lang);
 	export let catsList = [{
@@ -344,7 +343,7 @@
 	})
 </script>
 
-<div class="kanban {theme}" style:background="{primary}">
+<div class="kanban" class:light={theme == "light"} class:dark={theme=="dark"} style:background="{primary}">
 	<div class="layout">
 		<div class="kanban-container">
 			{#each $columns as column, index_col(column)}
@@ -409,12 +408,6 @@
 		flex-direction: column;
 		/* border: 2px rgb(107, 114, 128) dashed; */
 	}
-	.header{
-		height:150px;
-		display:flex;
-		justify-content: center;
-		width:100%;
-	}
 
 	.footer{
 		height:75px;
@@ -428,10 +421,10 @@
 		justify-content: flex-start;
 	}
 
-	.kanban.light, .light .kanban-container, .light .footer, .light .header{
+	.kanban.light, .light .kanban-container, .light .footer{
 		background:#fff;
 	}
-	.kanban.dark, .dark .kanban-container, .dark .footer, .dark .header{
+	.kanban.dark, .dark .kanban-container, .dark .footer{
 		background:var(--dark-bg);
 	}
 </style>
