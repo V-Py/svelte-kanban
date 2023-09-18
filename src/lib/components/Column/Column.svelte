@@ -1,10 +1,12 @@
 <script lang="ts">
-    import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {columns}        from '$lib/stores/store.js';
-    import {fly, scale}     from 'svelte/transition';
+    import {createEventDispatcher} from 'svelte';
+	import {getBoard, getLang, getDragDrop} from '$lib/stores';
+    import {fly}            from 'svelte/transition';
     import Card             from '../Card.svelte';
     import OptionsColumn    from'./OptionsColumn.svelte';
-    import {globalLang}     from '$lib/stores/store.js';
+
+    const globalLang = getLang();
+    const dragDrop = getDragDrop();
 
     let bool_show_options = true;
 
@@ -16,6 +18,12 @@
     export let secondary;
     export let fontPrimary;
     export let fontSecondary;
+
+    let dropHere = false;
+    $: dropHere = $dragDrop.to.col === index_col;
+
+    let numCards = 0;
+    $: numCards = cards.length + (dropHere && $dragDrop.from.col === index_col ? 0 : Number(dropHere));
 
     const dispatch = createEventDispatcher();
 
