@@ -1,16 +1,16 @@
 <script lang="ts">
-    import {createEventDispatcher, onMount, useCrdt} from 'svelte';
-	import {getBoard, getLang} from '$lib/stores';
+    import {createEventDispatcher, onMount} from 'svelte';
+    import {getBoard, getLang, useCrdt} from '$lib/stores';
 
-	const board = getBoard();
-	const globalLang = getLang();
+    const board = getBoard();
+    const globalLang = getLang();
 
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
 
     function removeCard(e){
-		$board.columns[id_col].cards.splice(id, 1);
-		if (!useCrdt) $board = $board;
+        $board.columns[id_col].cards.splice(id, 1);
+        if (!useCrdt) $board = $board;
         dispatch('cardRemove', {});  
     }
 
@@ -32,7 +32,7 @@
         document.getElementById(modify).style.display = '';
         document.getElementById(input).style.display = 'none';
         document.getElementById(save).style.display = 'none';
-		$board.columns[id_col].cards[id][prop] = (<HTMLInputElement>document.getElementById(input)).value;
+        $board.columns[id_col].cards[id][prop] = (<HTMLInputElement>document.getElementById(input)).value;
         dispatch('cardPropSaved', {prop, col:id_col, card:id, value:(<HTMLInputElement>document.getElementById(input)).value});  
     }
  

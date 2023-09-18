@@ -1,9 +1,9 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-	import {getBoard, getLang, getDragDrop} from '$lib/stores';
-    import {fly}            from 'svelte/transition';
-    import Card             from '../Card.svelte';
-    import OptionsColumn    from'./OptionsColumn.svelte';
+    import {fly}                   from 'svelte/transition';
+    import {getLang, getDragDrop}  from '$lib/stores';
+    import Card                    from '../Card.svelte';
+    import OptionsColumn           from './OptionsColumn.svelte';
 
     const globalLang = getLang();
     const dragDrop = getDragDrop();
