@@ -106,6 +106,7 @@
                     on:moveCardUp
                     on:moveCardDown
                 />
+
             </div>
         {/each}
         {#if dropHere && $dragDrop.to.card >= cards.length}
@@ -311,7 +312,7 @@
         animation: growingSlot .3s ease-out forwards;
     }
 
-    @keyframes growingSlot {
+    @keyframes growingSlot{
         from{
             height:0px;
         }
