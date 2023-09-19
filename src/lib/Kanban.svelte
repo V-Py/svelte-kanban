@@ -332,16 +332,32 @@
 	}
 
 	function moveColumn(e){
-		const direction = e.detail.direction;
+		const direction = e.detail.direction === 'left' ? -1 : 1;
 		const index = e.detail.index;
-		if(direction === 'left' && index === 0) return;
-		if(direction === 'right' && index === ($columns.length-1)) return;
-		const newIndex = index + (direction === 'right' ? 1 : -1);
-		let columns_work = [...$columns];
-		const col = columns_work[index];
-		columns_work.splice(index,1);
-		columns_work.splice(newIndex, 0, col)
-		columns.set(columns_work);
+		if (index >= $board.columns.length) return;
+
+		const newIndex = index + direction;
+		if (newIndex < 0 || newIndex >= $board.columns.length) return;
+
+		let col = $board.columns[index];
+		if (useCrdt) col = JSON.parse(JSON.stringify(col));
+
+		if (!useCrdt || direction === 1) {
+			// Move right
+			// Remove
+			$board.columns.splice(index, 1);
+			// Add
+			$board.columns.splice(newIndex, 0, col)
+		} else {
+			// Move left
+			// SyncedStore wants Add & Remove performed in this order when moving left
+			// Add
+			$board.columns.splice(newIndex, 0, col);
+			// Remove
+			$board.columns.splice(index+1, 1);
+		}
+
+		if (!useCrdt) $board = $board;
 		dispatch('columnMoved', {old_pos:index, new_pos:newIndex});
 	}
 </script>

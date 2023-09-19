@@ -87,20 +87,20 @@
     </div>
 
     <div class="content"> 
-        {#each cards as slot, index}
-            {#if dropHere && $dragDrop.to.card === index}
+        {#each cards as cardObj, card}
+            {#if dropHere && $dragDrop.to.card === card}
                 <div class="animate empty-slot"/>
             {/if}
             <div class="animate not-empty">
                 <Card
-                    id={index}
+                    id={card}
                     id_col={index_col}
                     {catsList}
-                    on:mousedown="{(e) => {handleMouseDown(e, index)}}"
-                    title={slot.title}
-                    description={slot.description}
-                    category={slot.category}
-                    date={slot.date}
+                    on:mousedown="{(e) => {handleMouseDown(e, card)}}"
+                    title={cardObj.title}
+                    <!-- description={cardObj.description} -->
+                    category={cardObj.category}
+                    date={cardObj.date}
                     on:cardPropModify
                     on:cardPropSaved
                     on:cardRemove
@@ -312,7 +312,7 @@
         animation: growingSlot .3s ease-out forwards;
     }
 
-    @keyframes growingSlot{
+    @keyframes growingSlot {
         from{
             height:0px;
         }
