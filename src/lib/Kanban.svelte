@@ -28,6 +28,7 @@
     const globalLang = getLang(lang);
     const dragDrop = getDragDrop();
 
+	// Default categories
 	export let catsList = [{
             label:$globalLang.getStr('new'),
 			color:'white',
