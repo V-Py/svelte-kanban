@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from "svelte";
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
 	import {getBoard, getLang, useCrdt, getDragDrop} from './stores';
@@ -202,46 +202,54 @@
 			elem_dragged.style.removeProperty('left');
 
 			if ($dragDrop.to.col < 0) return;
-			if ($dragDrop.from.card >= $board.columns[$dragDrop.from.col].cards.length) return;
+			if ($dragDrop.from.col >= $board.columns.length) return;
 
-			let card = $board.columns[$dragDrop.from.col].cards[$dragDrop.from.card];
+			const { cards } = $board.columns[$dragDrop.from.col];
+			if ($dragDrop.from.card >= cards.length) return;
+
+			let card = cards[$dragDrop.from.card];
 			if (useCrdt) card = JSON.parse(JSON.stringify(card));
 
 			// Dragged in the same column?
 			if ($dragDrop.from.col === $dragDrop.to.col) {
 				// Remove the card
-				$board.columns[$dragDrop.from.col].cards.splice($dragDrop.from.card, 1);
+				cards.splice($dragDrop.from.card, 1);
 				// Add the card
 				if ($dragDrop.from.card < $dragDrop.to.card) {
-					$board.columns[$dragDrop.from.col].cards.splice($dragDrop.to.card-1, 0, card);
+					cards.splice($dragDrop.to.card-1, 0, card);
 				} else {
-					$board.columns[$dragDrop.from.col].cards.splice($dragDrop.to.card, 0, card);
+					cards.splice($dragDrop.to.card, 0, card);
 				}
 			} else {
+				if ($dragDrop.to.col >= $board.columns.length) return;
+				const { cards: toCards } = $board.columns[$dragDrop.to.col];
+				if ($dragDrop.to.card > toCards.length) return;
+
 				// Remove the card
-				$board.columns[$dragDrop.from.col].cards.splice($dragDrop.from.card, 1);
+				cards.splice($dragDrop.from.card, 1);
 				// Add the card
-				$board.columns[$dragDrop.to.col].cards.splice($dragDrop.to.card, 0, card);
+				toCards.splice($dragDrop.to.card, 0, card);
 			}
 
 			if (!useCrdt) $board = $board;
-
 			bool_drag_success = true;
-			const propsDispatch = {
+		} finally {
+			const action_dispatch = (bool_drag_success ? 'cardDragSuccess' : 'cardDragFailed');
+			const propsDispatch = bool_drag_success ? {
 				old_col:$dragDrop.from.col,
 				old_pos:$dragDrop.from.card,
+				new_col: $dragDrop.to.col,
+				new_pos: $dragDrop.to.card,
 				columns:$board.columns,
+			} : {
+				col:$dragDrop.from.col,
+				pos:$dragDrop.from.card,
 			};
 
-			if ($dragDrop.to) {
-				propsDispatch.new_col = $dragDrop.to.col;
-				propsDispatch.new_pos = $dragDrop.to.card;
-			}
+			dispatch(action_dispatch, propsDispatch);  
 
 			// console.log(`ACTION [${action_dispatch}] OLD COL [${$dragDrop.from.col}] IN POSITION OLD POS [${$dragDrop.from.card}] NEW COL [${newCol}] NEW POS [${newPos}]`);
-			const action_dispatch = (bool_drag_success ? 'cardDragSuccess' : 'cardDragFailed');
-			dispatch(action_dispatch, propsDispatch);  
-		} finally {
+
 			$dragDrop.from.col = -1;
 			$dragDrop.to.col = -1;
 		}
@@ -249,7 +257,6 @@
 
 	function addCard(col_index:number){		
 		if (col_index >= $board.columns.length) return;
-		const column = $board.columns[col_index];
 
 		const card_temp = {
  			empty: false,
@@ -260,7 +267,7 @@
 			date: new Date().toLocaleString().replace(/,.*/, '')
  		};
 
-		column.cards.unshift(card_temp);
+		$board.columns[col_index].cards.unshift(card_temp);
 		if (!useCrdt) $board = $board;
 
 		dispatch('cardAdd', {col:col_index, columns:$board.columns});
@@ -272,59 +279,56 @@
 		const name = $board.columns[index_col];
 		$board.columns.splice(event.detail.index_col, 1);
 		if (!useCrdt) $board = $board;
-		dispatch('columnRemove', {position:event.detail.index_col, name, columns:$board.columns});  
+		dispatch('columnRemove', {position:index_col, name, columns:$board.columns});  
 	}
 
 	function addColumn(){
 		if ($board.columns.length >= maxColumns) return;
+
 		const col_temp = {
 			title:$globalLang.getStr('NewColumn'),
 			coordinates: {x_start:0, x_end:0, y_start:0, y_end:0},
-			rect:{},
-			slots:[]
+			cards: [],
 		}
 
-		if($columns.length === maxColumns) return;
-		const posAdd = $columns.length;
-		$columns = [... $columns, col_temp];
+		const posAdd = $board.columns.length;
+		$board.columns.push(col_temp);
+		if (!useCrdt) $board = $board;
 
-		setTimeout(function(){
-			const col_index = $columns.length - 1 ;
-			$columns[col_index].rect = document.getElementsByClassName('column')[col_index].getBoundingClientRect();
-		}, 200);
-
-        dispatch('columnAdd', {position:posAdd, columns:$columns});  	
+        dispatch('columnAdd', {position:posAdd, columns:$board.columns});
 	}
 
 	function moveCardUp(event){
 		if(event.detail.card === 0 )return;
-		const card = $columns[event.detail.col].slots[event.detail.card]
-		
-		const columns_work = [...$columns];
-		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
-		columns_work[event.detail.col].slots.splice((event.detail.card-1), 0, card);
-		columns.set(columns_work);
-        dispatch('moveCardUp', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card-1, columns:$columns});  	
+		if (event.detail.col >= $board.columns.length) return;
+		const { cards } = $board.columns[event.detail.col];
+		if (event.detail.card >= cards.length) return;
+
+		let card = cards[event.detail.card];
+		if (useCrdt) card = JSON.parse(JSON.stringify(card));
+
+		cards.splice(event.detail.card, 1);
+		cards.splice((event.detail.card-1), 0, card);
+
+		if (!useCrdt) $board = $board;
+
+        dispatch('moveCardUp', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card-1, columns:$board.columns});  	
 	}
 
 	function moveCardDown(event){
-		const numEvents = ($columns[event.detail.col].slots.length -1);
-		if(event.detail.card === numEvents) return;
-	
-		const card = $columns[event.detail.col].slots[event.detail.card]
-		const columns_work = [...$columns];
-		columns_work[event.detail.col].slots.splice(event.detail.card, 1);
-		columns_work[event.detail.col].slots.splice((event.detail.card+1), 0, card);
-		columns.set(columns_work);
-        dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1, columns:$columns});  	
-	}
+		if (event.detail.col >= $board.columns.length) return;
+		const { cards } = $board.columns[event.detail.col];
+		if (event.detail.card >= cards.length) return;
 
-	function handleResize(entries){
-		const columns_temp = document.getElementsByClassName('column');
-		for(let i=0; i<columns_temp.length; i++){
-			const rect_col  =  columns_temp[i].getBoundingClientRect();
-			$columns[i].rect = rect_col;
-		}
+		let card = cards[event.detail.card];
+		if (useCrdt) card = JSON.parse(JSON.stringify(card));
+
+		cards.splice(event.detail.card, 1);
+		cards.splice((event.detail.card+1), 0, card);
+
+		if (!useCrdt) $board = $board;
+
+        dispatch('moveCardDown', {col:event.detail.col, old_pos:event.detail.card, new_pos:event.detail.card+1, columns:$board.columns});  	
 	}
 
 	function moveColumn(e){
@@ -340,12 +344,6 @@
 		columns.set(columns_work);
 		dispatch('columnMoved', {old_pos:index, new_pos:newIndex});
 	}
-
-	onMount(() => {
-		// we only need to observe the first column since all the columns have the same size atm
-		let resizer = new ResizeObserver(handleResize)
-		resizer.observe(document.getElementsByClassName('column')[0])
-	})
 </script>
 
 <div class="kanban" class:light={theme == "light"} class:dark={theme=="dark"} style:background="{primary}">
