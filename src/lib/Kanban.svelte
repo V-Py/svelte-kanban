@@ -12,7 +12,7 @@
 	const STARTING_POINT_TOP = 98;
 	const HEIGHT_CARD = 105; // 96
 	const REAL_STARTING_POINT_TOP = STARTING_POINT_TOP + HEIGHT_CARD/2; // The first point of reference is the middle of the first card (if there is one)
-	const DRAG_CARD_DOWN_SAME_COLUMN_OFFSET_Y = HEIGHT_CARD_CONTAINER + (HEIGHT_CARD_CONTAINER-HEIGHT_CARD);
+	const DRAG_CARD_UP_WITHIN_COLUMN_OFFSET_Y = HEIGHT_CARD_CONTAINER + (HEIGHT_CARD_CONTAINER-HEIGHT_CARD);
 
 	// Properties of the Kanban
 	export let theme 			= 'light';
@@ -170,9 +170,10 @@
 					const diff = position_order - $dragDrop.from.card;
 					if (diff && diff !== 1) {
 						if (diff < 0) {
-							// The empty card (drop target) is below the card that's being dragged so the dragged card
-							// needs to be nudged higher
-							y_live -= DRAG_CARD_DOWN_SAME_COLUMN_OFFSET_Y;
+							// Dragging up
+							// The empty card (drop target) appears above the card that's being dragged, pushing it down.
+							// Compensate by moving the dragged card up.
+							y_live -= DRAG_CARD_UP_WITHIN_COLUMN_OFFSET_Y;
 						}
 						$dragDrop.to.col = i;
 					}
