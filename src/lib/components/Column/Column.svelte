@@ -1,7 +1,7 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
     import {fly}                   from 'svelte/transition';
-    import {getBoard, getLang, getDragDrop}  from '$lib/stores';
+    import {getBoard, getLang, getDragDrop}  from '$stores';
     import Card                    from '../Card.svelte';
     import OptionsColumn           from './OptionsColumn.svelte';
 
