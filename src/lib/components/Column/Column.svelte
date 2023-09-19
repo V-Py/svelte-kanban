@@ -98,7 +98,6 @@
                     {catsList}
                     on:mousedown="{(e) => {handleMouseDown(e, card)}}"
                     title={cardObj.title}
-                    <!-- description={cardObj.description} -->
                     category={cardObj.category}
                     date={cardObj.date}
                     on:cardPropModify

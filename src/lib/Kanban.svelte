@@ -74,7 +74,7 @@
 	})
 
 	function cardDragStart(event){	
-		const {col, card} = event;
+		const {col, card} = event.detail;
         dispatch('cardDragStart', {card, col, event:event.detail.event});  
 
 		let e = event.detail.event;
@@ -86,9 +86,8 @@
 		$dragDrop.to.col = -1;
 
 		if (col >= $board.columns.length) return;
-		if (card >= $board.columns[col].cards.length) return;
-
-		const cardObj = $board.columns[col].cards[card];
+		const { cards } = $board.columns[col];
+		if (card >= cards.length) return;
 
 		const elem_dragged = document.getElementById(`card-${card}-col-${col}`);
 		if (!elem_dragged) return;
