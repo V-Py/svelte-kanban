@@ -106,12 +106,12 @@
                     on:moveCardUp
                     on:moveCardDown
                 />
-
             </div>
         {/each}
         {#if dropHere && $dragDrop.to.card >= cards.length}
             <div class="animate empty-slot"/>
         {/if}
+
     </div>
     <button class="add-card" on:click={() => {dispatch('addCard', {index:index_col});  }} style:color="{fontSecondary}">
         <span>{$globalLang.getStr('AddACard')} </span>
