@@ -1,6 +1,6 @@
 <script lang="ts">
     import {createEventDispatcher, onMount} from 'svelte';
-    import {getBoard, getLang, useCrdt} from '$lib/stores';
+    import {getBoard, getLang, useCrdt} from '$stores';
 
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from 'svelte';
 	import Column from './components/Column/Column.svelte';
 	import AddColumnBtn from './components/AddColumnBtn.svelte';
-	import {getBoard, getLang, useCrdt, getDragDrop} from './stores';
+	import {getBoard, getLang, useCrdt, getDragDrop} from '$stores';
 	import type {LangCode} from './lang';
 
 	const dispatch = createEventDispatcher();

@@ -9,13 +9,15 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"exclude": [
-			"node_modules"
-		],
 		"paths": {
 			"$lib": ["./src/lib"],
 			"$lib/*": ["./src/lib/*"],
+			"$stores": ["./src/lib/stores"],
 			"$stores/*": ["./src/lib/stores/*"]
 		}
-	}
+	},
+	"exclude": [
+		"node_modules/",
+		"dist/"
+	],
 }
