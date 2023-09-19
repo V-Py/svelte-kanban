@@ -7,10 +7,6 @@
 
 	const dispatch = createEventDispatcher();
 
-    const board = getBoard();
-    const globalLang = getLang();
-    const dragDrop = getDragDrop();
-
 	// Props used for setting up card size / dragNdrop
 	const HEIGHT_CARD_CONTAINER = 120;
 	const STARTING_POINT_TOP = 98;
@@ -27,6 +23,10 @@
 	export let fontSecondary 	= null;
 	export let lang: LangCode	= 'en';
 	export let maxColumns 		= 5;
+
+    const board = getBoard();
+    const globalLang = getLang(lang);
+    const dragDrop = getDragDrop();
 
 	export let catsList = [{
             label:$globalLang.getStr('new'),
@@ -352,7 +352,6 @@
 	}
 
 	onMount(() => {
-		if(lang) globalLang.set(new Lang(lang)); //
 		// we only need to observe the first column since all the columns have the same size atm
 		let resizer = new ResizeObserver(handleResize)
 		resizer.observe(document.getElementsByClassName('column')[0])
@@ -362,24 +361,24 @@
 <div class="kanban" class:light={theme == "light"} class:dark={theme=="dark"} style:background="{primary}">
 	<div class="layout">
 		<div class="kanban-container">
-			{#each $columns as column, index_col(column)}
+			{#each $board.columns as column, index_col(column)}
 				<Column
 					{theme}
 					{catsList}
-					cards={column.slots}
+					cards={column.cards}
 					title={column.title}
 					{index_col}
 					{secondary}
 					{third}
 					{fontPrimary}
 					{fontSecondary}
-					on:columnSaveTitle={(e)=>{dispatch('columnSaveTitle', {title:e.detail.title, columns:$columns})}}
+					on:columnSaveTitle={(e)=>{dispatch('columnSaveTitle', {title:e.detail.title, columns:$board.columns})}}
 					on:cardMouseDown={cardDragStart}
 					on:removeColumn={removeColumn}
 					on:addCard={(e) => {addCard(e.detail.index)}}
-					on:cardPropSaved={(e) => {dispatch('cardPropSaved', {prop:e.detail.prop, col:e.detail.col, card:e.detail.card, value:e.detail.value, columns:$columns})}}
+					on:cardPropSaved={(e) => {dispatch('cardPropSaved', {prop:e.detail.prop, col:e.detail.col, card:e.detail.card, value:e.detail.value, columns:$board.columns})}}
 					on:cardPropModify
-					on:cardRemove={()=>{dispatch('cardRemove', {columns:$columns})}}
+					on:cardRemove={()=>{dispatch('cardRemove', {columns:$board.columns})}}
 					on:moveCardUp={moveCardUp}
 					on:moveCardDown={moveCardDown}
 					on:moveColumn={moveColumn}	

@@ -2,11 +2,11 @@
     import {createEventDispatcher, onMount} from 'svelte';
     import {getBoard, getLang, useCrdt} from '$lib/stores';
 
-    const board = getBoard();
-    const globalLang = getLang();
-
     let bool_show_cats_list = false;
     const dispatch = createEventDispatcher();
+
+    const board = getBoard();
+    const globalLang = getLang();
 
     function removeCard(e){
         $board.columns[id_col].cards.splice(id, 1);
