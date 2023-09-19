@@ -13,12 +13,6 @@ export default defineConfig({
 		devSourcemap: true, // enable CSS source maps during development
 	},
 	plugins: [sveltekit()],
-	resolve: {
-		alias: {
-			$lib: path.resolve("./src/lib"),
-			$stores: path.resolve("./src/lib/stores")
-		}
-	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
