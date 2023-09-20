@@ -2,8 +2,9 @@ import { getContext, setContext } from 'svelte';
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
-// The Svelte compiler scans for assignment rather than 'delete' so it doesn't know to make the property reactive.
-// For example, 'delete dragDrop.to' is not reactive. Instead use dragDrop.to.col = -1
+// The Svelte compiler scans for assignment rather than 'delete.'
+// For example, 'delete dragDrop.to' is not reactive. Instead use:
+// dragDrop.to.col = -1
 
 type CardCoordinates = {
 	col: number;
