@@ -11,7 +11,7 @@
     function removeCard(e){
         $board.columns[id_col].cards.splice(id, 1);
         if (!useCrdt) $board = $board;
-        dispatch('cardRemove', {});  
+        dispatch('cardRemove', {col:id_col, card:id});  
     }
 
     function modifyProp(prop:string){
