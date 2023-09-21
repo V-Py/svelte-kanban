@@ -376,7 +376,7 @@
 <div class="kanban" class:light={theme == "light"} class:dark={theme=="dark"} style:background="{primary}">
 	<div class="layout">
 		<div class="kanban-container">
-			{#each $board.columns as column, index_col(column)}
+			{#each $board.columns as column, index_col}
 				<Column
 					{theme}
 					{catsList}
