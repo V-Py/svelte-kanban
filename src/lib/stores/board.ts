@@ -9,7 +9,7 @@ import { writable } from 'svelte/store';
 
 // ====================================
 // When using CRDT uncomment this block
-// add the following dependencies:
+// and add the following dependencies:
 // "@syncedstore/core": "0.6.0-alpha.0",
 // "@syncedstore/svelte": "0.6.0-alpha.0",
 // "y-webrtc": "^10.2.5"
