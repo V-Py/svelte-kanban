@@ -270,8 +270,6 @@
 		if (col_index >= $board.columns.length) return;
 
 		const card_temp = {
- 			empty: false,
-			animate: false,
 			title: $globalLang.getStr('NewCard'),
 			description: $globalLang.getStr('new'),
 			category: catsList[0],
