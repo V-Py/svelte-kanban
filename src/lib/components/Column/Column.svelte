@@ -7,9 +7,7 @@
 
     let bool_show_options = true;
 
-    export let title;
     export let index_col: number;
-    export let cards;
     export let catsList;
     export let theme;
     export let secondary;
@@ -22,11 +20,20 @@
     const globalLang = getLang();
     const dragDrop = getDragDrop();
 
-    let dropHere = false;
-    $: dropHere = $dragDrop.to.col === index_col;
+	let column;
+	$: column = $board.columns[index_col];
+
+    let cards;
+    $: cards = column.cards;
 
     let numCards = 0;
     $: numCards = cards.length + (dropHere && $dragDrop.from.col === index_col ? 0 : Number(dropHere));
+
+	let title;
+	$: title = column.title;
+
+    let dropHere = false;
+    $: dropHere = $dragDrop.to.col === index_col;
 
     function handleMouseDown(e, index_card:number){
         if(e.target instanceof HTMLButtonElement) return;
