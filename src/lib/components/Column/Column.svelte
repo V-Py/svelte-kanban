@@ -21,10 +21,10 @@
     const dragDrop = getDragDrop();
 
 	let column;
-	$: column = $board.columns[index_col];
+	$: column = $board.columns[index_col] || {};
 
     let cards;
-    $: cards = column.cards;
+    $: cards = column.cards || [];
 
     let numCards = 0;
     $: numCards = cards.length + (dropHere && $dragDrop.from.col === index_col ? 0 : Number(dropHere));
