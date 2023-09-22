@@ -378,8 +378,6 @@
 				<Column
 					{theme}
 					{catsList}
-					cards={column.cards}
-					title={column.title}
 					{index_col}
 					{secondary}
 					{third}
