@@ -22,3 +22,9 @@
     on:moveCardDown
     lang="fr"
 />
+
+<!--
+For an empty board, use:
+
+ <Kanban colsList={[]}/>
+-->

@@ -1,16 +1,13 @@
 <script lang="ts">
-    import {onMount, getContext, createEventDispatcher} from 'svelte';
-    import {columns}        from '$lib/stores/store.js';
-    import {fly, scale}     from 'svelte/transition';
-    import Card             from '../Card.svelte';
-    import OptionsColumn    from'./OptionsColumn.svelte';
-    import {globalLang}     from '$lib/stores/store.js';
+    import {createEventDispatcher} from 'svelte';
+    import {fly}                   from 'svelte/transition';
+    import {getBoard, getLang, getDragDrop}  from '$stores';
+    import Card                    from '../Card.svelte';
+    import OptionsColumn           from './OptionsColumn.svelte';
 
     let bool_show_options = true;
 
-    export let title;
-    export let index_col;
-    export let slots;
+    export let index_col: number;
     export let catsList;
     export let theme;
     export let secondary;
@@ -18,6 +15,25 @@
     export let fontSecondary;
 
     const dispatch = createEventDispatcher();
+
+    const board = getBoard();
+    const globalLang = getLang();
+    const dragDrop = getDragDrop();
+
+	let column;
+	$: column = $board.columns[index_col] || {};
+
+    let cards;
+    $: cards = column.cards || [];
+
+    let numCards = 0;
+    $: numCards = cards.length + (dropHere && $dragDrop.from.col === index_col ? 0 : Number(dropHere));
+
+	let title;
+	$: title = column.title;
+
+    let dropHere = false;
+    $: dropHere = $dragDrop.to.col === index_col;
 
     function handleMouseDown(e, index_card:number){
         if(e.target instanceof HTMLButtonElement) return;
@@ -42,7 +58,7 @@
     function saveColumn(){
         const input_id = 'input-colum'+index_col;
         const new_title = document.getElementById(input_id).value;
-        $columns[index_col].title = new_title;
+        $board.columns[index_col].title = new_title;
         bool_show_options = true;
         dispatch('columnSaveTitle', {title:new_title})
     }
@@ -74,36 +90,33 @@
     </div>
 
     <div class="cards-count" style:color="{fontSecondary}">
-        {slots.length} {$globalLang.getStr(slots.length === 1 ? 'Card':'Cards')}
+        {numCards} {$globalLang.getStr(numCards === 1 ? 'Card':'Cards')}
     </div>
 
     <div class="content"> 
-        {#if slots.length > 0}
-            {#each slots as slot, index}
-                <div class="{slot.animate == true ? 'animate' : ''} not-empty animate">
-                    {#if slot.empty == false}
-                        <Card
-                            id={index}
-                            id_col={index_col}
-                            {catsList}
-                            on:mousedown="{(e) => {handleMouseDown(e, index)}}"
-
-                            title={slot.title}
-                            description={slot.description}
-                            category={slot.category}
-                            date={slot.date}
-
-                            on:cardPropModify
-                            on:cardPropSaved
-                            on:cardRemove
-                            on:moveCardUp
-                            on:moveCardDown
-                        />
-                    {:else}
-                        <div class="animate empty-slot"></div>
-                    {/if}
-                </div>
-            {/each}
+        {#each cards as cardObj, card}
+            {#if dropHere && $dragDrop.to.card === card}
+                <div class="animate empty-slot"/>
+            {/if}
+            <div class="animate not-empty">
+                <Card
+                    id={card}
+                    id_col={index_col}
+                    {catsList}
+                    on:mousedown="{(e) => {handleMouseDown(e, card)}}"
+                    title={cardObj.title}
+                    category={cardObj.category}
+                    date={cardObj.date}
+                    on:cardPropModify
+                    on:cardPropSaved
+                    on:cardRemove
+                    on:moveCardUp
+                    on:moveCardDown
+                />
+            </div>
+        {/each}
+        {#if dropHere && $dragDrop.to.card >= cards.length}
+            <div class="animate empty-slot"/>
         {/if}
 
     </div>

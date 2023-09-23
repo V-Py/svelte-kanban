@@ -2,6 +2,10 @@
 # MacOs
 .DS_Store
 
+#####
+# git
+*.orig
+
 ##############
 # Dependencies
 /node_modules
@@ -29,9 +33,12 @@ yarn.lock
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+##########################################
 # Source maps https://web.dev/source-maps/
 *.map
 
+###############
+# Build-related
 /.svelte-kit
 /build
 /dist
